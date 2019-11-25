@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.soict.hoangviet.firebase"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("key-debug.jks")
+            storePassword "Aa234566"
+            keyAlias "baseDebug"
+            keyPassword "Aa234566"
+        }
+        release {
+            storeFile file("key-release.jks")
+            storePassword "Aa234566"
+            keyAlias "baseRelease"
+            keyPassword "Aa234566"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            versionNameSuffix "-debug"
+            buildConfigField 'String', 'BASE_URL', '"http://api-staging.timdatxe.com/v1/"'
+            buildConfigField 'String', 'BASE_MAP_URL', '"https://maps.googleapis.com/maps/api/"'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'BASE_URL', '"https://api.base.com/v1/"'
+            buildConfigField 'String', 'BASE_MAP_URL', '"https://maps.googleapis.com/maps/api/"'
+            versionNameSuffix "-release"
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "versions"
+
+    productFlavors {
+        demo {
+            dimension "versions"
+            versionNameSuffix "-demo"
+            resValue "string", "app_name", "Application Development"
+        }
+
+        full {
+            dimension "versions"
+            versionNameSuffix "-full"
+            resValue "string", "app_name", "Application"
+        }
+    }
+    compileOptions {
+        targetCompatibility = '1.8'
+        sourceCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    testImplementation "junit:junit:$rootProject.jUnitVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+
+    //Image Loader
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideComplierVersion"
+
+    // Network
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit2Verion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.gsonConverterVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.interceptorVersion"
+
+    // Rx adapter for retrofit
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.rxjava2Version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+
+    //google play service
+    implementation "com.google.android.gms:play-services-maps:$rootProject.serviceMapsVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.serviceLocationsVersion"
+    implementation "com.google.android.gms:play-services-places:$rootProject.servicePlacesVersion"
+    implementation "com.google.android.libraries.places:places:$rootProject.placesLibraryVersion"
+    implementation "com.google.maps.android:android-maps-utils:$rootProject.mapUtilsVersion"
+
+    //Firebase
+    implementation "com.google.firebase:firebase-messaging:$rootProject.firebaseMessage"
+}
