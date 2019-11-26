@@ -31,8 +31,4 @@ class BaseApplication : Application() {
         Fabric.with(fabric)
         // [END crash_enable_debug_mode]
     }
-
-    fun getContext(): Context {
-        return instance
-    }
 }

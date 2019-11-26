@@ -31,7 +31,7 @@ open class BaseRetrofit {
                         .build()
                     return chain.proceed(request)
                 }
-            }).addInterceptor(NetworkConnectionInterceptor(BaseApplication().getContext()))
+            }).addInterceptor(NetworkConnectionInterceptor(BaseApplication.instance))
             if (BuildConfig.DEBUG) {
                 mOkHttpClientBuilder?.let {
                     if (!it.interceptors().contains(logging)) {
