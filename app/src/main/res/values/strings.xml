@@ -2,4 +2,6 @@
     <string name="file_provider">base.provider</string>
     <string name="default_notification_channel_id">channel_id</string>
     <string name="default_notification_channel_name" translatable="true">Firebase</string>
+    <string name="error_happen">Có lỗi xảy ra. Vui lòng thử lại!</string>
+    <string name="share_option">Chọn hình thức chia sẻ</string>
 </resources>

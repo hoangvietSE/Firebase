@@ -60,6 +60,7 @@ ext {
     firebaseMessage = '20.0.1'
     crashlyticsVersion = '2.10.1'
     analyticsVersion = '17.2.1'
+    dynamicLinksVersion = '19.0.0'
 
     //Test dependencies
     jUnitVersion = '4.12'

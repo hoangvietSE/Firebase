@@ -15,6 +15,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
         super.onCreate(savedInstanceState)
         setContentView(mLayoutRes)
         mPresenter.onAttach()
+        initListener()
         subscribeTopic()
     }
 
