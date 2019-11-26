@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.soict.hoangviet.firebase.ui.view.impl.MainActivity">
+        <activity android:name="com.soict.hoangviet.firebase.ui.view.impl.CrashlyticActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,6 +48,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
+        <meta-data
+                android:name="firebase_crashlytics_collection_enabled"
+                android:value="false" />
     </application>
 
 </manifest>
