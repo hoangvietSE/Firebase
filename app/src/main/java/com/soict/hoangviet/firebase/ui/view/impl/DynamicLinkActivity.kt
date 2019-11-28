@@ -46,11 +46,11 @@ class DynamicLinkActivity : BaseActivity<DynamicLinkPresenter>(), DynamicLinkVie
         // [START create_link_basic]
         showLoading()
         val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.soict.hust.edu.vn?id=18091998"))
+                .setLink(Uri.parse("https://soict.page.link?id=18091998"))
                 .setDomainUriPrefix("https://soict.page.link")
                 // Open links with this app on Android
                 .setAndroidParameters(
-                        DynamicLink.AndroidParameters.Builder()
+                        DynamicLink.AndroidParameters.Builder("com.soict.hoangviet.firebase")
                                 .setFallbackUrl(Uri.parse("https://www.soict.hust.edu.vn/"))
                                 .setMinimumVersion(0)
                                 .build()
