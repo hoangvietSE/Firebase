@@ -61,6 +61,8 @@ ext {
     crashlyticsVersion = '2.10.1'
     analyticsVersion = '17.2.1'
     dynamicLinksVersion = '19.0.0'
+    authsVersion = '19.2.0'
+    databasesVersion = '19.2.0'
 
     //Test dependencies
     jUnitVersion = '4.12'

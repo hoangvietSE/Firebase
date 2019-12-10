@@ -4,4 +4,30 @@
     <string name="default_notification_channel_name" translatable="true">Firebase</string>
     <string name="error_happen">Có lỗi xảy ra. Vui lòng thử lại!</string>
     <string name="share_option">Chọn hình thức chia sẻ</string>
+
+    <!--Main-->
+    <string name="main_login_title">Đăng nhập</string>
+    <string name="main_register_title">Đăng ký</string>
+
+    <!--Login-->
+    <string name="login_toolbar_title">Đăng nhập</string>
+    <string name="login_email_hint"><b>Email</b></string>
+    <string name="login_password_hint"><b>Mật khẩu</b></string>
+    <string name="login_button_title">Đăng nhập</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="login_error">Đăng nhập thất bại. Vui lòng thử lại</string>
+
+    <!--Register-->
+    <string name="register_toolbar_title">Đăng ký</string>
+    <string name="register_email_hint"><b>Email</b></string>
+    <string name="register_password_hint"><b>Mật khẩu</b></string>
+    <string name="register_username_hint"><b>Tên người dùng</b></string>
+    <string name="register_button_title">Đăng ký</string>
+    <string name="register_username_empty">Vui lòng nhập tên tài khoản</string>
+    <string name="register_email_empty">Vui lòng nhập email</string>
+    <string name="register_email_error">Vui lòng nhập email hợp lệ</string>
+    <string name="register_password_empty">Vui lòng nhập mật khẩu</string>
+    <string name="register_password_error">Mật khẩu phải có ít nhất 6 kí tự bao gồm chữ và số</string>
+    <string name="register_success">Đăng ký thành công. Vui lòng đăng nhập</string>
+    <string name="register_error">Đăng ký thất bại. Vui lòng thử lại</string>
 </resources>

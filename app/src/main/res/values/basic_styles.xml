@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimaryDark">@color/md_grey_300</item>
-        <item name="android:colorPrimary">@color/md_grey_300</item>
-        <item name="android:colorAccent">@color/md_grey_300</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Layout" />
@@ -254,12 +255,12 @@
     </style>
     <!-- Button Relate social -->
     <!--<style name="Layout.FillWidth.RelateSocial">-->
-        <!--<item name="android:layout_marginStart">@dimen/margin_normal</item>-->
-        <!--<item name="android:layout_marginEnd">@dimen/margin_normal</item>-->
-        <!--<item name="android:elevation" tools:ignore="NewApi">4dp</item>-->
-        <!--<item name="android:orientation">horizontal</item>-->
-        <!--<item name="android:layout_gravity">center_vertical</item>-->
-        <!--<item name="android:padding">@dimen/content_padding_normal</item>-->
+    <!--<item name="android:layout_marginStart">@dimen/margin_normal</item>-->
+    <!--<item name="android:layout_marginEnd">@dimen/margin_normal</item>-->
+    <!--<item name="android:elevation" tools:ignore="NewApi">4dp</item>-->
+    <!--<item name="android:orientation">horizontal</item>-->
+    <!--<item name="android:layout_gravity">center_vertical</item>-->
+    <!--<item name="android:padding">@dimen/content_padding_normal</item>-->
     <!--</style>-->
     <style name="Layout.FillWidth.Vertical.Comment">
         <item name="android:elevation" tools:ignore="NewApi">4dp</item>

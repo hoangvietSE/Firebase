@@ -7,8 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.soict.hoangviet.firebase.extension.inflate
 
 abstract class BaseCustomViewConstrainLayout : ConstraintLayout {
-    protected abstract var layoutRes: Int
-    protected abstract var styleRes: IntArray?
+    protected abstract val layoutRes: Int
+    protected open val styleRes: IntArray? = null
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)

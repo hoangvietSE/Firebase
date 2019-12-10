@@ -28,4 +28,14 @@
     <dimen name="radius_26_dp">26dp</dimen>
     <dimen name="radius_32_dp">32dp</dimen>
 
+    <!--Text Size-->
+    <dimen name="text_size_10_sp">10sp</dimen>
+    <dimen name="text_size_12_sp">12sp</dimen>
+    <dimen name="text_size_14_sp">14sp</dimen>
+    <dimen name="text_size_16_sp">16sp</dimen>
+    <dimen name="text_size_18_sp">18sp</dimen>
+    <dimen name="text_size_20_sp">20sp</dimen>
+    <dimen name="text_size_22_sp">22sp</dimen>
+    <dimen name="text_size_24_sp">24sp</dimen>
+
 </resources>

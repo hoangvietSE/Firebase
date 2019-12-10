@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.messaging.FirebaseMessaging
@@ -9,7 +10,7 @@ import com.soict.hoangviet.firebase.ui.view.BaseView
 
 abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, BaseFragment.CallBack {
     protected abstract val mLayoutRes: Int
-    protected val mPresenter : P get() = getPresenter()
+    protected val mPresenter: P get() = getPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +22,10 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
 
     private fun subscribeTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic("topic_app")
-            .addOnSuccessListener {
-
-            }
-            .addOnFailureListener {
-
-            }
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
     }
 
     override fun onDestroy() {
@@ -47,4 +46,15 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
     }
 
     abstract fun getPresenter(): P
+
+    protected fun startActivity(classOfT: Class<*>) {
+        startActivity(Intent(this, classOfT))
+    }
+
+    protected fun startActivityAndClearTask(classOfT: Class<*>) {
+        startActivity(Intent(this, classOfT).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        })
+    }
+
 }
