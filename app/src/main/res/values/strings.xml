@@ -30,4 +30,7 @@
     <string name="register_password_error">Mật khẩu phải có ít nhất 6 kí tự bao gồm chữ và số</string>
     <string name="register_success">Đăng ký thành công. Vui lòng đăng nhập</string>
     <string name="register_error">Đăng ký thất bại. Vui lòng thử lại</string>
+
+    <!--Home-->
+    <string name="home_toolbar_title">Messenger</string>
 </resources>

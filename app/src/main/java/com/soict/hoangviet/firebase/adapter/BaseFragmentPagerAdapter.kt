@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class BaseFragmentPagerAdapter(
+open class BaseFragmentPagerAdapter(
     mFragmentManager: FragmentManager,
     val mListFragment: ArrayList<Fragment>,
     val mListTitle: ArrayList<String>

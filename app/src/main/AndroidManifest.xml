@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.view.impl.MainActivity">
+        <activity android:name=".ui.view.impl.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +36,13 @@
         </activity>
 
         <activity
+            android:name=".ui.view.impl.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.view.impl.DynamicLinkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.impl.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.impl.LoginActivity"

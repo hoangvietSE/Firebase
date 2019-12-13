@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.widget.BaseCustomViewConstrainLayout
 
 class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
@@ -33,9 +34,11 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
     }
 
     fun setTitle(title: String?) {
-        title?.let {
-            toolbarTitle?.text = title
-        }
+        title?.let { toolbarTitle?.text = title }
+    }
+
+    fun hideLeftButton() {
+        imvBack?.let { it.gone() }
     }
 
     override fun initData() {
