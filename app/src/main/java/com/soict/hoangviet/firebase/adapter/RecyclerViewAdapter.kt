@@ -157,7 +157,7 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
         super.onDetachedFromRecyclerView(recyclerView)
     }
 
-    protected fun <T> getItemPosition(position: Int, classOfT: Class<T>): T {
+    fun <T> getItemPosition(position: Int, classOfT: Class<T>): T {
         return classOfT.cast(mListWrapperModel[position].model)
     }
 

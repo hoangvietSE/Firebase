@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.utils.ToastUtil
 import com.soict.hoangviet.firebase.widget.BaseCustomViewConstrainLayout
 
 class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
@@ -26,6 +28,9 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
     override fun initView() {
         imvBack = findViewById(R.id.imv_back)
         toolbarTitle = findViewById(R.id.toolbar_title)
+        imvBack?.setOnClickListener {
+            ToastUtil.show("Back")
+        }
     }
 
     override fun initDataFromStyleable(typeArray: TypedArray?) {

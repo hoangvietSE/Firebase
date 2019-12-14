@@ -21,8 +21,6 @@ class HomeActivity : BaseActivity<HomePresenter>(), HomeView {
 
     override val mLayoutRes: Int
         get() = R.layout.activity_home
-    private lateinit var userReference: DatabaseReference
-    private var userListener: ValueEventListener? = null
     private var listFragment: ArrayList<Fragment> = arrayListOf()
     private var homeAdapter: HomeAdapter? = null
 
@@ -52,28 +50,15 @@ class HomeActivity : BaseActivity<HomePresenter>(), HomeView {
     }
 
     private fun getCurrentUser() {
-        userReference = FirebaseDatabase.getInstance().getReference("Users")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid)
-        userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d(TAG, "load:success")
-                // Get Post object and use the values to update the UI
-                val user = dataSnapshot.getValue(User::class.java)
-                // [START_EXCLUDE]
-                user?.let {
-                    ToastUtil.show("Welcome ${it.username}")
-                }
-                // [END_EXCLUDE]
+        getCurrentUser(FirebaseAuth.getInstance().currentUser!!.uid, object : RealTimeDatabaseListener<User> {
+            override fun onLoadSuccess(data: User) {
+                ToastUtil.show("Welcome ${data.username}")
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "load:onCancelled", databaseError.toException())
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
+            override fun onLoadError() {
             }
-        }
-        userReference.addValueEventListener(userListener as ValueEventListener)
+
+        })
     }
 
     override fun initListener() {
@@ -83,12 +68,5 @@ class HomeActivity : BaseActivity<HomePresenter>(), HomeView {
     }
 
     override fun onFragmentDetached(tag: String) {
-    }
-
-    override fun onStop() {
-        super.onStop()
-        userListener?.let {
-            userReference.removeEventListener(it)
-        }
     }
 }

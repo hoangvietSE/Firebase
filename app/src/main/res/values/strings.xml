@@ -16,6 +16,7 @@
     <string name="login_button_title">Đăng nhập</string>
     <string name="login_success">Đăng nhập thành công</string>
     <string name="login_error">Đăng nhập thất bại. Vui lòng thử lại</string>
+    <string name="login_no_account_yet">Không phải thành viên? <u>Đăng ký</u></string>
 
     <!--Register-->
     <string name="register_toolbar_title">Đăng ký</string>

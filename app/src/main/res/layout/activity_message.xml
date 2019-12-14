@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imv_splash"
+    <com.soict.hoangviet.firebase.custom.CustomFirebaseToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/md_white_1000"
-        tools:src="@drawable/splash" />
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>

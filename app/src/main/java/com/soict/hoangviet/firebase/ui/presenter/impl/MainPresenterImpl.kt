@@ -1,13 +1,8 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
-import com.soict.hoangviet.firebase.data.network.ICallBack
-import com.soict.hoangviet.firebase.data.network.api.ApiException
-import com.soict.hoangviet.firebase.data.network.response.BaseListEntityResponse
-import com.soict.hoangviet.firebase.data.network.response.TestResponse
 import com.soict.hoangviet.firebase.ui.interactor.MainInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.view.MainView
-import com.soict.hoangviet.firebase.utils.ToastUtil
 
 class MainPresenterImpl(mView: MainView, mMainInteractor: MainInteractor) : BasePresenterImpl<MainView, MainInteractor>(mView, mMainInteractor), MainPresenter {
     private var page = 1
@@ -21,18 +16,18 @@ class MainPresenterImpl(mView: MainView, mMainInteractor: MainInteractor) : Base
         data["end_point"] = ""
         data["limit"] = 6
         data["page"] = page
-        mInterator?.let {
-            mCompositeDisposable.add(it.fetchListDriver(
-                    data, object : ICallBack<BaseListEntityResponse<TestResponse>> {
-                override fun onSuccess(result: BaseListEntityResponse<TestResponse>) {
-                    ToastUtil.show("Good Job!")
-                }
-
-                override fun onError(e: ApiException) {
-                    ToastUtil.show("Error Happen. Please try again!")
-                }
-            }
-            ))
-        }
+//        mInterator?.let {
+//            mCompositeDisposable.add(it.fetchListDriver(
+//                    data, object : ICallBack<BaseListEntityResponse<TestResponse>> {
+//                override fun onSuccess(result: BaseListEntityResponse<TestResponse>) {
+//                    ToastUtil.show("Good Job!")
+//                }
+//
+//                override fun onError(e: ApiException) {
+//                    ToastUtil.show("Error Happen. Please try again!")
+//                }
+//            }
+//            ))
+//        }
     }
 }

@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,11 +17,10 @@ import com.soict.hoangviet.firebase.ui.interactor.impl.UserInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.UserPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.UserPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.UserView
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
-    RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
+        RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     override val mLayoutRes: Int
         get() = R.layout.fragment_user
 
@@ -75,10 +75,10 @@ class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecy
 
     private fun initAdapter() {
         mUserAdpter = UserAdapter(context!!)
+        recycler_view_user.setAdapter(mUserAdpter!!)
         recycler_view_user.setLoadingMoreListner(this)
         recycler_view_user.setOnItemClickListener(this)
         recycler_view_user.setOnRefreshingListener(this)
-        recycler_view_user.setAdapter(mUserAdpter!!)
         mUserAdpter?.addModels(mListUser, false)
         recycler_view_user.setLinearLayoutManager()
     }
@@ -90,6 +90,10 @@ class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecy
     }
 
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
+        val user = mUserAdpter?.getItemPosition(position!!, User::class.java)
+        startActivity(Intent(parentActivity?.let { it }, MessageActivity::class.java).apply {
+            putExtra(MessageActivity.EXTRA_USER_ID, user?.id)
+        })
     }
 
     override fun onSwipeRefresh() {

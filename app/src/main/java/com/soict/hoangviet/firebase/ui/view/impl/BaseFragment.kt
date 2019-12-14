@@ -13,7 +13,7 @@ import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
 
 abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
-    private var parentActivity: AppCompatActivity? = null
+    protected var parentActivity: AppCompatActivity? = null
     protected val mPresenter: P get() = getPresenter()
     abstract val mLayoutRes: Int
 
