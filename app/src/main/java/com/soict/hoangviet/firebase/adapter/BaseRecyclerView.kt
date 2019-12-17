@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.widget.BaseCustomViewRelativeLayout
 import kotlinx.android.synthetic.main.layout_base_recycler_view.view.*
 
@@ -118,6 +119,14 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
 
     fun showRefreshing() {
         swipe_refresh_layout.isRefreshing = true
+    }
+
+    fun disableRefreshing() {
+        swipe_refresh_layout.isEnabled = false
+    }
+
+    fun enableRefreshing() {
+        swipe_refresh_layout.isEnabled = true
     }
 
 

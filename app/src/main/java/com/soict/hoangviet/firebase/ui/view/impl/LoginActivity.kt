@@ -3,7 +3,6 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
-import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.interactor.impl.LoginInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.LoginPresenterImpl
@@ -48,6 +47,7 @@ class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
     override fun onAuthSuccess() {
         hideLoading()
         ToastUtil.show(resources.getString(R.string.login_success))
+        startActivityAndClearTask(MainActivity::class.java)
     }
 
     override fun onEmailEmpty() {

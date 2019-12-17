@@ -1,4 +1,4 @@
 package com.soict.hoangviet.firebase.ui.presenter
 
-interface UserPresenter : BasePresenter {
+interface FriendsPresenter : BasePresenter {
 }

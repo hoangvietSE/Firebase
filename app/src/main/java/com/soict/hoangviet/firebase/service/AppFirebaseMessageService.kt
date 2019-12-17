@@ -16,7 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.NotificationResponse
-import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
+import com.soict.hoangviet.firebase.ui.view.impl.ProfileFragment
 
 class AppFirebaseMessageService : FirebaseMessagingService() {
     companion object {
@@ -71,10 +71,10 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notificationResponse: NotificationResponse) {
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = Intent(this, ProfileFragment::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            putExtra(MainActivity.EXTRA_TITLE, notificationResponse.title)
-//            putExtra(MainActivity.EXTRA_CONTENT, notificationResponse.content)
+//            putExtra(ProfileFragment.EXTRA_TITLE, notificationResponse.title)
+//            putExtra(ProfileFragment.EXTRA_CONTENT, notificationResponse.content)
         }
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,

@@ -17,8 +17,7 @@ abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
     protected val mPresenter: P get() = getPresenter()
     abstract val mLayoutRes: Int
 
-    override
-    fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BaseActivity<*>) {
             parentActivity = context

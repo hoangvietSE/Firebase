@@ -41,7 +41,7 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
         mDiffResult.dispatchUpdatesTo(this)
     }
 
-    protected fun setOnItemPressListener(listener: OnItemPressListener) {
+    fun setOnItemPressListener(listener: OnItemPressListener) {
         mOnItemPressListener = listener
     }
 

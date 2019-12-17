@@ -113,4 +113,5 @@ dependencies {
     implementation "com.google.firebase:firebase-dynamic-links:$rootProject.dynamicLinksVersion"
     implementation "com.google.firebase:firebase-auth:$rootProject.authsVersion"
     implementation "com.google.firebase:firebase-database-ktx:$rootProject.databasesVersion"
+    implementation "com.github.ibrahimsn98:SmoothBottomBar:$rootProject.smoothBottomsVersion"
 }

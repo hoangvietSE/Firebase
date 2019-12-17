@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.soict.hoangviet.firebase.custom.CustomFirebaseToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/card_view"
+        android:layout_below="@id/toolbar" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        app:cardElevation="@dimen/margin_8_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <me.ibrahimsn.lib.SmoothBottomBar
+            android:id="@+id/bottom_bar"
+            app:backgroundColor="@color/md_white_1000"
+            app:iconSize="@dimen/margin_24_dp"
+            app:iconTint="@color/colorAccent"
+            app:iconTintActive="@color/colorPrimary"
+            app:indicatorColor="#2DE1BEE7"
+            app:menu="@menu/menu_bottom"
+            app:textColor="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

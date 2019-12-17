@@ -13,16 +13,16 @@ import com.soict.hoangviet.firebase.adapter.EndlessLoadingRecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.UserAdapter
 import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.ui.interactor.impl.UserInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.UserPresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.UserPresenterImpl
-import com.soict.hoangviet.firebase.ui.view.UserView
-import kotlinx.android.synthetic.main.fragment_user.*
+import com.soict.hoangviet.firebase.ui.interactor.impl.FriendsInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
+import com.soict.hoangviet.firebase.ui.presenter.impl.FriendsPresenterImpl
+import com.soict.hoangviet.firebase.ui.view.FriendsView
+import kotlinx.android.synthetic.main.fragment_friends.*
 
-class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
+class FriendsFragment : BaseFragment<FriendsPresenter>(), FriendsView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
         RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     override val mLayoutRes: Int
-        get() = R.layout.fragment_user
+        get() = R.layout.fragment_friends
 
     private var mUserAdpter: UserAdapter? = null
     private var mListUser: ArrayList<User> = arrayListOf()
@@ -30,16 +30,16 @@ class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecy
     private var userListener: ValueEventListener? = null
 
     companion object {
-        fun getInstance(): UserFragment {
-            val userFragment = UserFragment()
+        fun getInstance(): FriendsFragment {
+            val userFragment = FriendsFragment()
             val bundle = Bundle()
             userFragment.arguments = bundle
             return userFragment
         }
     }
 
-    override fun getPresenter(): UserPresenter {
-        return UserPresenterImpl(this, UserInteractorImpl())
+    override fun getPresenter(): FriendsPresenter {
+        return FriendsPresenterImpl(this, FriendsInteractorImpl())
     }
 
     override fun initView() {
@@ -65,7 +65,7 @@ class UserFragment : BaseFragment<UserPresenter>(), UserView, EndlessLoadingRecy
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
-                Log.w(HomeActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }

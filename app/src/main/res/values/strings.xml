@@ -32,6 +32,11 @@
     <string name="register_success">Đăng ký thành công. Vui lòng đăng nhập</string>
     <string name="register_error">Đăng ký thất bại. Vui lòng thử lại</string>
 
-    <!--Home-->
+    <!--Main-->
     <string name="home_toolbar_title">Messenger</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_friends">Bạn bè</string>
+    <string name="menu_profile">Cá nhân</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

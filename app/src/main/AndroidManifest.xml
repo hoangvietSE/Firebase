@@ -38,13 +38,13 @@
         </activity>
 
         <activity
-            android:name=".ui.view.impl.MainActivity"
+            android:name=".ui.view.impl.ProfileFragment"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.impl.DynamicLinkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.view.impl.HomeActivity"
+            android:name=".ui.view.impl.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.impl.LoginActivity"

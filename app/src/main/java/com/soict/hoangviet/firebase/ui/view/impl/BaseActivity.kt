@@ -11,7 +11,6 @@ import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
-import kotlinx.android.synthetic.main.layout_toolbar.*
 
 abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, BaseFragment.CallBack {
     protected abstract val mLayoutRes: Int
@@ -69,7 +68,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
                 .child(FirebaseAuth.getInstance().currentUser!!.uid)
         userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d(HomeActivity.TAG, "load:success")
+                Log.d(MainActivity.TAG, "load:success")
                 // Get Post object and use the values to update the UI
                 val user = dataSnapshot.getValue(User::class.java)
                 // [START_EXCLUDE]
@@ -79,7 +78,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
-                Log.w(HomeActivity.TAG, "load:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
                 listener.onLoadError()
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
