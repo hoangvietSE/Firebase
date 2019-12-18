@@ -3,12 +3,14 @@ package com.soict.hoangviet.firebase.widget
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import android.widget.RelativeLayout
 import com.soict.hoangviet.firebase.extension.inflate
 
 abstract class BaseCustomViewRelativeLayout : RelativeLayout {
     protected abstract val layoutRes: Int
     protected open val styleRes: IntArray? = null
+    protected lateinit var view: View
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -30,7 +32,7 @@ abstract class BaseCustomViewRelativeLayout : RelativeLayout {
         }
     }
 
-    protected open fun initDataFromStyleable(typeArray: TypedArray?) {
+    protected open fun initDataFromStyleable(typeArray: TypedArray) {
     }
 
     protected open fun initView() {
@@ -43,6 +45,6 @@ abstract class BaseCustomViewRelativeLayout : RelativeLayout {
     }
 
     private fun setLayout() {
-        context.inflate(layoutRes, this, true)
+        view = context.inflate(layoutRes, this, true)
     }
 }

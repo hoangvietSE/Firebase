@@ -39,4 +39,12 @@
     <string name="menu_profile">Cá nhân</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+
+    <!--Profile-->
+    <string name="profile_setting_update">Cập nhật thông tin</string>
+    <string name="profile_setting_notification">Cài đặt thông báo</string>
+    <string name="profile_setting_language">Cài đặt ngôn ngữ</string>
+    <string name="profile_setting_changepass">Đổi mật khẩu</string>
+    <string name="profile_setting_faq">FAQ</string>
+    <string name="profile_setting_contact">Liên hệ</string>
 </resources>

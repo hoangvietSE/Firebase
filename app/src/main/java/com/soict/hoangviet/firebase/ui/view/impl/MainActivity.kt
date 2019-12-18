@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.os.Build
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -23,17 +24,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_nav.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 import kotlinx.android.synthetic.main.layout_navigation.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapter.OnItemClickListener,
-        RecyclerViewAdapter.OnItemPressListener {
+        RecyclerViewAdapter.OnItemPressListener, RecyclerViewAdapter.OnItemCancelListener {
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
         const val ITEM_HOME = "home"
         const val ITEM_FRIEND = "friends"
         const val ITEM_PROFILE = "profile"
+        const val ITEM_LOGOUT = "logout"
         const val ITEM_MAIN_HOME = 0;
         const val ITEM_MAIN_FRIEND = 1;
         const val ITEM_MAIN_PROFILE = 2;
+        const val DELAY_LOGOUT = 1000L;
     }
 
     override val mLayoutRes: Int
@@ -42,6 +46,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
     private var homeAdapter: HomeAdapter? = null
     private lateinit var mMainNavigationAdapter: MainNavigationAdapter
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var listItemNav: ArrayList<ItemMenuNav>
 
     override fun getPresenter(): MainPresenter {
         return MainPresenterImpl(this, MainInteractorImpl())
@@ -55,6 +60,8 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
     }
 
     private fun setToolbar() {
+        toolbar.setIconToolbar(R.drawable.ic_navigation)
+        setMainNameToolbar("Home")
     }
 
     private fun initListFragment() {
@@ -66,6 +73,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
         listFragment.add(profileFragment)
         homeAdapter = HomeAdapter(supportFragmentManager, listFragment, arrayListOf("Home", "Friends", "Profile"))
         viewPager.adapter = homeAdapter
+        viewPager.currentItem = ITEM_MAIN_HOME
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -73,44 +81,59 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
+                val data = mMainNavigationAdapter.getItemPosition(position, ItemMenuNav::class.java)
                 bottom_bar.setActiveItem(position)
+                dataSetChangeAdapter(data, position)
             }
 
         })
     }
 
+    private fun setMainNameToolbar(name: String) {
+        toolbar.setMainName(name)
+    }
+
     private fun initNavigationDrawer() {
         actionBarDrawerToggle = ActionBarDrawerToggle(this, drawer_layout, R.string.nav_open, R.string.nav_close)
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
-        val listItemNav: ArrayList<ItemMenuNav> = arrayListOf()
         val itemHome = ItemMenuNav(
                 R.drawable.ic_home_active,
-                R.drawable.ic_home,
+                R.drawable.ic_home_disable,
                 "Home",
                 "home",
                 false
         )
         val itemFriends = ItemMenuNav(
                 R.drawable.ic_friends_active,
-                R.drawable.ic_priends,
+                R.drawable.ic_friends_disable,
                 "Bạn bè",
                 "friends",
                 false
         )
         val itemProfile = ItemMenuNav(
                 R.drawable.ic_profile_active,
-                R.drawable.ic_profile,
+                R.drawable.ic_profile_disable,
                 "Cá nhân",
                 "profile",
                 false
         )
+        val itemLogout = ItemMenuNav(
+                R.drawable.ic_logout_active,
+                R.drawable.ic_logout_disable,
+                "Đăng xuất",
+                "logout",
+                false
+        )
+        listItemNav = arrayListOf()
         listItemNav.add(itemHome)
         listItemNav.add(itemFriends)
         listItemNav.add(itemProfile)
+        listItemNav.add(itemLogout)
         mMainNavigationAdapter = MainNavigationAdapter(this)
         nav_list_item.setAdapter(mMainNavigationAdapter)
         mMainNavigationAdapter?.setOnItemPressListener(this)
         mMainNavigationAdapter?.setOnItemClickListener(this)
+        mMainNavigationAdapter?.setOnItemCancelListener(this)
         nav_list_item.addModels(listItemNav, false)
         nav_list_item.setLinearLayoutManager()
         nav_list_item.disableRefreshing()
@@ -133,6 +156,9 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
         bottom_bar.onItemSelected = {
             viewPager.currentItem = it
         }
+        imv_function.setOnClickListener {
+            openDrawer()
+        }
     }
 
     override fun onFragmentAttached() {
@@ -143,25 +169,56 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
 
     override fun onItemPress(view: View, position: Int?) {
         val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
-        view.setBackgroundResource(R.drawable.bg_item_nav_selected)
-        view.imv_item_nav.setImageResource(data.iconSelected)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            view.tv_item_nav.setTextColor(resources.getColor(R.color.colorPrimary, null))
-        } else {
-            view.tv_item_nav.setTextColor(resources.getColor(R.color.colorPrimary))
-        }
+        handleEventTouch(view, data, true)
+    }
+
+    override fun onItemCancel(view: View, position: Int?) {
+        val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
+        handleEventTouch(view, data, false)
     }
 
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
         val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
-        view.setBackgroundResource(R.drawable.bg_item_nav_unselected)
-        view.imv_item_nav.setImageResource(data.iconDefault)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            view.tv_item_nav.setTextColor(resources.getColor(R.color.md_black_1000, null))
-        } else {
-            view.tv_item_nav.setTextColor(resources.getColor(R.color.md_black_1000))
-        }
+        handleEventTouch(view, data, false)
+        dataSetChangeAdapter(data, position)
         closeDrawer()
+        when (data.code) {
+            ITEM_LOGOUT -> {
+                logoutApplication()
+            }
+        }
+    }
+
+    private fun logoutApplication() {
+        showLoading()
+        Handler().postDelayed({
+            FirebaseAuth.getInstance().signOut()
+            hideLoading()
+            startActivity(LoginActivity::class.java)
+            finish()
+        }, DELAY_LOGOUT)
+
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun closeDrawer() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun openDrawer() {
+        drawer_layout.openDrawer(GravityCompat.START)
+    }
+
+    private fun dataSetChangeAdapter(data: ItemMenuNav, position: Int?) {
         when (data.code) {
             ITEM_HOME -> {
                 viewPager.currentItem = ITEM_MAIN_HOME
@@ -173,20 +230,30 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
                 viewPager.currentItem = ITEM_MAIN_PROFILE
             }
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        closeDrawer()
-    }
-
-    private fun closeDrawer() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        for ((index, item) in listItemNav.withIndex()) {
+            item.selected = index == position
         }
+        mMainNavigationAdapter?.notifyDataSetChanged()
+        setMainNameToolbar(data.description)
     }
 
-    private fun openDrawer() {
-        drawer_layout.openDrawer(GravityCompat.START)
+    private fun handleEventTouch(view: View, data: ItemMenuNav, hover: Boolean) {
+        if (hover) {
+            view.setBackgroundResource(R.drawable.bg_item_nav_selected)
+            view.imv_item_nav.setImageResource(data.iconSelected)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                view.tv_item_nav.setTextColor(resources.getColor(R.color.colorPrimary, null))
+            } else {
+                view.tv_item_nav.setTextColor(resources.getColor(R.color.colorPrimary))
+            }
+        } else {
+            view.setBackgroundResource(R.drawable.bg_item_nav_unselected)
+            view.imv_item_nav.setImageResource(data.iconDefault)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                view.tv_item_nav.setTextColor(resources.getColor(R.color.colorAccent, null))
+            } else {
+                view.tv_item_nav.setTextColor(resources.getColor(R.color.colorAccent))
+            }
+        }
     }
 }

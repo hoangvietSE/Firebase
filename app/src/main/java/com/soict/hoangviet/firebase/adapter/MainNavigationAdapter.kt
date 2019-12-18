@@ -35,13 +35,15 @@ class MainNavigationAdapter(context: Context) : EndlessLoadingRecyclerViewAdapte
                 navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorPrimary))
             }
             navigationViewHolder.itemIcon.setImageResource(data.iconSelected)
+            navigationViewHolder.itemView.setBackgroundResource(R.drawable.bg_item_nav_selected)
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.md_black_1000, null))
+                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorAccent, null))
             } else {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.md_black_1000))
+                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorAccent))
             }
             navigationViewHolder.itemIcon.setImageResource(data.iconDefault)
+            navigationViewHolder.itemView.setBackgroundResource(R.drawable.bg_item_nav_unselected)
         }
     }
 

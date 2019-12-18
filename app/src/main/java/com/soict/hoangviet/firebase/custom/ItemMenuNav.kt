@@ -5,5 +5,5 @@ class ItemMenuNav(
         val iconDefault: Int,
         val description: String,
         val code: String,
-        val selected: Boolean
+        var selected: Boolean
 )

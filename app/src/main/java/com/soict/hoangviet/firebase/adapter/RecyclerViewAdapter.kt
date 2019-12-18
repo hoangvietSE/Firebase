@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.soict.hoangviet.firebase.utils.LogUtil
+import com.soict.hoangviet.firebase.utils.ToastUtil
 import java.util.concurrent.atomic.AtomicInteger
 
 abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -19,6 +20,7 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
     protected var mListWrapperModel: MutableList<WrapperModel> = mutableListOf()
     protected var mListWrapperModelBackup: MutableList<WrapperModel> = mutableListOf()
     protected var mOnItemPressListener: OnItemPressListener? = null
+    protected var mOnItemCancelListener: OnItemCancelListener? = null
     protected var mOnItemClickListener: OnItemClickListener? = null
 
     protected fun backUp() {
@@ -43,6 +45,10 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
 
     fun setOnItemPressListener(listener: OnItemPressListener) {
         mOnItemPressListener = listener
+    }
+
+    fun setOnItemCancelListener(listener: OnItemCancelListener) {
+        mOnItemCancelListener = listener
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -162,10 +168,10 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
     }
 
     private fun notifyItemClickListener(
-        parent: ViewGroup,
-        viewType: Int,
-        view: View,
-        position: Int?
+            parent: ViewGroup,
+            viewType: Int,
+            view: View,
+            position: Int?
     ) {
         mOnItemClickListener?.onItemClick(parent, viewType, view, position)
     }
@@ -179,6 +185,8 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
                     true
                 }
                 MotionEvent.ACTION_CANCEL -> {
+                    mOnItemCancelListener?.onItemCancel(view, getViewByPosition(view))
+                    true
                 }
                 /**
                  * clickable=true
@@ -261,12 +269,16 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
         fun onItemPress(view: View, position: Int?)
     }
 
+    interface OnItemCancelListener {
+        fun onItemCancel(view: View, position: Int?)
+    }
+
     interface OnItemClickListener {
         fun onItemClick(
-            parent: ViewGroup,
-            viewType: Int,
-            view: View,
-            position: Int?
+                parent: ViewGroup,
+                viewType: Int,
+                view: View,
+                position: Int?
         )
     }
 

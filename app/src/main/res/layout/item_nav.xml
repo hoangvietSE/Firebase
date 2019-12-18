@@ -24,7 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/margin_32_dp"
         android:layout_toRightOf="@id/imv_item_nav"
-        android:textColor="@color/md_black_1000"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold"
         tool:text="Home" />
 

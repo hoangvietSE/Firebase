@@ -25,6 +25,7 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     }
 
     override fun initView() {
+
     }
 
     override fun initListener() {

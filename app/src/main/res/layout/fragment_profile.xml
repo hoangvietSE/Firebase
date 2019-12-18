@@ -1,56 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/md_white_1000"
+    android:clipToPadding="false">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <com.soict.hoangviet.firebase.custom.CircleImageView
+            android:id="@+id/imv_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/margin_32_dp"
+            android:src="@drawable/ic_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imv_avatar"
+            android:fontFamily="@font/lato_bold"
+            android:text="Hoàng Tiến Việt"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_20_sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imv_avatar" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:id="@+id/card_info"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_32_dp"
-            android:layout_marginEnd="@dimen/margin_32_dp"
-            android:layout_marginBottom="@dimen/margin_8_dp"
-            app:cardCornerRadius="@dimen/radius_6_dp"
-            app:cardElevation="@dimen/margin_4_dp">
+            android:layout_marginTop="@dimen/margin_24_dp"
+            app:cardCornerRadius="@dimen/radius_10_dp"
+            app:cardElevation="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:layout_constraintWidth_percent="0.9">
 
-            <TextView
-                android:id="@+id/btn_login"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/md_purple_200"
-                android:gravity="center"
-                android:padding="@dimen/content_padding_16_dp"
-                android:text="@string/main_login_title"
-                android:textColor="@color/md_black_1000"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowTitle="Địa chỉ:" />
+
+                <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowTitle="Số điện thoại:" />
+
+                <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowTitle="Email:" />
+
+                <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowTitle="Giới tính:" />
+
+                <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowTitle="Ngày sinh:" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:id="@+id/card_setting"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_32_dp"
-            android:layout_marginEnd="@dimen/margin_32_dp"
-            android:layout_marginBottom="@dimen/margin_8_dp"
-            app:cardCornerRadius="@dimen/radius_6_dp"
-            app:cardElevation="@dimen/margin_4_dp">
+            android:layout_marginTop="@dimen/margin_24_dp"
+            android:layout_marginBottom="@dimen/content_padding_20_dp"
+            android:paddingBottom="@dimen/content_padding_20_dp"
+            app:cardCornerRadius="@dimen/radius_10_dp"
+            app:cardElevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_info"
+            app:layout_constraintWidth_percent="0.9">
 
-            <TextView
-                android:id="@+id/btn_register"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/md_indigo_200"
-                android:gravity="center"
-                android:padding="@dimen/content_padding_16_dp"
-                android:text="@string/main_register_title"
-                android:textColor="@color/md_black_1000"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_canhan"
+                    app:rowItemDetail="@string/profile_setting_update" />
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_thongbao"
+                    app:rowItemDetail="@string/profile_setting_notification" />
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_ngonngu"
+                    app:rowItemDetail="@string/profile_setting_language" />
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_changepass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_changepass"
+                    app:rowItemDetail="@string/profile_setting_changepass" />
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_faq"
+                    app:rowItemDetail="@string/profile_setting_faq" />
+
+                <com.soict.hoangviet.firebase.custom.BaseMainProfileRow
+                    android:id="@+id/row_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowImage="@drawable/ic_contact"
+                    app:rowItemDetail="@string/profile_setting_contact" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
-    </LinearLayout>
-</RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>

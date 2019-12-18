@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.extension.gone
@@ -16,8 +17,9 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var imvBack: ImageView? = null
+    private var imvFunction: ImageView? = null
     private var toolbarTitle: TextView? = null
+    private var toolbarMainName: TextView? = null
 
     override val layoutRes: Int
         get() = R.layout.layout_toolbar
@@ -26,24 +28,37 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
 
 
     override fun initView() {
-        imvBack = findViewById(R.id.imv_back)
+        imvFunction = findViewById(R.id.imv_function)
         toolbarTitle = findViewById(R.id.toolbar_title)
-        imvBack?.setOnClickListener {
-            ToastUtil.show("Back")
+        toolbarMainName = findViewById(R.id.toolbar_main_name)
+        imvFunction?.setOnClickListener {
+
         }
     }
 
     override fun initDataFromStyleable(typeArray: TypedArray?) {
+        val imageIcon = typeArray?.getInt(R.styleable.BaseToolbar_bt_icon, -1)
         val title = typeArray?.getString(R.styleable.BaseToolbar_bt_title)
         setTitle(title)
+        setIconToolbar(imageIcon ?: -1)
+    }
+
+    fun setIconToolbar(@DrawableRes icon: Int) {
+        if (icon != -1) {
+            imvFunction?.let { it.setImageResource(icon) }
+        }
     }
 
     fun setTitle(title: String?) {
-        title?.let { toolbarTitle?.text = title }
+        title?.let { toolbarTitle?.text = it }
+    }
+
+    fun setMainName(name: String?) {
+        name?.let { toolbarMainName?.text = it }
     }
 
     fun hideLeftButton() {
-        imvBack?.let { it.gone() }
+        imvFunction?.let { it.gone() }
     }
 
     override fun initData() {

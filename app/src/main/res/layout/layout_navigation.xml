@@ -6,12 +6,13 @@
     android:layout_gravity="start|left"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/imv_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/nav_header" />
@@ -20,10 +21,11 @@
             android:id="@+id/nav_list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imv_header"
             android:background="@color/md_white_1000"
             android:paddingStart="@dimen/content_padding_8_dp"
             android:paddingTop="@dimen/content_padding_8_dp"
             android:paddingEnd="@dimen/content_padding_8_dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </com.google.android.material.navigation.NavigationView>

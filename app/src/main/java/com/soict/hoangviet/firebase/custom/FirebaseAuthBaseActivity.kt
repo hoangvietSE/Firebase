@@ -26,6 +26,10 @@ abstract class FirebaseAuthBaseActivity<T : BasePresenter> : BaseActivity<T>(), 
         initAuth().login(loginRequest)
     }
 
+    protected fun logout(){
+        initAuth().logout()
+    }
+
 
 
 }

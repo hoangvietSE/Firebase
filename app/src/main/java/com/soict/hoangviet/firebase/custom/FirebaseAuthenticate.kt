@@ -65,4 +65,8 @@ class FirebaseAuthenticate(val mListener: AuthenticateCallBack) {
                     mListener.onAuthError()
                 }
     }
+
+    fun logout() {
+        auth.signOut()
+    }
 }
