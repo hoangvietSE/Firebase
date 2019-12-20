@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.interactor.impl.RegisterInteractorImpl
@@ -81,6 +82,8 @@ class RegisterActivity : BaseActivity<RegisterPresenter>(), RegisterView {
     }
 
     override fun onValidateSuccess(registerRequest: RegisterRequest) {
-        startActivity(ConfirmActivity::class.java)
+        startActivity(Intent(this, ConfirmActivity::class.java).apply {
+            putExtra(ConfirmActivity.EXTRA_REGISTER_OBJECT, registerRequest)
+        })
     }
 }

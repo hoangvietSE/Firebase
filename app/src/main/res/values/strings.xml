@@ -63,4 +63,9 @@
     <string name="active_otp_resend">Lấy lại mã OTP</string>
     <string name="active_otp_send">Lấy mã OTP</string>
     <string name="active_otp_resend_message">Bạn có muốn gửi lại mã OTP?</string>
+    <string name="active_otp_code_error">Mã xác thực không đúng. Vui lòng nhập lại</string>
+    <string name="active_otp_send_code_error">Có lỗi xảy ra. Vui lòng thử lại</string>
+    <string name="active_otp_success">Đăng ký tài khoản thành công</string>
+    <string name="active_otp_error">Mã xác thực không đúng. Vui lòng nhập lại</string>
+
 </resources>

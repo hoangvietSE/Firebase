@@ -18,52 +18,53 @@ class FirebaseAuthenticate(val mListener: AuthenticateCallBack) {
 
     fun register(registerRequest: RegisterRequest) {
         auth.createUserWithEmailAndPassword(registerRequest.email, registerRequest.password)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Log.d(TAG, "createUserWithEmail:success")
-                        val user = auth.currentUser
-                        val userId = user?.uid
-                        reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!);
-                        val userRecored = mutableMapOf<String, String>()
-                        userRecored.put("id", userId)
-                        userRecored.put("fullName", registerRequest.fullName)
-                        userRecored.put("imageUrl", "default")
-                        reference?.setValue(userRecored)?.addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                mListener.onAuthSuccess()
-                            }
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    val userId = user?.uid
+                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!);
+                    val userRecored = mutableMapOf<String, String>()
+                    userRecored.put("id", userId)
+                    userRecored.put("fullname", registerRequest.fullName)
+                    userRecored.put("email", registerRequest.email)
+                    userRecored.put("phone", registerRequest.phoneNumber)
+                    reference?.setValue(userRecored)?.addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            mListener.onAuthSuccess()
                         }
-                    } else {
-                        mListener.onAuthError()
-                        Log.w(TAG, "createUserWithEmail:failure", it.exception)
-
                     }
-                }
-                .addOnFailureListener {
+                } else {
                     mListener.onAuthError()
-                    Log.w(TAG, "createUserWithEmail:exception", it)
+                    Log.w(TAG, "createUserWithEmail:failure", it.exception)
+
                 }
+            }
+            .addOnFailureListener {
+                mListener.onAuthError()
+                Log.w(TAG, "createUserWithEmail:exception", it)
+            }
     }
 
     fun login(loginRequest: LoginRequest) {
         auth.signInWithEmailAndPassword(loginRequest.email, loginRequest.password)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success")
-                        mListener.onAuthSuccess()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    mListener.onAuthSuccess()
 
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", it.exception)
-                        mListener.onAuthError()
-                    }
-                    // ...
-                }
-                .addOnFailureListener {
-                    Log.w(TAG, "createUserWithEmail:exception", it)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", it.exception)
                     mListener.onAuthError()
                 }
+                // ...
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "createUserWithEmail:exception", it)
+                mListener.onAuthError()
+            }
     }
 
     fun logout() {

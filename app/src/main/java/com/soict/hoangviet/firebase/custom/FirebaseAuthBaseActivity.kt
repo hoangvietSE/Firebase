@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.custom
 
+import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
@@ -15,10 +16,6 @@ abstract class FirebaseAuthBaseActivity<T : BasePresenter> : BaseActivity<T>(), 
 
     override fun initListener() {
 
-    }
-
-    protected fun register(registerRequest: RegisterRequest) {
-        initAuth().register(registerRequest)
     }
 
     protected fun login(loginRequest: LoginRequest) {

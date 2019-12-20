@@ -26,4 +26,11 @@ object NumberUtil {
         }
         return resultString.toString().toDouble()
     }
+
+    fun formatPhoneTokenSms(phoneNumer: String): String {
+        if (phoneNumer[0].toString() == "0") {
+            return "+84${phoneNumer.substring(1)}"
+        }
+        return ""
+    }
 }

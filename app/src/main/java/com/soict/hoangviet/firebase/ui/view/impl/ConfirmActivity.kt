@@ -1,19 +1,25 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.os.CountDownTimer
+import android.text.Html
+import android.text.Spanned
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.custom.PhoneSmsBaseActivity
+import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.interactor.impl.ConfirmInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.ConfirmPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ConfirmPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ConfirmView
+import com.soict.hoangviet.firebase.utils.NumberUtil
+import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_confirm.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import java.util.*
 
-class ConfirmActivity : BaseActivity<ConfirmPresenter>(), ConfirmView {
+class ConfirmActivity : PhoneSmsBaseActivity<ConfirmPresenter>(), ConfirmView {
     companion object {
+        const val EXTRA_REGISTER_OBJECT = "extra_register_object"
         const val TIME_LEFT_IN_MILLS = 60000L
         const val TIME_INTERVAL = 1000L
     }
@@ -24,6 +30,7 @@ class ConfirmActivity : BaseActivity<ConfirmPresenter>(), ConfirmView {
     private var permissionSend: Boolean = false
     private var mTimeLeftInMills: Long = 0L
     private var mCountDownTimer: CountDownTimer? = null
+    private lateinit var registerRequest: RegisterRequest
 
 
     override fun getPresenter(): ConfirmPresenter {
@@ -32,8 +39,45 @@ class ConfirmActivity : BaseActivity<ConfirmPresenter>(), ConfirmView {
 
     override fun initView() {
         setToolbar()
+        getDataIntent()
         setDefaultCountDown()
         initCountDownTimer()
+    }
+
+    override fun initListener() {
+        btn_confirm.setOnClickListener {
+            if (mCheckSendSmsSuccess) {
+                showLoading()
+                mTokenPhoneSms.confirmTokenPhoneSms(edt_otp)
+            } else {
+                ToastUtil.show(resources.getString(R.string.active_otp_send_code_error))
+            }
+        }
+        imv_resend.setOnClickListener {
+            if (permissionSend) {
+                setPermission(false)
+                setDefaultCountDown()
+                initCountDownTimer()
+                showCountDown()
+                mTokenPhoneSms.resendPhoneNumberVerification(NumberUtil.formatPhoneTokenSms(registerRequest.phoneNumber))
+            }
+        }
+    }
+
+    private fun getDataIntent() {
+        registerRequest = intent.getParcelableExtra(EXTRA_REGISTER_OBJECT)
+        sendOtpWithPhoneNumber(registerRequest.phoneNumber)
+        edt_phone.setText(registerRequest.phoneNumber)
+        val otpHint: Spanned? =
+                Html.fromHtml("<small><i style=\"color:#ccc\">" + getString(R.string.active_otp_code_hint) + "</i></small>")
+        val phoneHint: Spanned? =
+                Html.fromHtml("<small><i style=\"color:#ccc\">" + registerRequest.phoneNumber + "</i></small>")
+        edt_phone.hint = phoneHint
+        edt_otp.hint = otpHint
+    }
+
+    private fun sendOtpWithPhoneNumber(phoneNumber: String) {
+        mTokenPhoneSms.startPhoneNumberVerification(NumberUtil.formatPhoneTokenSms(phoneNumber))
     }
 
     private fun initCountDownTimer() {
@@ -78,12 +122,30 @@ class ConfirmActivity : BaseActivity<ConfirmPresenter>(), ConfirmView {
         toolbar.hideMainName()
     }
 
-    override fun initListener() {
-    }
-
     override fun onFragmentAttached() {
     }
 
     override fun onFragmentDetached(tag: String) {
+    }
+
+    override fun onVerifySmsSuccess() {
+        register(registerRequest)
+    }
+
+    override fun onVerifySmsFailed() {
+        hideLoading()
+        ToastUtil.show(resources.getString(R.string.active_otp_code_error))
+    }
+
+    override fun onAuthSuccess() {
+        hideLoading()
+        ToastUtil.show(resources.getString(R.string.active_otp_success))
+        startActivity(LoginActivity::class.java)
+        finish()
+    }
+
+    override fun onAuthError() {
+        hideLoading()
+        ToastUtil.show(resources.getString(R.string.register_error))
     }
 }
