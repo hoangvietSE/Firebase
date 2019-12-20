@@ -54,7 +54,6 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
 
     override fun initView() {
         setToolbar()
-        getCurrentUser()
         initListFragment()
         initNavigationDrawer()
     }
@@ -137,18 +136,6 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
         nav_list_item.addModels(listItemNav, false)
         nav_list_item.setLinearLayoutManager()
         nav_list_item.disableRefreshing()
-    }
-
-    private fun getCurrentUser() {
-        getCurrentUser(FirebaseAuth.getInstance().currentUser!!.uid, object : RealTimeDatabaseListener<User> {
-            override fun onLoadSuccess(data: User) {
-                ToastUtil.show("Welcome ${data.username}")
-            }
-
-            override fun onLoadError() {
-            }
-
-        })
     }
 
     override fun initListener() {

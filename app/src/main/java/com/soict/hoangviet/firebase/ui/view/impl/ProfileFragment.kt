@@ -2,10 +2,12 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.os.Bundle
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.ProfileInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.ProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ProfileView
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     override val mLayoutRes: Int
@@ -25,9 +27,16 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     }
 
     override fun initView() {
-
+        mPresenter.getCurrentUser()
     }
 
     override fun initListener() {
     }
+
+    override fun showUserInfo(user: User) {
+        tv_name.text = user.fullname
+        row_email.setDetail(user.email)
+        row_phone.setDetail(user.phone)
+    }
+
 }

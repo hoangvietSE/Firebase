@@ -14,8 +14,6 @@ import com.soict.hoangviet.firebase.ui.view.BaseView
 
 abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, BaseFragment.CallBack {
     protected abstract val mLayoutRes: Int
-    private lateinit var userReference: DatabaseReference
-    private var userListener: ValueEventListener? = null
     protected val mPresenter: P get() = getPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,40 +61,9 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
         })
     }
 
-    protected fun getCurrentUser(userId: String, listener: RealTimeDatabaseListener<User>) {
-        userReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
-        userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d(MainActivity.TAG, "load:success")
-                // Get Post object and use the values to update the UI
-                val user = dataSnapshot.getValue(User::class.java)
-                // [START_EXCLUDE]
-                user?.let { listener.onLoadSuccess(it) }
-                // [END_EXCLUDE]
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
-                listener.onLoadError()
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
-            }
-        }
-        userReference.addValueEventListener(userListener as ValueEventListener)
-    }
-
     override fun onStop() {
         super.onStop()
-        userListener?.let {
-            userReference.removeEventListener(it)
-        }
-    }
-
-    interface RealTimeDatabaseListener<T> {
-        fun onLoadSuccess(data: T)
-        fun onLoadError()
+        mPresenter.onDetach()
     }
 
 }

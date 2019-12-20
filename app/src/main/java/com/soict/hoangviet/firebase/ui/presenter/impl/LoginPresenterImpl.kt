@@ -1,7 +1,10 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.text.TextUtils
+import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
+import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.extension.isValidateEmail
 import com.soict.hoangviet.firebase.extension.isValidatePassword
 import com.soict.hoangviet.firebase.ui.interactor.LoginInteractor
@@ -30,4 +33,15 @@ class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
         mView!!.onValidateSuccess(loginRequest)
     }
 
+    override fun saveCurrentUser() {
+        getCurrentUser(object : RealTimeDatabaseListener<User>{
+            override fun onLoadSuccess(data: User) {
+                AppSharePreference.getInstance(BaseApplication.instance).setUser(data)
+            }
+
+            override fun onLoadError() {
+            }
+
+        })
+    }
 }

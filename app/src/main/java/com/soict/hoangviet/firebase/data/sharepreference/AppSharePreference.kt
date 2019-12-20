@@ -2,20 +2,34 @@ package com.soict.hoangviet.firebase.data.sharepreference
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.utils.AppConstant
 
 class AppSharePreference private constructor(var context: Context?) : SharePreference {
     companion object {
-        private lateinit var instances: AppSharePreference
+        private var instances: AppSharePreference? = null
         fun getInstance(context: Context): AppSharePreference {
             if (instances == null) {
                 instances = AppSharePreference(context)
             }
-            return instances
+            return instances!!
         }
+
+        const val PREF_USER = "pref_user"
     }
 
     private val mPrefs: SharedPreferences = context?.getSharedPreferences(AppConstant.PREF_NAME, Context.MODE_PRIVATE)!!
+
+    fun setUser(mUser: User) {
+        val rawUser = Gson().toJson(mUser)
+        setString(PREF_USER, rawUser)
+    }
+
+    fun getUser(): User {
+        val rawUser = getString(PREF_USER)
+        return Gson().fromJson(rawUser, User::class.java)
+    }
 
     override fun setString(key: String, value: String) {
         mPrefs.edit().putString(key, value).apply()

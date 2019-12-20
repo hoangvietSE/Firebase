@@ -27,20 +27,6 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView {
 
     private fun getDataIntent() {
         val userId = intent.getStringExtra(EXTRA_USER_ID)
-        getCurrentUser(userId)
-    }
-
-    private fun getCurrentUser(userId: String?) {
-        getCurrentUser(userId!!, object : RealTimeDatabaseListener<User> {
-            override fun onLoadSuccess(data: User) {
-                ToastUtil.show("Chat with ${data.username}")
-                toolbar.setTitle(data.username)
-            }
-
-            override fun onLoadError() {
-
-            }
-        })
     }
 
     override fun initListener() {

@@ -52,26 +52,31 @@
                 android:orientation="vertical">
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:id="@+id/row_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rowTitle="Địa chỉ:" />
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:id="@+id/row_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rowTitle="Số điện thoại:" />
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:id="@+id/row_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rowTitle="Email:" />
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:id="@+id/row_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rowTitle="Giới tính:" />
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
+                    android:id="@+id/row_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rowTitle="Ngày sinh:" />
