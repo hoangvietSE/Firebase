@@ -26,7 +26,7 @@ class FirebaseAuthenticate(val mListener: AuthenticateCallBack) {
                         reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!);
                         val userRecored = mutableMapOf<String, String>()
                         userRecored.put("id", userId)
-                        userRecored.put("username", registerRequest.username)
+                        userRecored.put("fullName", registerRequest.fullName)
                         userRecored.put("imageUrl", "default")
                         reference?.setValue(userRecored)?.addOnCompleteListener {
                             if (it.isSuccessful) {

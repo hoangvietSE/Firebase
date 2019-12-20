@@ -61,6 +61,10 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
         imvFunction?.let { it.gone() }
     }
 
+    fun hideMainName() {
+        toolbarMainName?.let { it.gone() }
+    }
+
     override fun initData() {
 
     }

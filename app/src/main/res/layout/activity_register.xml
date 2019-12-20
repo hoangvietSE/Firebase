@@ -1,80 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:apps="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <com.soict.hoangviet.firebase.custom.CustomFirebaseToolbar
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        apps:bt_title="@string/register_toolbar_title" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintWidth_percent="0.8">
+        <ImageView
+            android:id="@+id/imv_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_register"
+            app:layout_constraintBottom_toTopOf="@id/ll_form"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/edt_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_username_hint" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_email"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8_dp">
+            android:src="@drawable/ic_firebase"
+            app:layout_constraintBottom_toBottomOf="@id/imv_background"
+            app:layout_constraintEnd_toEndOf="@id/imv_background"
+            app:layout_constraintStart_toStartOf="@id/imv_background"
+            app:layout_constraintTop_toTopOf="@id/imv_background" />
 
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_email_hint" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_password"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_form"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8_dp">
+            android:orientation="vertical"
+            android:paddingTop="64dp"
+            android:paddingBottom="@dimen/content_padding_32_dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_member"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imv_background"
+            app:layout_constraintVertical_weight="1"
+            app:layout_constraintWidth_percent="0.85">
 
-            <EditText
-                android:id="@+id/edt_password"
+            <androidx.cardview.widget.CardView style="@style/RegisCard">
+
+                <RelativeLayout
+                    android:paddingEnd="@dimen/content_padding_10_dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/content_padding_8_dp"
+                    android:paddingBottom="@dimen/content_padding_8_dp">
+
+                    <ImageView
+                        android:id="@+id/imv_user"
+                        android:layout_width="@dimen/content_padding_32_dp"
+                        android:layout_height="@dimen/content_padding_32_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8_dp"
+                        android:layout_marginEnd="@dimen/margin_16_dp"
+                        android:padding="@dimen/content_padding_8_dp"
+                        android:src="@drawable/ic_person" />
+
+                    <EditText
+                        android:inputType="text"
+                        android:id="@+id/edt_fullname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imv_user"
+                        android:background="@drawable/bg_white"
+                        android:hint="@string/register_username_hint"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:textColorHint="@color/md_purple_200" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/RegisCard">
+
+                <RelativeLayout
+                    android:paddingEnd="@dimen/content_padding_10_dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/content_padding_8_dp"
+                    android:paddingBottom="@dimen/content_padding_8_dp">
+
+                    <ImageView
+                        android:id="@+id/imv_email"
+                        android:layout_width="@dimen/content_padding_32_dp"
+                        android:layout_height="@dimen/content_padding_32_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8_dp"
+                        android:layout_marginEnd="@dimen/margin_16_dp"
+                        android:padding="@dimen/content_padding_8_dp"
+                        android:src="@drawable/ic_email" />
+
+                    <EditText
+                        android:inputType="text"
+                        android:id="@+id/edt_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imv_email"
+                        android:background="@drawable/bg_white"
+                        android:hint="@string/register_email_hint"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:textColorHint="@color/md_purple_200" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/RegisCard">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/content_padding_8_dp"
+                    android:paddingBottom="@dimen/content_padding_8_dp">
+
+                    <ImageView
+                        android:id="@+id/imv_phone"
+                        android:layout_width="@dimen/content_padding_32_dp"
+                        android:layout_height="@dimen/content_padding_32_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8_dp"
+                        android:layout_marginEnd="@dimen/margin_16_dp"
+                        android:padding="@dimen/content_padding_8_dp"
+                        android:src="@drawable/ic_phone" />
+
+                    <EditText
+                        android:id="@+id/edt_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imv_phone"
+                        android:background="@drawable/bg_white"
+                        android:hint="@string/register_phone_hint"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:textColorHint="@color/md_purple_200" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/RegisCard">
+
+                <RelativeLayout
+                    android:layout_width="337dp"
+                    android:layout_height="40dp"
+                    android:paddingTop="@dimen/content_padding_8_dp"
+                    android:paddingBottom="@dimen/content_padding_8_dp">
+
+                    <ImageView
+                        android:id="@+id/imv_password"
+                        android:layout_width="@dimen/content_padding_32_dp"
+                        android:layout_height="@dimen/content_padding_32_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8_dp"
+                        android:layout_marginEnd="@dimen/margin_16_dp"
+                        android:padding="@dimen/content_padding_4_dp"
+                        android:src="@drawable/ic_password" />
+
+                    <EditText
+                        android:id="@+id/edt_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imv_password"
+                        android:background="@drawable/bg_white"
+                        android:hint="@string/register_password_hint"
+                        android:inputType="textPassword"
+                        android:lines="1"
+                        android:maxLength="16"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:textColorHint="@color/md_purple_200" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_password_hint"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="@dimen/margin_8_dp"
+                android:layout_marginTop="@dimen/margin_32_dp"
+                android:layout_marginEnd="@dimen/margin_8_dp"
+                android:background="@drawable/bg_color_primary_26dp"
+                android:gravity="center"
+                android:paddingTop="@dimen/content_padding_10_dp"
+                android:paddingBottom="@dimen/content_padding_10_dp"
+                android:text="@string/register_button_title"
+                android:textAllCaps="true"
+                android:textColor="@color/md_white_1000"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_member"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_32_dp"
-            android:background="@drawable/bg_btn_login"
-            android:gravity="center"
-            android:text="@string/register_button_title"
-            android:textColor="@color/md_white_1000"
-            android:textSize="@dimen/text_size_16_sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:text="@string/register_member_already"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_form" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

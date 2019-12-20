@@ -50,10 +50,14 @@
             android:name=".ui.view.impl.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:name=".ui.view.impl.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.impl.MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.impl.ConfirmActivity"
             android:screenOrientation="portrait" />
 
         <provider

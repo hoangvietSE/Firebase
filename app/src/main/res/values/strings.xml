@@ -17,20 +17,25 @@
     <string name="login_success">Đăng nhập thành công</string>
     <string name="login_error">Đăng nhập thất bại. Vui lòng thử lại</string>
     <string name="login_no_account_yet">Không phải thành viên? <u>Đăng ký</u></string>
+    <string name="login_social">Đăng nhập bằng</string>
 
     <!--Register-->
     <string name="register_toolbar_title">Đăng ký</string>
-    <string name="register_email_hint"><b>Email</b></string>
-    <string name="register_password_hint"><b>Mật khẩu</b></string>
-    <string name="register_username_hint"><b>Tên người dùng</b></string>
+    <string name="register_email_hint"><font size="12">Email</font></string>
+    <string name="register_password_hint"><font size="12">Mật khẩu</font></string>
+    <string name="register_username_hint"><font size="12">Tên người dùng</font></string>
+    <string name="register_phone_hint"><font size="12">Số điện thoại</font></string>
     <string name="register_button_title">Đăng ký</string>
-    <string name="register_username_empty">Vui lòng nhập tên tài khoản</string>
+    <string name="register_fullname_empty">Vui lòng nhập họ tên</string>
     <string name="register_email_empty">Vui lòng nhập email</string>
     <string name="register_email_error">Vui lòng nhập email hợp lệ</string>
+    <string name="register_phone_empty">Vui lòng nhập số điện thoại</string>
+    <string name="register_phone_error">Vui lòng nhập số điện thoại hợp lệ</string>
     <string name="register_password_empty">Vui lòng nhập mật khẩu</string>
     <string name="register_password_error">Mật khẩu phải có ít nhất 6 kí tự bao gồm chữ và số</string>
     <string name="register_success">Đăng ký thành công. Vui lòng đăng nhập</string>
     <string name="register_error">Đăng ký thất bại. Vui lòng thử lại</string>
+    <string name="register_member_already">Bạn đã có tài khoản? <font color="#CE93D8">Đăng nhập</font></string>
 
     <!--Main-->
     <string name="home_toolbar_title">Messenger</string>
@@ -47,4 +52,15 @@
     <string name="profile_setting_changepass">Đổi mật khẩu</string>
     <string name="profile_setting_faq">FAQ</string>
     <string name="profile_setting_contact">Liên hệ</string>
+
+    <!--Active OTP-->
+    <string name="active_otp_title_toolbar">Xác thực tài khoản</string>
+    <string name="active_otp_title">Xác nhận</string>
+    <string name="active_otp_phone">Số điện thoại</string>
+    <string name="active_otp_phone_hint"><font size="14">Nhập số điện thoại</font></string>
+    <string name="active_otp_code">Mã OTP</string>
+    <string name="active_otp_code_hint"><font size="14">Nhập mã OTP xác minh</font></string>
+    <string name="active_otp_resend">Lấy lại mã OTP</string>
+    <string name="active_otp_send">Lấy mã OTP</string>
+    <string name="active_otp_resend_message">Bạn có muốn gửi lại mã OTP?</string>
 </resources>

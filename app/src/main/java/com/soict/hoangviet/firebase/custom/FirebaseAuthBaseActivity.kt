@@ -1,6 +1,5 @@
 package com.soict.hoangviet.firebase.custom
 
-import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter

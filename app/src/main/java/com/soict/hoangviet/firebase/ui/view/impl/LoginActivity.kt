@@ -9,9 +9,9 @@ import com.soict.hoangviet.firebase.ui.presenter.impl.LoginPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.LoginView
 import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.edt_email
 import kotlinx.android.synthetic.main.activity_login.edt_password
-import kotlinx.android.synthetic.main.activity_login.til_email
-import kotlinx.android.synthetic.main.activity_login.til_password
+
 
 class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
     override val mLayoutRes: Int
@@ -30,6 +30,9 @@ class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
             loginRequest.email = edt_email.text.toString()
             loginRequest.password = edt_password.text.toString()
             mPresenter?.validateLogin(loginRequest)
+        }
+        tv_member.setOnClickListener {
+            startActivity(RegisterActivity::class.java)
         }
     }
 
@@ -51,36 +54,23 @@ class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
     }
 
     override fun onEmailEmpty() {
-        defaultTextInputLayout()
-        til_email.error = resources.getString(R.string.register_email_empty)
-        edt_email.requestFocus()
+        ToastUtil.show(resources.getString(R.string.register_email_empty))
     }
 
     override fun onEmailError() {
-        defaultTextInputLayout()
-        til_email.error = resources.getString(R.string.register_email_error)
-        edt_email.requestFocus()
+        ToastUtil.show(resources.getString(R.string.register_email_error))
     }
 
     override fun onPasswordError() {
-        defaultTextInputLayout()
-        til_password.error = resources.getString(R.string.register_password_error)
-        til_password.requestFocus()
+        ToastUtil.show(resources.getString(R.string.register_password_error))
     }
 
     override fun onPasswordEmpty() {
-        defaultTextInputLayout()
-        til_password.error = resources.getString(R.string.register_password_empty)
-        til_password.requestFocus()
+        ToastUtil.show(resources.getString(R.string.register_password_empty))
     }
 
     override fun onValidateSuccess(loginRequest: LoginRequest) {
         showLoading()
         login(loginRequest)
-    }
-
-    private fun defaultTextInputLayout() {
-        til_email.error = null
-        til_password.error = null
     }
 }
