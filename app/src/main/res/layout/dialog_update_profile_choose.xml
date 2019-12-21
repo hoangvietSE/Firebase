@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_6dp"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/content_padding_16_dp">
+
+    <ImageView
+        android:id="@+id/imv_gif"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/update_profile" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imv_gif"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_16_dp"
+        android:text="Vui lòng lựa chọn"
+        android:textColor="@color/md_black_1000"
+        android:textSize="@dimen/text_size_20_sp"
+        android:textStyle="bold" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="@dimen/margin_16_dp">
+
+        <TextView
+            android:id="@+id/btn_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16_dp"
+            android:background="@drawable/bg_color_primary_26dp"
+            android:paddingStart="@dimen/content_padding_16_dp"
+            android:paddingTop="@dimen/content_padding_8_dp"
+            android:paddingEnd="@dimen/content_padding_16_dp"
+            android:paddingBottom="@dimen/content_padding_8_dp"
+            android:text="Bộ sưu tập"
+            android:textColor="@color/md_white_1000"
+            android:textSize="@dimen/text_size_16_sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_capture"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16_dp"
+            android:background="@drawable/bg_color_primary_26dp"
+            android:paddingStart="@dimen/content_padding_16_dp"
+            android:paddingTop="@dimen/content_padding_8_dp"
+            android:paddingEnd="@dimen/content_padding_16_dp"
+            android:paddingBottom="@dimen/content_padding_8_dp"
+            android:text="Chụp ảnh"
+            android:textColor="@color/md_white_1000"
+            android:textSize="@dimen/text_size_16_sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_album" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

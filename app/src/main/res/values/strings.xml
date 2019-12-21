@@ -1,5 +1,5 @@
 <resources>
-    <string name="file_provider">base.provider</string>
+    <string name="file_provider">com.soict.hoangviet.provider</string>
     <string name="default_notification_channel_id">channel_id</string>
     <string name="default_notification_channel_name" translatable="true">Firebase</string>
     <string name="error_happen">Có lỗi xảy ra. Vui lòng thử lại!</string>
@@ -67,5 +67,19 @@
     <string name="active_otp_send_code_error">Có lỗi xảy ra. Vui lòng thử lại</string>
     <string name="active_otp_success">Đăng ký tài khoản thành công</string>
     <string name="active_otp_error">Mã xác thực không đúng. Vui lòng nhập lại</string>
+
+    <!--Update Profile-->
+    <string name="update_profile_toolbar_title">Cập nhật thông tin cá nhân</string>
+    <string name="update_profile_image_title">Chọn ảnh đại diện</string>
+    <string name="update_profile_image_des">Upload Images</string>
+    <string name="update_profile_title_name">Tên:</string>
+    <string name="update_profile_title_address">Địa chỉ:</string>
+    <string name="update_profile_title_phone">SĐT:</string>
+    <string name="update_profile_title_email">Email:</string>
+    <string name="update_profile_title_gender">Giới tính:</string>
+    <string name="update_profile_title_date">Ngày sinh:</string>
+    <string name="update_profile_done">Hoàn thành</string>
+    <string name="update_profile_error_date">Không thể chọn ngày trong tương lai!</string>
+    <string name="update_profile_denied_request">Bạn chưa cấp quyền truy cập bộ nhớ!</string>
 
 </resources>

@@ -32,6 +32,7 @@ abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mPresenter.onAttach()
+        initListener()
     }
 
     override fun showLoading() {

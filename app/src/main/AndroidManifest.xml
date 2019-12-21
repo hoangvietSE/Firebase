@@ -60,6 +60,10 @@
         <activity
             android:name=".ui.view.impl.ConfirmActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.impl.UpdateProfileActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

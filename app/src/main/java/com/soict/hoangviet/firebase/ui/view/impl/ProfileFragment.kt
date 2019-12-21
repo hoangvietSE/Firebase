@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
 import android.os.Bundle
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     override val mLayoutRes: Int
         get() = R.layout.fragment_profile
+    private lateinit var mUser: User
 
     companion object {
         fun getInstance(): ProfileFragment {
@@ -31,9 +33,16 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     }
 
     override fun initListener() {
+        row_information.setOnClickListener {
+            val intent = Intent(context, UpdateProfileActivity::class.java).apply {
+                putExtra(UpdateProfileActivity.EXTRA_USER, mUser)
+            }
+            startActivity(intent)
+        }
     }
 
     override fun showUserInfo(user: User) {
+        mUser = user
         tv_name.text = user.fullname
         row_email.setDetail(user.email)
         row_phone.setDetail(user.phone)

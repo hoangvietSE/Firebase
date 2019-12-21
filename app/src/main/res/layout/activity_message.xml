@@ -55,7 +55,7 @@
                     android:src="@drawable/ic_camera_primary" />
 
                 <ImageView
-                    android:layout_width="@dimen/margin_32_dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/margin_32_dp"
                     android:padding="@dimen/content_padding_4_dp"
                     android:src="@drawable/ic_album_primary" />

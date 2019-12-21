@@ -80,6 +80,13 @@ object DateUtil {
             return time.toString()
         }
 
+    fun getDateValue(value: String): String {
+        if (value.length == 1) {
+            return "0${value}"
+        }
+        return value
+    }
+
     fun getDayName(day: String): String {
         when (day) {
             "Monday" -> return "Thứ Hai"

@@ -5,20 +5,23 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
+import com.soict.hoangviet.firebase.ui.view.impl.BaseActivity
+import com.soict.hoangviet.firebase.utils.LogUtil
 import com.soict.hoangviet.firebase.utils.PermissionUtil
 import java.io.File
-import android.provider.MediaStore
-import androidx.core.content.FileProvider
-import com.soict.hoangviet.firebase.utils.LogUtil
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-abstract class BasePhotoActivity() : AppCompatActivity() {
+abstract class BasePhotoActivity<T : BasePresenter> : BaseActivity<T>() {
     private var cameraFilePath: String? = null
     private var mFileCreateImage: File? = null
+    private var mPhotoCaptureUri: Uri? = null
 
     companion object {
         const val REQUEST_CHOOSE_IMAGE = 9001
@@ -51,7 +54,11 @@ abstract class BasePhotoActivity() : AppCompatActivity() {
             if (PermissionUtil.hasPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 pickImageFromGallery()
             } else {
-                PermissionUtil.requestPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_GALLERY)
+                PermissionUtil.requestPermission(
+                        this,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        REQUEST_PERMISSION_GALLERY
+                )
             }
         } else {
             pickImageFromGallery()
@@ -75,13 +82,14 @@ abstract class BasePhotoActivity() : AppCompatActivity() {
         if (intentCamera.resolveActivity(packageManager) != null) {
             try {
                 mFileCreateImage = createFileImage()
+                mPhotoCaptureUri = FileProvider.getUriForFile(
+                        this,
+                        resources.getString(com.soict.hoangviet.firebase.R.string.file_provider),
+                        mFileCreateImage!!
+                )
                 intentCamera.putExtra(
                         MediaStore.EXTRA_OUTPUT,
-                        FileProvider.getUriForFile(
-                                this,
-                                resources.getString(com.soict.hoangviet.firebase.R.string.file_provider),
-                                mFileCreateImage!!
-                        )
+                        mPhotoCaptureUri
                 )
                 startActivityForResult(intentCamera, REQUEST_IMAGE_CAPTURE)
             } catch (ioe: IOException) {
@@ -124,7 +132,7 @@ abstract class BasePhotoActivity() : AppCompatActivity() {
         val columnIndex = cursor.getColumnIndex(filePathColumn[0])
         //Gets the String value in the column
         val imgDecodableString = cursor.getString(columnIndex)
-        onTakeAbsolutePathImageSuccess(imgDecodableString)
+        onTakeAbsolutePathImageSuccess(imgDecodableString, uriImage)
         cursor.close()
     }
 
@@ -154,7 +162,7 @@ abstract class BasePhotoActivity() : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) {
             cameraFilePath?.let {
                 LogUtil.d("Success: Capture Image")
-                onTakeImageFileCaptureSuccess(it!!)
+                onTakeImageFileCaptureSuccess(it!!, mPhotoCaptureUri!!)
             }
             return
         }
@@ -165,6 +173,6 @@ abstract class BasePhotoActivity() : AppCompatActivity() {
         }
     }
 
-    open fun onTakeImageFileCaptureSuccess(cameraFilePath: String){}
-    open fun onTakeAbsolutePathImageSuccess(absoluteFilePathImage: String){}
+    open fun onTakeImageFileCaptureSuccess(cameraFilePath: String, uriImage: Uri) {}
+    open fun onTakeAbsolutePathImageSuccess(absoluteFilePathImage: String, uriImage: Uri) {}
 }
