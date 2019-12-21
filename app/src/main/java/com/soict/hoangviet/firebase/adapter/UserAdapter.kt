@@ -25,6 +25,7 @@ class UserAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context)
     override fun bindNormalViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val userViewHoler = holder as UserViewHolder
         val data = getItemPosition(position, User::class.java)
+        userViewHoler.tvName.text = data.fullname
     }
 
     class UserViewHolder(itemView: View) : NormalViewHoler(itemView) {

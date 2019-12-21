@@ -1,13 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.soict.hoangviet.firebase.custom.CustomFirebaseToolbar
+    <com.soict.hoangviet.firebase.custom.CustomFirebaseMessageToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:btm_background="@color/md_white_1000"
+        app:btm_icon_left="@drawable/ic_back_white"
+        app:btm_icon_right_one="@drawable/ic_info_primary"
+        app:btm_icon_right_three="@drawable/ic_call_primary"
+        app:btm_icon_right_two="@drawable/ic_video_primary" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/csl_message"
+        android:layout_below="@id/toolbar" />
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/csl_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_main_function"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/margin_32_dp"
+                    android:layout_height="@dimen/margin_32_dp"
+                    android:padding="@dimen/content_padding_4_dp"
+                    android:src="@drawable/ic_sticker_primary" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_32_dp"
+                    android:layout_height="@dimen/margin_32_dp"
+                    android:padding="@dimen/content_padding_4_dp"
+                    android:src="@drawable/ic_camera_primary" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_32_dp"
+                    android:layout_height="@dimen/margin_32_dp"
+                    android:padding="@dimen/content_padding_4_dp"
+                    android:src="@drawable/ic_album_primary" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_32_dp"
+                    android:layout_height="@dimen/margin_32_dp"
+                    android:padding="@dimen/content_padding_4_dp"
+                    android:src="@drawable/ic_voice_primary" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imv_navigate_right"
+                android:layout_width="@dimen/margin_32_dp"
+                android:layout_height="@dimen/margin_32_dp"
+                android:src="@drawable/ic_navigation_right_primary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imv_send"
+            app:layout_constraintStart_toEndOf="@id/ll_main_function"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/edt_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext_grey_26dp"
+                android:hint="Aa"
+                android:inputType="text"
+                android:paddingStart="@dimen/margin_10_dp"
+                android:paddingTop="@dimen/content_padding_4_dp"
+                android:paddingEnd="@dimen/content_padding_16_dp"
+                android:paddingBottom="@dimen/content_padding_4_dp"
+                android:textColorHint="@color/md_grey_400"
+                android:textSize="@dimen/text_size_14_sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imv_send"
+            android:layout_width="@dimen/margin_32_dp"
+            android:layout_height="@dimen/margin_32_dp"
+            android:padding="@dimen/content_padding_4_dp"
+            android:src="@drawable/ic_send_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

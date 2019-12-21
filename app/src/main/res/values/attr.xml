@@ -4,6 +4,16 @@
         <attr name="bt_icon" format="integer|reference" />
         <attr name="bt_title" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="BaseToolbarMessage">
+        <attr name="btm_icon_left" format="integer|reference" />
+        <attr name="btm_avatar" format="integer|reference" />
+        <attr name="btm_background" format="integer|reference" />
+        <attr name="btm_icon_right_one" format="integer|reference" />
+        <attr name="btm_icon_right_two" format="integer|reference" />
+        <attr name="btm_icon_right_three" format="integer|reference" />
+        <attr name="btm_main_name" format="string" />
+    </declare-styleable>
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />
         <attr name="civ_border_color" format="color" />

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    app:cardElevation="@dimen/radius_6_dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/md_white_1000">
+
+        <ImageView
+            android:id="@+id/imv_left"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_back_white" />
+
+        <com.soict.hoangviet.firebase.custom.CircleImageView
+            android:id="@+id/imv_avatar"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:padding="@dimen/content_padding_8_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imv_left"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/toolbar_main_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_18_sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imv_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Home" />
+
+        <ImageView
+            android:id="@+id/imv_right_one"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_info_primary" />
+
+        <ImageView
+            android:id="@+id/imv_right_second"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imv_right_one"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_video_primary" />
+
+        <ImageView
+            android:id="@+id/imv_right_three"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imv_right_second"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_call_primary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

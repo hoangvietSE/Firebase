@@ -18,6 +18,7 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private var imvFunction: ImageView? = null
+    private var imvRightOne: ImageView? = null
     private var toolbarTitle: TextView? = null
     private var toolbarMainName: TextView? = null
 
@@ -29,6 +30,7 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
 
     override fun initView() {
         imvFunction = findViewById(R.id.imv_function)
+        imvRightOne = findViewById(R.id.imv_right_one)
         toolbarTitle = findViewById(R.id.toolbar_title)
         toolbarMainName = findViewById(R.id.toolbar_main_name)
         imvFunction?.setOnClickListener {

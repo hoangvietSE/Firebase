@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
 
     <com.soict.hoangviet.firebase.custom.CircleImageView
         android:id="@+id/imvAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:padding="@dimen/content_padding_8_dp"
         android:src="@drawable/ic_avatar" />
 
@@ -18,9 +19,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/margin_16_dp"
         android:layout_toRightOf="@id/imvAvatar"
         android:textColor="@color/md_black_1000"
         android:textSize="@dimen/text_size_18_sp"
         android:textStyle="bold"
         tools:text="Hoàng Tiến Việt" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_16_dp"
+        android:background="@drawable/bg_circle_grey"
+        android:padding="@dimen/content_padding_8_dp"
+        android:src="@drawable/ic_clap" />
 </RelativeLayout>
