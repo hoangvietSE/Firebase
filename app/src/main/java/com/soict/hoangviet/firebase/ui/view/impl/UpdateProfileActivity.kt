@@ -87,7 +87,7 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
     }
 
     override fun initListener() {
-        tv_birthday.setOnClickListener {
+        rowBirthday.setOnClickListener {
             mDatePickerDialogWidget?.showDatePickerDialog()
         }
         imv_choose_image.setOnClickListener {
