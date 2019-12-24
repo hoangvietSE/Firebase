@@ -9,6 +9,9 @@ import com.soict.hoangviet.firebase.ui.presenter.ProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ProfileView
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     override val mLayoutRes: Int
@@ -29,6 +32,9 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     }
 
     override fun initView() {
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this)
+        }
         mPresenter.getCurrentUser()
     }
 
@@ -41,11 +47,24 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun showUserInfo(user: User) {
         mUser = user
         tv_name.text = user.fullname
         row_email.setDetail(user.email)
         row_phone.setDetail(user.phone)
+        row_birthday.setDetail(user.birthday)
+        row_gender.setDetail(if (user.gender == 0) "Nam" else "Nữ")
     }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdateInfo(mUser: User) {
+        showUserInfo(mUser)
+    }
+
 
 }

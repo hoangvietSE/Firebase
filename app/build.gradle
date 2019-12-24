@@ -113,5 +113,11 @@ dependencies {
     implementation "com.google.firebase:firebase-dynamic-links:$rootProject.dynamicLinksVersion"
     implementation "com.google.firebase:firebase-auth:$rootProject.authsVersion"
     implementation "com.google.firebase:firebase-database-ktx:$rootProject.databasesVersion"
+    implementation "com.google.firebase:firebase-storage:$rootProject.storagesVersion"
+
+    //BottomBar
     implementation "com.github.ibrahimsn98:SmoothBottomBar:$rootProject.smoothBottomsVersion"
+
+    //EventBus
+    implementation "org.greenrobot:eventbus:$rootProject.eventbusVersion"
 }

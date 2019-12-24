@@ -7,7 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import com.soict.hoangviet.firebase.R
 
-class BaseLoadingDialog private constructor(private var context: Context) {
+class BaseLoadingDialog private constructor(private val context: Context) {
 
     private var mDialog: Dialog? = null
     private var shown: Boolean? = null

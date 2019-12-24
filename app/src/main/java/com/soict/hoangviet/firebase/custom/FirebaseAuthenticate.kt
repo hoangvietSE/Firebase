@@ -23,7 +23,7 @@ class FirebaseAuthenticate(val mListener: AuthenticateCallBack) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
                     val userId = user?.uid
-                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!);
+                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
                     val userRecored = mutableMapOf<String, String>()
                     userRecored.put("id", userId)
                     userRecored.put("fullname", registerRequest.fullName)

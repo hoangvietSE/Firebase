@@ -5,13 +5,12 @@ import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import beetech.com.carbooking.util.DateUtil
-import com.bumptech.glide.Glide
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.UpdateProfileAdapter
 import com.soict.hoangviet.firebase.common.BasePhotoActivity
+import com.soict.hoangviet.firebase.data.network.request.UpdateProfileRequest
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.loadImageUri
-import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.module.GlideApp
 import com.soict.hoangviet.firebase.ui.interactor.impl.UpdateProfileInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
@@ -33,7 +32,6 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
         get() = R.layout.activity_update_profile
 
     private var mUpdateProfileAdapter: UpdateProfileAdapter? = null
-    private var mGenderPosition: Int? = null
     private var mDatePickerDialogWidget: DatePickerDialogWidget? = null
 
     override fun getPresenter(): UpdateProfilePresenter {
@@ -46,6 +44,7 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
         getDataIntent()
     }
 
+
     private fun initDatePicker() {
         mDatePickerDialogWidget = DatePickerDialogWidget(this, object : DatePickerDialogWidget.DatePickerListener {
             override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
@@ -57,8 +56,8 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
                     return
                 }
                 tv_birthday.text =
-                        "${DateUtil.getDateValue(dayOfMonth.toString())}/${DateUtil.getDateValue(month.toString())}/" +
-                                "${DateUtil.getDateValue(year.toString())}"
+                    "${DateUtil.getDateValue(dayOfMonth.toString())}/${DateUtil.getDateValue(month.toString())}/" +
+                            "${DateUtil.getDateValue(year.toString())}"
             }
         })
     }
@@ -71,7 +70,7 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                mGenderPosition = position
+                mPresenter.setGender(position)
             }
 
         }
@@ -92,16 +91,16 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
         }
         imv_choose_image.setOnClickListener {
             val dialog = DialogUtil.customDialog(
-                    this,
-                    R.layout.dialog_update_profile_choose,
-                    true,
-                    object : DialogUtil.BaseCustomDialog {
-                        override fun addDataToDialog(dialog: Dialog) {
-                            GlideApp.with(this@UpdateProfileActivity)
-                                    .load(R.drawable.update_profile)
-                                    .into(dialog.imv_gif)
-                        }
+                this,
+                R.layout.dialog_update_profile_choose,
+                true,
+                object : DialogUtil.BaseCustomDialog {
+                    override fun addDataToDialog(dialog: Dialog) {
+                        GlideApp.with(this@UpdateProfileActivity)
+                            .load(R.drawable.update_profile)
+                            .into(dialog.imv_gif)
                     }
+                }
             )
             dialog.show()
             dialog.btn_album.setOnClickListener {
@@ -113,6 +112,16 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
                 openCamera()
             }
         }
+        btn_update.setOnClickListener {
+            val mUpdateProfileRequest = UpdateProfileRequest()
+            mUpdateProfileRequest.apply {
+                email = tv_email.text.toString()
+                phone = tv_phone.text.toString()
+                fullname = edt_name.text.toString()
+                birthday = tv_birthday.text.toString()
+            }
+            mPresenter.updateProfile(mUpdateProfileRequest)
+        }
     }
 
     override fun onFragmentAttached() {
@@ -123,19 +132,42 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
 
     override fun onTakeAbsolutePathImageSuccess(absoluteFilePathImage: String, uriImage: Uri) {
         imv_choose_image.loadImageUri(
-                this,
-                uriImage,
-                R.drawable.ic_avatar,
-                R.drawable.ic_avatar
+            this,
+            uriImage,
+            R.drawable.ic_avatar,
+            R.drawable.ic_avatar
         )
+        mPresenter.setAvatar(uriImage)
     }
 
     override fun onTakeImageFileCaptureSuccess(cameraFilePath: String, uriImage: Uri) {
         imv_choose_image.loadImageUri(
-                this,
-                uriImage,
-                R.drawable.ic_avatar,
-                R.drawable.ic_avatar
+            this,
+            uriImage,
+            R.drawable.ic_avatar,
+            R.drawable.ic_avatar
         )
+        mPresenter.setAvatar(uriImage)
+    }
+
+    override fun onFullNameEmpty() {
+        ToastUtil.show(resources.getString(R.string.update_profile_name_empty))
+    }
+
+    override fun onBirthdayEmpty() {
+        ToastUtil.show(resources.getString(R.string.update_profile_birthday_empty))
+    }
+
+    override fun onAvatarUploadError() {
+        ToastUtil.show(resources.getString(R.string.update_profile_avatar_upload_error))
+    }
+
+    override fun uploadSuccess() {
+        ToastUtil.show("Cập nhật thành công")
+        finish()
+    }
+
+    override fun uploadError() {
+        ToastUtil.show("Cập nhật thất bại. Vui lòng thử lại")
     }
 }

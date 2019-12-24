@@ -14,6 +14,7 @@ class User() : Parcelable {
     var phone: String = ""
     var gender: Int = 0
     var birthday: String = ""
+    var avatar: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -22,6 +23,7 @@ class User() : Parcelable {
         phone = parcel.readString()
         gender = parcel.readInt()
         birthday = parcel.readString()
+        avatar = parcel.readString()
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -31,6 +33,7 @@ class User() : Parcelable {
         dest?.writeString(phone)
         dest?.writeInt(gender)
         dest?.writeString(birthday)
+        dest?.writeString(avatar)
     }
 
     companion object CREATOR : Parcelable.Creator<User> {

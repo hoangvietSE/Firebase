@@ -15,7 +15,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_active"
+        android:layout_above="@id/btn_update"
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
@@ -237,7 +237,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <TextView
-        android:id="@+id/btn_active"
+        android:id="@+id/btn_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

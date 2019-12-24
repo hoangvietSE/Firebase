@@ -63,6 +63,7 @@ ext {
     dynamicLinksVersion = '19.0.0'
     authsVersion = '19.2.0'
     databasesVersion = '19.2.0'
+    storagesVersion = '19.1.0'
 
     //Test dependencies
     jUnitVersion = '4.12'
@@ -71,6 +72,9 @@ ext {
 
     //Smooth BottomBar
     smoothBottomsVersion = '1.6'
+
+    //EventBus
+    eventbusVersion = '3.0.0'
 
 }
 

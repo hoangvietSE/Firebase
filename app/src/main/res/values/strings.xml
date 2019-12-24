@@ -81,5 +81,8 @@
     <string name="update_profile_done">Hoàn thành</string>
     <string name="update_profile_error_date">Không thể chọn ngày trong tương lai!</string>
     <string name="update_profile_denied_request">Bạn chưa cấp quyền truy cập bộ nhớ!</string>
+    <string name="update_profile_name_empty">Vui lòng nhập họ tên</string>
+    <string name="update_profile_birthday_empty">Vui lòng chọn ngày sinh</string>
+    <string name="update_profile_avatar_upload_error">Có lỗi xảy ra trong quá trình cập nhật ảnh đại diện</string>
 
 </resources>

@@ -12,7 +12,6 @@
         android:layout_height="match_parent">
 
 
-
         <com.soict.hoangviet.firebase.custom.CircleImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -65,12 +64,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <com.soict.hoangviet.firebase.custom.BaseProfileRow
-                    android:id="@+id/row_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:rowTitle="Địa chỉ:" />
 
                 <com.soict.hoangviet.firebase.custom.BaseProfileRow
                     android:id="@+id/row_phone"

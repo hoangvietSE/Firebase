@@ -2,25 +2,28 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.soict.hoangviet.firebase.ui.interactor.impl.SplashInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
+import com.soict.hoangviet.firebase.ui.presenter.impl.SplashPresenterImpl
+import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DeviceUtil
 import com.soict.hoangviet.firebase.utils.DialogUtil
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<SplashPresenter>(), SplashView {
+    override fun getPresenter(): SplashPresenter {
+        return SplashPresenterImpl(this, SplashInteractorImpl())
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initView()
+    override fun initListener() {
     }
 
     companion object {
         const val SPLASH_TIME = 1500L
     }
 
-    private fun initView() {
+    override fun initView() {
         Handler().postDelayed({
             checkNetworkConnection()
         }, SPLASH_TIME)
@@ -36,34 +39,48 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkCurrentUser() {
         if (FirebaseAuth.getInstance().currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java).apply {
-            })
-            finish()
+            mPresenter.saveCurrentUser()
         } else {
-            startActivity(Intent(this, LoginActivity::class.java).apply {
-            })
-            finish()
+            goToLogin()
         }
+    }
+
+    override fun goToHomeScreen() {
+        startActivity(Intent(this, MainActivity::class.java).apply {
+        })
+        finish()
+    }
+
+    private fun goToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+        })
+        finish()
     }
 
     private fun showAlertNoNetworkConnection() {
         DialogUtil.showMessageDialog(
-                this,
-                "Warning!",
-                "Không có kết nối Internet. Vui lòng quay lại khi có kết nối!",
-                false,
-                "Đồng ý",
-                object : DialogUtil.BaseDialogInterface {
-                    override fun onPositiveClick(dialog: DialogInterface) {
-                        finish()
-                    }
-
-                    override fun onNegativeClick(dialog: DialogInterface) {
-                    }
-
-                    override fun onItemClick(dialog: DialogInterface, position: Int) {
-                    }
+            this,
+            "Warning!",
+            "Không có kết nối Internet. Vui lòng quay lại khi có kết nối!",
+            false,
+            "Đồng ý",
+            object : DialogUtil.BaseDialogInterface {
+                override fun onPositiveClick(dialog: DialogInterface) {
+                    finish()
                 }
+
+                override fun onNegativeClick(dialog: DialogInterface) {
+                }
+
+                override fun onItemClick(dialog: DialogInterface, position: Int) {
+                }
+            }
         )
+    }
+
+    override fun onFragmentAttached() {
+    }
+
+    override fun onFragmentDetached(tag: String) {
     }
 }

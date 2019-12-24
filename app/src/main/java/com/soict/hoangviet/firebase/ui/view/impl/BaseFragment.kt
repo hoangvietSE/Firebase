@@ -11,6 +11,7 @@ import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.extension.inflate
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
+import org.greenrobot.eventbus.EventBus
 
 abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
     protected var parentActivity: AppCompatActivity? = null
@@ -47,9 +48,14 @@ abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
+
     override fun onDetach() {
         super.onDetach()
         (parentActivity as BaseActivity<*>).onFragmentDetached("")
+
     }
 
     abstract fun getPresenter(): P
