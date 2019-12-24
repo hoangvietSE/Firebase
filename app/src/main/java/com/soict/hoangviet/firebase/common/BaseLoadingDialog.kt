@@ -17,9 +17,7 @@ class BaseLoadingDialog private constructor(private val context: Context) {
     companion object {
         private var instance: BaseLoadingDialog? = null
         fun getInstance(context: Context): BaseLoadingDialog {
-            if (instance == null) {
-                instance = BaseLoadingDialog(context)
-            }
+            instance = BaseLoadingDialog(context)
             return instance!!
         }
     }
@@ -37,14 +35,17 @@ class BaseLoadingDialog private constructor(private val context: Context) {
     }
 
     fun showLoadingDialog() {
-        if (!shown!! && !(context as Activity).isFinishing) {
-            force()
-            mDialog?.show()
+        if (!(context as Activity).isFinishing) {
+            if (!shown!! && mDialog != null) {
+                force()
+                mDialog?.show()
+            }
         }
+
     }
 
     fun hideLoadingDialog() {
-        if (shown!! && (mDialog?.isShowing!!)) {
+        if (shown!! && (mDialog?.isShowing!!) && mDialog != null) {
             initialization()
             mDialog?.dismiss()
         }

@@ -1,9 +1,59 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
+import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 
 class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
         BasePresenterImpl<MessageView, MessageInteractor>(mView, mInteractor), MessagePresenter {
+    private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private var mListChats: ArrayList<ChatsResponse> = arrayListOf()
+    override fun sendMessage(receiver: String, msg: String) {
+        val record: MutableMap<String, Any> = mutableMapOf()
+        record["sender"] = AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+        record["receiver"] = receiver
+        record["message"] = msg
+        messageRef.child("Chats").push().setValue(record)
+        mView?.onSendSuccess()
+    }
+
+    override fun readMessage(receiver: String) {
+        val listMessageReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Chats")
+        val listMessageListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                mView?.clearMessage()
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    // Get Post object and use the values to update the UI
+                    val mChatsResponse: ChatsResponse = snapshot.getValue(ChatsResponse::class.java)!!
+                    // [START_EXCLUDE]
+                    if ((mChatsResponse.sender == AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+                                    && mChatsResponse.receiver == receiver)) {
+                        mView?.addSender(mChatsResponse)
+                    }
+                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+                                    && mChatsResponse.sender == receiver)) {
+                        mView?.addReceiver(mChatsResponse)
+                    }
+                    // [END_EXCLUDE]
+                }
+                mView?.onShowMessage()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+        listMessageReference.addValueEventListener(listMessageListener as ValueEventListener)
+    }
 }

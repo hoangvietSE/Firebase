@@ -51,6 +51,7 @@ class FriendsFragment : BaseFragment<FriendsPresenter>(), FriendsView, EndlessLo
         userReference = FirebaseDatabase.getInstance().getReference("Users")
         userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                mListUser.clear()
                 for (snapshot in dataSnapshot.children) {
                     // Get Post object and use the values to update the UI
                     val user = snapshot.getValue(User::class.java)

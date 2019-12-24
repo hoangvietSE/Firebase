@@ -24,7 +24,7 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
 
     override fun solveOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.solveOnBindViewHolder(holder, position)
-        if (mListWrapperModel[position].model == VIEW_TYPE_NORMAL_LOADING) {
+        if (mListWrapperModel[position].viewType == VIEW_TYPE_NORMAL_LOADING) {
             onBindLoadingViewHolder(holder, position)
         }
     }

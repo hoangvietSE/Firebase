@@ -45,6 +45,18 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
         }
     }
 
+    fun setLinearLayoutManagerMessage() {
+        val mLinearLayoutManager = LinearLayoutManager(context)
+        recycler_view_actual.layoutManager = mLinearLayoutManager
+        mLinearLayoutManager.stackFromEnd = true
+        swipe_refresh_layout.setOnRefreshListener {
+            mSwipeRefreshListener?.let {
+                it.onSwipeRefresh()
+            }
+        }
+    }
+
+
     fun setGridLayoutManager(numberColumn: Int) {
         mLayoutManager = GridLayoutManager(context, numberColumn)
         recycler_view_actual.layoutManager = mLayoutManager

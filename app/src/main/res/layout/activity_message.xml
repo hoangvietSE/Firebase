@@ -15,7 +15,8 @@
         app:btm_icon_right_three="@drawable/ic_call_primary"
         app:btm_icon_right_two="@drawable/ic_video_primary" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.soict.hoangviet.firebase.adapter.BaseRecyclerView
+        android:id="@+id/recycler_view_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/csl_message"
@@ -81,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/imv_send"
+            app:layout_constraintEnd_toStartOf="@id/btn_send"
             app:layout_constraintStart_toEndOf="@id/ll_main_function"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -93,15 +94,15 @@
                 android:hint="Aa"
                 android:inputType="text"
                 android:paddingStart="@dimen/margin_10_dp"
-                android:paddingTop="@dimen/content_padding_4_dp"
+                android:paddingTop="@dimen/content_padding_8_dp"
                 android:paddingEnd="@dimen/content_padding_16_dp"
-                android:paddingBottom="@dimen/content_padding_4_dp"
+                android:paddingBottom="@dimen/content_padding_8_dp"
                 android:textColorHint="@color/md_grey_400"
                 android:textSize="@dimen/text_size_14_sp" />
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/imv_send"
+            android:id="@+id/btn_send"
             android:layout_width="@dimen/margin_32_dp"
             android:layout_height="@dimen/margin_32_dp"
             android:padding="@dimen/content_padding_4_dp"

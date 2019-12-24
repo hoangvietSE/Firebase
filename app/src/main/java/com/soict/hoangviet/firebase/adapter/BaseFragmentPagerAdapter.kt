@@ -9,7 +9,7 @@ open class BaseFragmentPagerAdapter(
     val mListFragment: ArrayList<Fragment>,
     val mListTitle: ArrayList<String>
 ) :
-    FragmentPagerAdapter(mFragmentManager) {
+    FragmentPagerAdapter(mFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return mListFragment[position]
     }

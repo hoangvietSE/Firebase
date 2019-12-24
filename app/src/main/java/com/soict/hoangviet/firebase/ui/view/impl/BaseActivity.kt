@@ -11,6 +11,7 @@ import com.soict.hoangviet.firebase.ui.view.BaseView
 abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, BaseFragment.CallBack {
     protected open val mLayoutRes: Int? = null
     protected lateinit var mPresenter: P
+    private var mBaseLoadingDialog: BaseLoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
         }
         mPresenter = getPresenter()
         mPresenter.onAttach()
+        mBaseLoadingDialog = BaseLoadingDialog.getInstance(this)
         initListener()
         subscribeTopic()
     }
@@ -41,11 +43,11 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
     }
 
     override fun showLoading() {
-        BaseLoadingDialog.getInstance(this).showLoadingDialog()
+        mBaseLoadingDialog?.let { it.showLoadingDialog() }
     }
 
     override fun hideLoading() {
-        BaseLoadingDialog.getInstance(this).hideLoadingDialog()
+        mBaseLoadingDialog?.let { it.hideLoadingDialog() }
     }
 
     abstract fun getPresenter(): P
