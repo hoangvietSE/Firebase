@@ -4,4 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.soict.hoangviet.firebase.adapter.BaseRecyclerView
+        android:id="@+id/recycler_view_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

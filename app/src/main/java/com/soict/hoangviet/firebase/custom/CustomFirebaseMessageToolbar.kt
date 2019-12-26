@@ -18,13 +18,13 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
 
-    private var toolbar: ConstraintLayout? = null
-    private var imvLeft: ImageView? = null
-    private var imvRightOne: ImageView? = null
-    private var imvRightTwo: ImageView? = null
-    private var imvRightThree: ImageView? = null
-    private var imvAvatar: ImageView? = null
-    private var toolbarMainName: TextView? = null
+    var toolbar: ConstraintLayout? = null
+    var imvLeft: ImageView? = null
+    var imvRightOne: ImageView? = null
+    var imvRightTwo: ImageView? = null
+    var imvRightThree: ImageView? = null
+    var imvAvatar: ImageView? = null
+    var toolbarMainName: TextView? = null
 
     override val layoutRes: Int
         get() = R.layout.layout_toolbar_message

@@ -34,7 +34,6 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
         toolbarTitle = findViewById(R.id.toolbar_title)
         toolbarMainName = findViewById(R.id.toolbar_main_name)
         imvFunction?.setOnClickListener {
-
         }
     }
 

@@ -1,13 +1,23 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.ViewUtils
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.adapter.*
+import com.soict.hoangviet.firebase.custom.CustomItemDecoration
+import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.HomeInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.HomePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.HomeView
+import com.soict.hoangviet.firebase.utils.ViewUtil
+import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment<HomePresenter>(), HomeView {
+class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
+    EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
+    RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     override val mLayoutRes: Int
         get() = R.layout.fragment_home
 
@@ -20,15 +30,49 @@ class HomeFragment : BaseFragment<HomePresenter>(), HomeView {
         }
     }
 
+    private var mHomeUserChatsAdapter: HomeUserChatsAdapter? = null
+
     override fun getPresenter(): HomePresenter {
         return HomePresenterImpl(this, HomeInteractorImpl())
     }
 
     override fun initView() {
+        getAllChatUsers()
+    }
 
+    private fun getAllChatUsers() {
+        mPresenter.getAllChatUsers()
     }
 
     override fun initListener() {
 
+    }
+
+    override fun showAllChatUsers(mListUserChat: ArrayList<User>) {
+        mHomeUserChatsAdapter = HomeUserChatsAdapter(context!!)
+        recycler_view_user.setAdapter(mHomeUserChatsAdapter!!)
+        recycler_view_user.setLoadingMoreListner(this)
+        recycler_view_user.setOnItemClickListener(this)
+        recycler_view_user.setOnRefreshingListener(this)
+        mHomeUserChatsAdapter?.addModels(mListUserChat, false)
+        recycler_view_user.addItemDecoration(
+            CustomItemDecoration(
+                ViewUtil.dpToPx(
+                    resources.getDimension(
+                        R.dimen.content_padding_4_dp
+                    )
+                )
+            )
+        )
+        recycler_view_user.setLinearLayoutManager()
+    }
+
+    override fun onLoadMore() {
+    }
+
+    override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
+    }
+
+    override fun onSwipeRefresh() {
     }
 }

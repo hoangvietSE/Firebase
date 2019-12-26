@@ -11,7 +11,7 @@ import com.soict.hoangviet.firebase.widget.BaseCustomViewRelativeLayout
 import kotlinx.android.synthetic.main.layout_base_recycler_view.view.*
 
 class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
-        BaseCustomViewRelativeLayout(context, attrs) {
+    BaseCustomViewRelativeLayout(context, attrs) {
     private var mBaseAdapter: EndlessLoadingRecyclerViewAdapter? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null
     private var mSwipeRefreshListener: BaseSwipeRefreshListener? = null
@@ -123,6 +123,10 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
         mBaseAdapter?.let {
             it.addModels(listModel, isScroolToLast)
         }
+    }
+
+    fun addItemDecoration(itemDecoration: RecyclerView.ItemDecoration) {
+        recycler_view_actual.addItemDecoration(itemDecoration)
     }
 
     fun hideRefreshing() {

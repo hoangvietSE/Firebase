@@ -13,19 +13,19 @@ import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInteractor: I) : BasePresenter {
+abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInteractor: I) :
+    BasePresenter {
     protected var mView: V? = mView
     protected var mInterator: I? = mInteractor
     protected var mCompositeDisposable: CompositeDisposable? = null
     protected val isAttached get() = mView != null
     private lateinit var userReference: DatabaseReference
     private var userListener: ValueEventListener? = null
-    protected var datebaseRef: DatabaseReference? = null
+    protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
+    protected val currentId = AppSharePreference.getInstance(BaseApplication.instance).getUser().id
 
     override fun onAttach() {
         mCompositeDisposable = CompositeDisposable()
-        datebaseRef = FirebaseDatabase.getInstance().getReference("Users")
-            .child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
         mView?.let {
             it.initView()
         }

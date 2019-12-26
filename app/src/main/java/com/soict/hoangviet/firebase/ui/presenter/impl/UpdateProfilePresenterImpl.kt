@@ -17,7 +17,8 @@ import com.soict.hoangviet.firebase.utils.ToastUtil
 import org.greenrobot.eventbus.EventBus
 
 class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdateProfileInteractor) :
-    BasePresenterImpl<UpdateProfileView, UpdateProfileInteractor>(mView, mInteractor), UpdateProfilePresenter {
+    BasePresenterImpl<UpdateProfileView, UpdateProfileInteractor>(mView, mInteractor),
+    UpdateProfilePresenter {
     private var mAvatarUpload: Uri? = null
     private var mGenderPosition: Int? = null
     private var mAvatarUploadUrl: String? = null
@@ -80,11 +81,15 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
         userRecored.put("birthday", mUpdateProfileRequest.birthday)
         userRecored.put("gender", mGenderPosition ?: 0)
         userRecored.put("avatar", mAvatarUploadUrl ?: "")
-        datebaseRef?.setValue(userRecored)
+        datebaseRef
+            ?.getReference("Users")
+            ?.child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
+            ?.setValue(userRecored)
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
                     mView?.hideLoading()
-                    val mUser: User = AppSharePreference.getInstance(BaseApplication.instance).getUser()
+                    val mUser: User =
+                        AppSharePreference.getInstance(BaseApplication.instance).getUser()
                     mUser.fullname = mUpdateProfileRequest.fullname
                     mUser.birthday = mUpdateProfileRequest.birthday
                     mUser.gender = mGenderPosition ?: 0

@@ -54,6 +54,9 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView, EndlessLo
                 mPresenter.sendMessage(receiver, msg)
             }
         }
+        toolbar.imvLeft?.setOnClickListener {
+            finish()
+        }
     }
 
     override fun addSender(mChatsResponse: ChatsResponse) {
