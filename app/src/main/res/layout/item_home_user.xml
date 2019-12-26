@@ -42,7 +42,7 @@
                 android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.6" />
+                app:layout_constraintGuide_percent="0.7" />
 
             <TextView
                 android:id="@+id/tv_message"
@@ -50,11 +50,12 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Khổng Tuấn huhuhuhuhuhu" />
+                tools:text="Khổng Tuấn Anh fehwfuewfheuwfhewufefuew" />
 
             <TextView
                 android:id="@+id/tv_dot"
