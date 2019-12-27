@@ -26,8 +26,9 @@ import kotlinx.android.synthetic.main.layout_main.*
 import kotlinx.android.synthetic.main.layout_navigation.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapter.OnItemClickListener,
-        RecyclerViewAdapter.OnItemPressListener, RecyclerViewAdapter.OnItemCancelListener {
+class MainActivity : BaseActivity<MainPresenter>(), MainView,
+    RecyclerViewAdapter.OnItemClickListener,
+    RecyclerViewAdapter.OnItemPressListener, RecyclerViewAdapter.OnItemCancelListener {
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
         const val ITEM_HOME = "home"
@@ -70,14 +71,24 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
         listFragment.add(homeFragment)
         listFragment.add(friendsFragment)
         listFragment.add(profileFragment)
-        homeAdapter = HomeAdapter(supportFragmentManager, listFragment, arrayListOf("Home", "Friends", "Profile"))
+        homeAdapter = HomeAdapter(
+            supportFragmentManager,
+            listFragment,
+            arrayListOf("Home", "Friends", "Profile")
+        )
         viewPager.adapter = homeAdapter
+        viewPager.offscreenPageLimit = 2
         viewPager.currentItem = ITEM_MAIN_HOME
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
 
             override fun onPageSelected(position: Int) {
                 val data = mMainNavigationAdapter.getItemPosition(position, ItemMenuNav::class.java)
@@ -93,35 +104,36 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView, RecyclerViewAdapte
     }
 
     private fun initNavigationDrawer() {
-        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawer_layout, R.string.nav_open, R.string.nav_close)
+        actionBarDrawerToggle =
+            ActionBarDrawerToggle(this, drawer_layout, R.string.nav_open, R.string.nav_close)
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
         val itemHome = ItemMenuNav(
-                R.drawable.ic_home_active,
-                R.drawable.ic_home_disable,
-                "Home",
-                "home",
-                false
+            R.drawable.ic_home_active,
+            R.drawable.ic_home_disable,
+            "Home",
+            "home",
+            false
         )
         val itemFriends = ItemMenuNav(
-                R.drawable.ic_friends_active,
-                R.drawable.ic_friends_disable,
-                "Bạn bè",
-                "friends",
-                false
+            R.drawable.ic_friends_active,
+            R.drawable.ic_friends_disable,
+            "Bạn bè",
+            "friends",
+            false
         )
         val itemProfile = ItemMenuNav(
-                R.drawable.ic_profile_active,
-                R.drawable.ic_profile_disable,
-                "Cá nhân",
-                "profile",
-                false
+            R.drawable.ic_profile_active,
+            R.drawable.ic_profile_disable,
+            "Cá nhân",
+            "profile",
+            false
         )
         val itemLogout = ItemMenuNav(
-                R.drawable.ic_logout_active,
-                R.drawable.ic_logout_disable,
-                "Đăng xuất",
-                "logout",
-                false
+            R.drawable.ic_logout_active,
+            R.drawable.ic_logout_disable,
+            "Đăng xuất",
+            "logout",
+            false
         )
         listItemNav = arrayListOf()
         listItemNav.add(itemHome)
