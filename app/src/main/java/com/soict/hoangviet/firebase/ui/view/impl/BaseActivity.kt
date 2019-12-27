@@ -8,7 +8,8 @@ import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
 
-abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, BaseFragment.CallBack {
+abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
+    BaseFragment.CallBack {
     protected open val mLayoutRes: Int? = null
     protected lateinit var mPresenter: P
     private var mBaseLoadingDialog: BaseLoadingDialog? = null
@@ -35,6 +36,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
 
     override fun onDestroy() {
         super.onDestroy()
+        mPresenter.onDetach()
         unsubscribeTopic()
     }
 
@@ -60,11 +62,6 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView, 
         startActivity(Intent(this, classOfT).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mPresenter.onDetach()
     }
 
 }

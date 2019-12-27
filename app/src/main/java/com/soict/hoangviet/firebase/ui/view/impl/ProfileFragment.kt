@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.ui.interactor.impl.ProfileInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.ProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ProfilePresenterImpl
@@ -32,7 +33,7 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     }
 
     override fun initView() {
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
         mPresenter.getCurrentUser()
@@ -59,6 +60,12 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
         row_phone.setDetail(user.phone)
         row_birthday.setDetail(user.birthday)
         row_gender.setDetail(if (user.gender == 0) "Nam" else "Nữ")
+        imv_avatar.loadImageUrl(
+            context!!,
+            user.avatar,
+            R.drawable.ic_avatar,
+            R.drawable.ic_avatar
+        )
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

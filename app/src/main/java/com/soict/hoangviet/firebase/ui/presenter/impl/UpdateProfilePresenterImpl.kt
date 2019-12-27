@@ -13,7 +13,7 @@ import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.ui.interactor.UpdateProfileInteractor
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView
-import com.soict.hoangviet.firebase.utils.ToastUtil
+import com.soict.hoangviet.firebase.utils.FileUtil
 import org.greenrobot.eventbus.EventBus
 
 class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdateProfileInteractor) :
@@ -23,7 +23,7 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
     private var mGenderPosition: Int? = null
     private var mAvatarUploadUrl: String? = null
     private var storageRef: StorageReference =
-        FirebaseStorage.getInstance().reference.child("images")
+        FirebaseStorage.getInstance().reference
 
     override fun updateProfile(mUpdateProfileRequest: UpdateProfileRequest) {
         if (TextUtils.isEmpty(mUpdateProfileRequest.fullname)) {
@@ -36,7 +36,10 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
         }
         mView?.showLoading()
         if (mAvatarUpload != null) {
-            storageRef.child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id + ".jpg")
+            val fileReference = storageRef.child(
+                "${System.currentTimeMillis()}.${FileUtil.getFileExtension(mAvatarUpload!!)}"
+            )
+            fileReference
                 .putFile(mAvatarUpload!!)
                 .continueWithTask { task ->
                     if (!task.isSuccessful) {
@@ -44,7 +47,7 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
                             throw it
                         }
                     }
-                    storageRef.downloadUrl
+                    return@continueWithTask fileReference.downloadUrl
                 }
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -74,18 +77,17 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
 
     private fun updateProfileUser(mUpdateProfileRequest: UpdateProfileRequest) {
         val userRecored: MutableMap<String, Any> = mutableMapOf()
-        userRecored.put("id", AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
         userRecored.put("fullname", mUpdateProfileRequest.fullname)
-        userRecored.put("email", mUpdateProfileRequest.email)
-        userRecored.put("phone", mUpdateProfileRequest.phone)
+//        userRecored.put("email", mUpdateProfileRequest.email)
+//        userRecored.put("phone", mUpdateProfileRequest.phone)
         userRecored.put("birthday", mUpdateProfileRequest.birthday)
         userRecored.put("gender", mGenderPosition ?: 0)
         userRecored.put("avatar", mAvatarUploadUrl ?: "")
         datebaseRef
-            ?.getReference("Users")
-            ?.child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
-            ?.setValue(userRecored)
-            ?.addOnCompleteListener {
+            .getReference("Users")
+            .child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
+            .updateChildren(userRecored)
+            .addOnCompleteListener {
                 if (it.isSuccessful) {
                     mView?.hideLoading()
                     val mUser: User =
