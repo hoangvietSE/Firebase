@@ -26,7 +26,7 @@ class AppSharePreference private constructor(var context: Context?) : SharePrefe
         setString(PREF_USER, rawUser)
     }
 
-    fun getUser(): User {
+    fun getUser(): User? {
         val rawUser = getString(PREF_USER)
         return Gson().fromJson(rawUser, User::class.java)
     }

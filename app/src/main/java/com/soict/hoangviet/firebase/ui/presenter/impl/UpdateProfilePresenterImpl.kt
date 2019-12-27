@@ -1,9 +1,7 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.net.Uri
-import android.provider.SyncStateContract.Helpers.update
 import android.text.TextUtils
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.soict.hoangviet.firebase.application.BaseApplication
@@ -51,8 +49,8 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
                 }
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-                        updateProfileUser(mUpdateProfileRequest)
                         mAvatarUploadUrl = it.result!!.toString()
+                        updateProfileUser(mUpdateProfileRequest)
                     } else {
                         mView?.hideLoading()
                         mView?.onAvatarUploadError()
@@ -82,16 +80,16 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
 //        userRecored.put("phone", mUpdateProfileRequest.phone)
         userRecored.put("birthday", mUpdateProfileRequest.birthday)
         userRecored.put("gender", mGenderPosition ?: 0)
-        userRecored.put("avatar", mAvatarUploadUrl ?: "")
+        mAvatarUploadUrl?.let { userRecored.put("avatar", it) }
         datebaseRef
             .getReference("Users")
-            .child(AppSharePreference.getInstance(BaseApplication.instance).getUser().id)
+            .child(AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id)
             .updateChildren(userRecored)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     mView?.hideLoading()
                     val mUser: User =
-                        AppSharePreference.getInstance(BaseApplication.instance).getUser()
+                        AppSharePreference.getInstance(BaseApplication.instance).getUser()!!
                     mUser.fullname = mUpdateProfileRequest.fullname
                     mUser.birthday = mUpdateProfileRequest.birthday
                     mUser.gender = mGenderPosition ?: 0

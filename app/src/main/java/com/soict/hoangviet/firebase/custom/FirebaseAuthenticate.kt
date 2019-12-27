@@ -24,11 +24,12 @@ class FirebaseAuthenticate(val mListener: AuthenticateCallBack) {
                     val user = auth.currentUser
                     val userId = user?.uid
                     reference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
-                    val userRecored = mutableMapOf<String, String>()
+                    val userRecored = mutableMapOf<String, Any>()
                     userRecored.put("id", userId)
                     userRecored.put("fullname", registerRequest.fullName)
                     userRecored.put("email", registerRequest.email)
                     userRecored.put("phone", registerRequest.phoneNumber)
+                    userRecored.put("status", 0)
                     reference?.setValue(userRecored)?.addOnCompleteListener {
                         if (it.isSuccessful) {
                             mListener.onAuthSuccess()

@@ -19,6 +19,7 @@ import com.soict.hoangviet.firebase.ui.interactor.impl.MainInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.MainPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MainView
+import com.soict.hoangviet.firebase.utils.AppConstant
 import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_nav.view.*
@@ -54,6 +55,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
     }
 
     override fun initView() {
+        setStatus(AppConstant.ONLINE)
         setToolbar()
         initListFragment()
         initNavigationDrawer()
@@ -254,5 +256,14 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
                 view.tv_item_nav.setTextColor(resources.getColor(R.color.colorAccent))
             }
         }
+    }
+
+    private fun setStatus(status: Int) {
+        mPresenter.setStatus(status)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        setStatus(AppConstant.OFFLINE)
     }
 }

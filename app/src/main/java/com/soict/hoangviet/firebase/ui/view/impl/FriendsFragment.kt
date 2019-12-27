@@ -75,13 +75,15 @@ class FriendsFragment : BaseFragment<FriendsPresenter>(), FriendsView, EndlessLo
     }
 
     private fun initAdapter() {
-        mUserAdpter = UserAdapter(context!!)
-        recycler_view_user.setAdapter(mUserAdpter!!)
-        recycler_view_user.setLoadingMoreListner(this)
-        recycler_view_user.setOnItemClickListener(this)
-        recycler_view_user.setOnRefreshingListener(this)
-        mUserAdpter?.addModels(mListUser, false)
-        recycler_view_user.setLinearLayoutManager()
+        context?.let {
+            mUserAdpter = UserAdapter(it)
+            recycler_view_user.setAdapter(mUserAdpter!!)
+            recycler_view_user.setLoadingMoreListner(this)
+            recycler_view_user.setOnItemClickListener(this)
+            recycler_view_user.setOnRefreshingListener(this)
+            mUserAdpter?.addModels(mListUser, false)
+            recycler_view_user.setLinearLayoutManager()
+        }
     }
 
     override fun initListener() {

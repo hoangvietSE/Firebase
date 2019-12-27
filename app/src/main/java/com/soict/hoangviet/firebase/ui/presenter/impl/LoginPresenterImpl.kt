@@ -10,6 +10,7 @@ import com.soict.hoangviet.firebase.extension.isValidatePassword
 import com.soict.hoangviet.firebase.ui.interactor.LoginInteractor
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.view.LoginView
+import com.soict.hoangviet.firebase.utils.AppConstant
 
 class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
     BasePresenterImpl<LoginView, LoginInteractor>(mView, mInteractor), LoginPresenter {
@@ -34,7 +35,7 @@ class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
     }
 
     override fun saveCurrentUser() {
-        getCurrentUser(object : RealTimeDatabaseListener<User>{
+        getCurrentUser(object : RealTimeDatabaseListener<User> {
             override fun onLoadSuccess(data: User) {
                 AppSharePreference.getInstance(BaseApplication.instance).setUser(data)
             }

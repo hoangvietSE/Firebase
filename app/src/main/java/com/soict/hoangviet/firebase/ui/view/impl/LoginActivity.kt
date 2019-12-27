@@ -48,9 +48,9 @@ class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
     }
 
     override fun onAuthSuccess() {
-        mPresenter.saveCurrentUser()
         hideLoading()
         ToastUtil.show(resources.getString(R.string.login_success))
+        mPresenter.saveCurrentUser()
         startActivityAndClearTask(MainActivity::class.java)
     }
 

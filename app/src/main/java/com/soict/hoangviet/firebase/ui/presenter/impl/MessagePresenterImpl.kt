@@ -17,8 +17,8 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var mListChats: ArrayList<ChatsResponse> = arrayListOf()
     override fun sendMessage(receiver: String, msg: String) {
-        val record: MutableMap<String, Any> = mutableMapOf()
-        record["sender"] = AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+        val record: MutableMap<String, Any?> = mutableMapOf()
+        record["sender"] = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
         record["receiver"] = receiver
         record["message"] = msg
         messageRef.child("Chats").push().setValue(record)
@@ -34,11 +34,11 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
                     // Get Post object and use the values to update the UI
                     val mChatsResponse: ChatsResponse = snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
-                    if ((mChatsResponse.sender == AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+                    if ((mChatsResponse.sender == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
                                     && mChatsResponse.receiver == receiver)) {
                         mView?.addSender(mChatsResponse)
                     }
-                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
                                     && mChatsResponse.sender == receiver)) {
                         mView?.addReceiver(mChatsResponse)
                     }

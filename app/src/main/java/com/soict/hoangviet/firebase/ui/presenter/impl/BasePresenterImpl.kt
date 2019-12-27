@@ -22,7 +22,7 @@ abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInt
     private lateinit var userReference: DatabaseReference
     private var userListener: ValueEventListener? = null
     protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
-    protected val currentId = AppSharePreference.getInstance(BaseApplication.instance).getUser().id
+    protected val currentId = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
 
     override fun onAttach() {
         mCompositeDisposable = CompositeDisposable()
