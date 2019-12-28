@@ -3,16 +3,17 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ViewUtils
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.adapter.*
-import com.soict.hoangviet.firebase.custom.CustomItemDecoration
+import com.soict.hoangviet.firebase.adapter.BaseRecyclerView
+import com.soict.hoangviet.firebase.adapter.EndlessLoadingRecyclerViewAdapter
+import com.soict.hoangviet.firebase.adapter.HomeUserChatsAdapter
+import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
+import com.soict.hoangviet.firebase.data.network.response.HomeResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.HomeInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.HomePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.HomeView
-import com.soict.hoangviet.firebase.utils.ViewUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
@@ -48,7 +49,7 @@ class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
 
     }
 
-    override fun showAllChatUsers(mListUserChat: ArrayList<User>) {
+    override fun showAllChatUsers(mListUserChat: ArrayList<HomeResponse>) {
         context?.let {
             mHomeUserChatsAdapter = HomeUserChatsAdapter(it)
             recycler_view_user.setAdapter(mHomeUserChatsAdapter!!)
@@ -60,10 +61,15 @@ class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
         }
     }
 
+    override fun notifyChange(position: Int) {
+        mHomeUserChatsAdapter?.notifyItemChanged(position)
+    }
+
     override fun onLoadMore() {
     }
 
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
+
     }
 
     override fun onSwipeRefresh() {

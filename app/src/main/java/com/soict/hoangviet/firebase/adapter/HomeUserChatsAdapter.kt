@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.data.network.response.HomeResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.inflate
@@ -28,20 +29,22 @@ class HomeUserChatsAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter
 
     override fun bindNormalViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val userViewHoler = holder as UserViewHolder
-        val data = getItemPosition(position, User::class.java)
-        userViewHoler.tvName.text = data.fullname
+        val data = getItemPosition(position, HomeResponse::class.java)
+        userViewHoler.tvName.text = data.user?.fullname
         userViewHoler.imvAvatar.loadImageUrl(
             context,
-            data.avatar,
+            data.user?.avatar ?: "",
             R.drawable.ic_avatar,
             R.drawable.ic_avatar
         )
-        if (data.status == AppConstant.ONLINE) userViewHoler.imvOnline.visible() else userViewHoler.imvOnline.gone()
+        if (data.user?.status == AppConstant.ONLINE) userViewHoler.imvOnline.visible() else userViewHoler.imvOnline.gone()
+        userViewHoler.tvMessage.text = data.lastMessage
     }
 
     class UserViewHolder(itemView: View) : NormalViewHoler(itemView) {
         val imvAvatar: ImageView = itemView.findViewById(R.id.imv_avatar)
         val tvName: TextView = itemView.findViewById(R.id.tv_name)
+        val tvMessage: TextView = itemView.findViewById(R.id.tv_message)
         val imvOnline: ImageView = itemView.findViewById(R.id.imv_online)
     }
 }

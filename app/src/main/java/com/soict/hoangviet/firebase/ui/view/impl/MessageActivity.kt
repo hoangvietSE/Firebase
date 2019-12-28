@@ -4,7 +4,10 @@ import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.adapter.*
+import com.soict.hoangviet.firebase.adapter.BaseRecyclerView
+import com.soict.hoangviet.firebase.adapter.EndlessLoadingRecyclerViewAdapter
+import com.soict.hoangviet.firebase.adapter.MessageAdapter
+import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.gone
@@ -15,7 +18,6 @@ import com.soict.hoangviet.firebase.ui.presenter.impl.MessagePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
-import kotlinx.android.synthetic.main.fragment_friends.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 
 class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,

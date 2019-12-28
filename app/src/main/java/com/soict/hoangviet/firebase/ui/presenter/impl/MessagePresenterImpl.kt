@@ -25,19 +25,32 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
         record["message"] = msg
         record["seen"] = AppConstant.UNSEEN
         messageRef.child("Chats").push().setValue(record)
-        val ref = datebaseRef.getReference("ChatsList").child(currentId!!).child(receiver)
-        val eventListener = object : ValueEventListener {
+        val refSender = datebaseRef.getReference("ChatsList").child(currentId!!).child(receiver)
+        val eventListenerSender = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    ref.child("receiverId").setValue(receiver)
+                    refSender.child("id").setValue(receiver)
                 }
             }
 
         }
-        ref.addListenerForSingleValueEvent(eventListener)
+        refSender.addListenerForSingleValueEvent(eventListenerSender)
+        val refReceiver = datebaseRef.getReference("ChatsList").child(receiver).child(currentId!!)
+        val eventListenerReceiver = object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    refReceiver.child("id").setValue(currentId!!)
+                }
+            }
+
+        }
+        refReceiver.addListenerForSingleValueEvent(eventListenerReceiver)
         mView?.onSendSuccess()
     }
 

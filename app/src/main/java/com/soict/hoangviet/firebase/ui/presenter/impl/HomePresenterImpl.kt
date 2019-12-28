@@ -3,10 +3,10 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.soict.hoangviet.firebase.data.network.response.ChatsListResponse
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.data.network.response.HomeResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.HomeInteractor
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
@@ -16,7 +16,7 @@ import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 class HomePresenterImpl(mView: HomeView, mInteractor: HomeInteractor) :
     BasePresenterImpl<HomeView, HomeInteractor>(mView, mInteractor), HomePresenter {
     private var mListUserChatId: ArrayList<ChatsListResponse> = arrayListOf()
-    private var mListUserChat: ArrayList<User> = arrayListOf()
+    private var mListUserChat: ArrayList<HomeResponse> = arrayListOf()
     override fun getAllChatUsers() {
         val ref = datebaseRef.getReference("ChatsList").child(currentId!!)
         val chatsListener = object : ValueEventListener {
@@ -50,8 +50,18 @@ class HomePresenterImpl(mView: HomeView, mInteractor: HomeInteractor) :
                     val user: User = snapshot.getValue(User::class.java)!!
                     // [START_EXCLUDE]
                     for (mChatsList in mListUserChatId) {
-                        if (user.id.equals(mChatsList.receiverId)) {
-                            mListUserChat.add(user)
+                        if (user.id.equals(mChatsList.id)) {
+                            val homeResponse = HomeResponse(user)
+                            mListUserChat.add(homeResponse)
+                            fetchLastMessage(
+                                homeResponse,
+                                mListUserChat.size - 1,
+                                object : LastMessageListener {
+                                    override fun onLastMessage(position: Int) {
+                                        mView?.notifyChange(position)
+                                    }
+
+                                })
                         }
                     }
                     // [END_EXCLUDE]
@@ -67,5 +77,46 @@ class HomePresenterImpl(mView: HomeView, mInteractor: HomeInteractor) :
             }
         }
         ref.addValueEventListener(userChatsListener)
+    }
+
+    private fun fetchLastMessage(
+        homeResponse: HomeResponse,
+        position: Int,
+        listener: LastMessageListener
+    ) {
+        val ref = datebaseRef.getReference("Chats")
+        val lastMessageEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    // Get Post object and use the values to update the UI
+                    val mChatResponse: ChatsResponse =
+                        snapshot.getValue(ChatsResponse::class.java)!!
+                    // [START_EXCLUDE]
+                    if ((mChatResponse.sender.equals(currentId) && mChatResponse.receiver.equals(
+                            homeResponse.user?.id
+                        ))
+                        || (mChatResponse.sender.equals(homeResponse.user?.id) && mChatResponse.receiver.equals(
+                            currentId
+                        ))
+                    ) {
+                        homeResponse.lastMessage = mChatResponse.message
+                        listener.onLastMessage(position)
+                    }
+                    // [END_EXCLUDE]
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+        ref.addValueEventListener(lastMessageEventListener)
+    }
+
+    interface LastMessageListener {
+        fun onLastMessage(position: Int)
     }
 }
