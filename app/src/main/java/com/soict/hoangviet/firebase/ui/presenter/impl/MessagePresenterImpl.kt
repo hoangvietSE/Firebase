@@ -14,14 +14,16 @@ import com.soict.hoangviet.firebase.utils.AppConstant
 
 class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
     BasePresenterImpl<MessageView, MessageInteractor>(mView, mInteractor), MessagePresenter {
-
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var mListChats: ArrayList<ChatsResponse> = arrayListOf()
+    private var seenMessageRef: DatabaseReference? = null
+    private var seenMessageListener: ValueEventListener? = null
     override fun sendMessage(receiver: String, msg: String) {
         val record: MutableMap<String, Any?> = mutableMapOf()
         record["sender"] = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
         record["receiver"] = receiver
         record["message"] = msg
+        record["seen"] = AppConstant.UNSEEN
         messageRef.child("Chats").push().setValue(record)
         mView?.onSendSuccess()
     }
@@ -82,5 +84,39 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
             }
         }
         ref.addValueEventListener(userListener)
+    }
+
+    override fun seenMessage(receiver: String) {
+        seenMessageRef = FirebaseDatabase.getInstance().getReference("Chats")
+        seenMessageListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    // Get Post object and use the values to update the UI
+                    val mChatsResponse: ChatsResponse =
+                        snapshot.getValue(ChatsResponse::class.java)!!
+                    // [START_EXCLUDE]
+                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
+                                && mChatsResponse.sender == receiver)
+                    ) {
+                        val record: MutableMap<String, Any> = mutableMapOf()
+                        record["seen"] = AppConstant.SEEN
+                        snapshot.ref.updateChildren(record)
+                    }
+                    // [END_EXCLUDE]
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+        seenMessageRef?.addValueEventListener(seenMessageListener as ValueEventListener)
+    }
+
+    override fun removeEventListenerSeenMessage() {
+        seenMessageRef?.removeEventListener(seenMessageListener as ValueEventListener)
     }
 }

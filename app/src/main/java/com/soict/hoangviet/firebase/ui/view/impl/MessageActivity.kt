@@ -7,6 +7,8 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.*
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.interactor.impl.MessageInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.MessagePresenterImpl
@@ -14,6 +16,7 @@ import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.fragment_friends.*
+import kotlinx.android.synthetic.main.item_message_sender.view.*
 
 class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
     EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
@@ -36,6 +39,11 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
         initAdapter()
         getDataIntent()
         readMessage()
+        seenMessage()
+    }
+
+    private fun seenMessage() {
+        mPresenter.seenMessage(receiver)
     }
 
     private fun initAdapter() {
@@ -119,8 +127,19 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
     }
 
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
+        if (view.tv_seen.visibility == View.VISIBLE) {
+            view.tv_seen.gone()
+        } else if (view.tv_seen.visibility == View.GONE) {
+            view.tv_seen.visible()
+        }
     }
 
     override fun onSwipeRefresh() {
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mPresenter.removeEventListenerSeenMessage()
+
     }
 }

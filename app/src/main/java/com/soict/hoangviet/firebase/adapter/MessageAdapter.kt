@@ -10,6 +10,7 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.inflate
 import com.soict.hoangviet.firebase.extension.loadImageUrl
+import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.item_message_receiver.view.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import kotlinx.android.synthetic.main.item_message_sender.view.tv_message_sender
@@ -27,7 +28,10 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     override fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     }
 
-    override fun solveOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    override fun solveOnCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder? {
         when (viewType) {
             VIEW_TYPE_SENDER -> {
                 return initSenderMessageViewHolder(parent, viewType)
@@ -70,6 +74,8 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
         val data: ChatsResponse = getItemPosition(position, ChatsResponse::class.java)
         senderViewHolder.tvMessageSender.text = data.message
+        senderViewHolder.tvSeen.text =
+            if (data.seen == AppConstant.UNSEEN) "Đã gửi" else "Đã xem"
     }
 
     private fun bindReceiverMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -80,6 +86,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
 
     class SenderViewHolder(itemView: View) : NormalViewHoler(itemView) {
         val tvMessageSender: TextView = itemView.tv_message_sender
+        val tvSeen: TextView = itemView.tv_seen
     }
 
     class ReceiverViewHolder(itemView: View) : NormalViewHoler(itemView) {
