@@ -49,22 +49,15 @@ class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
     }
 
     override fun showAllChatUsers(mListUserChat: ArrayList<User>) {
-        mHomeUserChatsAdapter = HomeUserChatsAdapter(context!!)
-        recycler_view_user.setAdapter(mHomeUserChatsAdapter!!)
-        recycler_view_user.setLoadingMoreListner(this)
-        recycler_view_user.setOnItemClickListener(this)
-        recycler_view_user.setOnRefreshingListener(this)
-        mHomeUserChatsAdapter?.addModels(mListUserChat, false)
-        recycler_view_user.addItemDecoration(
-            CustomItemDecoration(
-                ViewUtil.dpToPx(
-                    resources.getDimension(
-                        R.dimen.content_padding_4_dp
-                    )
-                )
-            )
-        )
-        recycler_view_user.setLinearLayoutManager()
+        context?.let {
+            mHomeUserChatsAdapter = HomeUserChatsAdapter(it)
+            recycler_view_user.setAdapter(mHomeUserChatsAdapter!!)
+            recycler_view_user.setLoadingMoreListner(this)
+            recycler_view_user.setOnItemClickListener(this)
+            recycler_view_user.setOnRefreshingListener(this)
+            mHomeUserChatsAdapter?.addModels(mListUserChat, false)
+            recycler_view_user.setLinearLayoutManager()
+        }
     }
 
     override fun onLoadMore() {

@@ -56,12 +56,12 @@ class HomePresenterImpl(mView: HomeView, mInteractor: HomeInteractor) :
                     for (chatId: String in mListUserChatId) {
                         if (user.id.equals(chatId)) {
                             if (mListUserChat.size > 0) {
-                                var check = false
+                                var check = true
                                 for (userChat in mListUserChat) {
                                     if (userChat.id.equals(user.id)) {
-                                        continue;
+                                        check = false
+                                        break;
                                     }
-                                    check = true
                                 }
                                 if (check) {
                                     mListUserChat.add(user)

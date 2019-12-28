@@ -6,15 +6,18 @@ import android.view.ViewGroup
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.*
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.MessageInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.MessagePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MessageView
+import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.fragment_friends.*
 
-class MessageActivity : BaseActivity<MessagePresenter>(), MessageView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
-        RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
+class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
+    EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
+    RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
     }
@@ -45,6 +48,7 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView, EndlessLo
 
     private fun getDataIntent() {
         receiver = intent.getStringExtra(EXTRA_USER_ID)
+        mPresenter.showInfoUserMessage(receiver)
     }
 
     override fun initListener() {
@@ -71,6 +75,19 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView, EndlessLo
         mMessageAdapter?.clear()
     }
 
+    override fun showInfoUserMessage(user: User) {
+        when (user.status) {
+            AppConstant.ONLINE -> {
+                onOnlineMessage()
+            }
+            AppConstant.OFFLINE -> {
+                onOfflineMessage()
+            }
+        }
+        toolbar.showAvatar(user.avatar)
+        toolbar.setMainName(user.fullname)
+    }
+
     override fun onShowMessage() {
         recycler_view_message.setAdapter(mMessageAdapter!!)
         recycler_view_message.setLoadingMoreListner(this)
@@ -82,6 +99,14 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView, EndlessLo
 
     override fun onSendSuccess() {
         edt_message.setText("")
+    }
+
+    override fun onOnlineMessage() {
+        toolbar.showStatusOnline()
+    }
+
+    override fun onOfflineMessage() {
+        toolbar.showStatusOffline()
     }
 
     override fun onFragmentAttached() {

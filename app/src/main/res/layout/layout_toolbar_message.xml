@@ -26,25 +26,51 @@
 
         <com.soict.hoangviet.firebase.custom.CircleImageView
             android:id="@+id/imv_avatar"
-            android:layout_width="?attr/actionBarSize"
+            android:layout_width="40dp"
             android:layout_height="0dp"
-            android:padding="@dimen/content_padding_8_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/imv_left"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_avatar" />
 
-        <TextView
-            android:id="@+id/toolbar_main_name"
-            android:layout_width="wrap_content"
+        <com.soict.hoangviet.firebase.custom.CircleImageView
+            android:id="@+id/imv_online"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="@dimen/margin_6_dp"
+            android:background="@drawable/bg_online"
+            app:layout_constraintBottom_toBottomOf="@id/imv_avatar"
+            app:layout_constraintEnd_toEndOf="@id/imv_avatar" />
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_18_sp"
-            android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin_6_dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imv_right_three"
             app:layout_constraintStart_toEndOf="@id/imv_avatar"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Home" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/toolbar_main_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18_sp"
+                android:textStyle="bold"
+                tools:text="Hoàng Hằng" />
+
+            <TextView
+                android:id="@+id/tv_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Đang hoạt động" />
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/imv_right_one"
@@ -61,6 +87,7 @@
             android:id="@+id/imv_right_second"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="0dp"
+            android:layout_marginEnd="-16dp"
             android:scaleX="0.5"
             android:scaleY="0.5"
             app:layout_constraintBottom_toBottomOf="parent"

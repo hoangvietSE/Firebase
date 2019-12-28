@@ -1,7 +1,6 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
@@ -11,9 +10,11 @@ import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
+import com.soict.hoangviet.firebase.utils.AppConstant
 
 class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
-        BasePresenterImpl<MessageView, MessageInteractor>(mView, mInteractor), MessagePresenter {
+    BasePresenterImpl<MessageView, MessageInteractor>(mView, mInteractor), MessagePresenter {
+
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var mListChats: ArrayList<ChatsResponse> = arrayListOf()
     override fun sendMessage(receiver: String, msg: String) {
@@ -26,20 +27,24 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
     }
 
     override fun readMessage(receiver: String) {
-        val listMessageReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Chats")
+        val listMessageReference: DatabaseReference =
+            FirebaseDatabase.getInstance().getReference("Chats")
         val listMessageListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 mView?.clearMessage()
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     // Get Post object and use the values to update the UI
-                    val mChatsResponse: ChatsResponse = snapshot.getValue(ChatsResponse::class.java)!!
+                    val mChatsResponse: ChatsResponse =
+                        snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
                     if ((mChatsResponse.sender == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
-                                    && mChatsResponse.receiver == receiver)) {
+                                && mChatsResponse.receiver == receiver)
+                    ) {
                         mView?.addSender(mChatsResponse)
                     }
                     if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
-                                    && mChatsResponse.sender == receiver)) {
+                                && mChatsResponse.sender == receiver)
+                    ) {
                         mView?.addReceiver(mChatsResponse)
                     }
                     // [END_EXCLUDE]
@@ -55,5 +60,27 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
             }
         }
         listMessageReference.addValueEventListener(listMessageListener as ValueEventListener)
+    }
+
+    override fun showInfoUserMessage(receiver: String?) {
+        val ref = datebaseRef.getReference("Users").child(receiver!!)
+        val userListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.d(MainActivity.TAG, "load:success")
+                // Get Post object and use the values to update the UI
+                val user = dataSnapshot.getValue(User::class.java)
+                user?.let { mView?.showInfoUserMessage(it) }
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+        ref.addValueEventListener(userListener)
     }
 }

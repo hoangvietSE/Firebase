@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.view
 
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.data.network.response.User
 
 interface MessageView : BaseView {
     fun onSendSuccess()
@@ -8,4 +9,7 @@ interface MessageView : BaseView {
     fun addSender(mChatsResponse: ChatsResponse)
     fun addReceiver(mChatsResponse: ChatsResponse)
     fun clearMessage()
+    fun onOnlineMessage()
+    fun onOfflineMessage()
+    fun showInfoUserMessage(user: User)
 }

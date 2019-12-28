@@ -6,16 +6,21 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.extension.loadImageUrl
+import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.widget.BaseCustomViewConstrainLayout
 
 class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
 
     var toolbar: ConstraintLayout? = null
@@ -25,6 +30,8 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
     var imvRightThree: ImageView? = null
     var imvAvatar: ImageView? = null
     var toolbarMainName: TextView? = null
+    var imvOnline: ImageView? = null
+    var tvActive: TextView? = null
 
     override val layoutRes: Int
         get() = R.layout.layout_toolbar_message
@@ -40,6 +47,8 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
         imvRightThree = findViewById(R.id.imv_right_three)
         imvAvatar = findViewById(R.id.imv_avatar)
         toolbarMainName = findViewById(R.id.toolbar_main_name)
+        imvOnline = findViewById(R.id.imv_online)
+        tvActive = findViewById(R.id.tv_active)
         imvLeft?.setOnClickListener {
         }
     }
@@ -48,9 +57,12 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
         val avatar = typeArray?.getInt(R.styleable.BaseToolbarMessage_btm_avatar, -1)
         val background = typeArray?.getColor(R.styleable.BaseToolbarMessage_btm_background, -1)
         val imageLeft = typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_left)
-        val imageRightOne = typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_one)
-        val imageRightTwo = typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_two)
-        val imageRightThree = typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_three)
+        val imageRightOne =
+            typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_one)
+        val imageRightTwo =
+            typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_two)
+        val imageRightThree =
+            typeArray?.getDrawable(R.styleable.BaseToolbarMessage_btm_icon_right_three)
         val name = typeArray?.getString(R.styleable.BaseToolbarMessage_btm_main_name)
         imageLeft?.let { setIconLeft(it) }
         imageRightOne?.let { setIconRightOne(it) }
@@ -103,6 +115,27 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
 
     fun hideMainName() {
         toolbarMainName?.let { it.gone() }
+    }
+
+    fun showAvatar(avatar: String) {
+        imvAvatar?.let {
+            it.loadImageUrl(
+                context,
+                avatar,
+                R.drawable.ic_avatar,
+                R.drawable.ic_avatar
+            )
+        }
+    }
+
+    fun showStatusOnline() {
+        imvOnline?.let { it.visible() }
+        tvActive?.let { it.visible() }
+    }
+
+    fun showStatusOffline() {
+        imvOnline?.let { it.gone() }
+        tvActive?.let { it.gone() }
     }
 
     override fun initData() {
