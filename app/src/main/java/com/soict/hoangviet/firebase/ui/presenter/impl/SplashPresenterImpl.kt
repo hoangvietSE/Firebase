@@ -11,6 +11,7 @@ class SplashPresenterImpl(mView: SplashView, mInteractor: SplashInteractor) : Ba
     override fun saveCurrentUser() {
         getCurrentUser(object : RealTimeDatabaseListener<User>{
             override fun onLoadSuccess(data: User) {
+                removeValueListener()
                 AppSharePreference.getInstance(BaseApplication.instance).setUser(data)
                 mView?.goToHomeScreen()
             }

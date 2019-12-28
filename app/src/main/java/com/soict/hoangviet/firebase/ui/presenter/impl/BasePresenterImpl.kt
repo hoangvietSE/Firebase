@@ -68,6 +68,10 @@ abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInt
         userReference.addValueEventListener(userListener as ValueEventListener)
     }
 
+    protected fun removeValueListener(){
+        userReference.removeEventListener(userListener as ValueEventListener)
+    }
+
     interface RealTimeDatabaseListener<T> {
         fun onLoadSuccess(data: T)
         fun onLoadError()
