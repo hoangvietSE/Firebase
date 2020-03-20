@@ -72,6 +72,4 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
     fun onUpdateInfo(mUser: User) {
         showUserInfo(mUser)
     }
-
-
 }

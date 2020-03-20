@@ -10,15 +10,9 @@ open class BaseFragmentPagerAdapter(
     val mListTitle: ArrayList<String>
 ) :
     FragmentPagerAdapter(mFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    override fun getItem(position: Int): Fragment {
-        return mListFragment[position]
-    }
+    override fun getItem(position: Int) = mListFragment[position]
 
-    override fun getCount(): Int {
-        return mListFragment.size
-    }
+    override fun getCount() = mListFragment.size
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        return mListTitle[position]
-    }
+    override fun getPageTitle(position: Int) = mListTitle[position]
 }

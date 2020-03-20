@@ -10,7 +10,8 @@ import com.soict.hoangviet.firebase.utils.LogUtil
 import com.soict.hoangviet.firebase.utils.ToastUtil
 import java.util.concurrent.atomic.AtomicInteger
 
-abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class RecyclerViewAdapter(var context: Context) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_NORMAL = 0
         var idGenerator: AtomicInteger = AtomicInteger()
@@ -168,10 +169,10 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
     }
 
     private fun notifyItemClickListener(
-            parent: ViewGroup,
-            viewType: Int,
-            view: View,
-            position: Int?
+        parent: ViewGroup,
+        viewType: Int,
+        view: View,
+        position: Int?
     ) {
         mOnItemClickListener?.onItemClick(parent, viewType, view, position)
     }
@@ -246,7 +247,10 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
         }
     }
 
-    protected open fun solveOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    protected open fun solveOnCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder? {
         return if (viewType == VIEW_TYPE_NORMAL)
             initNormalViewHolder(parent, viewType)
         else
@@ -255,15 +259,17 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
 
     protected open fun solveOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (mListWrapperModel[position].viewType == VIEW_TYPE_NORMAL) {
-            bindNormalViewHolder(holder, position)
+            bindNormalViewHolder(holder as NormalViewHolder, position)
         }
     }
 
-    abstract fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHoler?
+    abstract fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHolder?
 
-    abstract fun bindNormalViewHolder(holder: RecyclerView.ViewHolder, position: Int)
+    abstract fun bindNormalViewHolder(holder: NormalViewHolder, position: Int)
 
-    open class NormalViewHoler(itemView: View) : RecyclerView.ViewHolder(itemView)
+    abstract class NormalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        abstract fun <T> bind(data: T)
+    }
 
     interface OnItemPressListener {
         fun onItemPress(view: View, position: Int?)
@@ -275,10 +281,10 @@ abstract class RecyclerViewAdapter(var context: Context) : RecyclerView.Adapter<
 
     interface OnItemClickListener {
         fun onItemClick(
-                parent: ViewGroup,
-                viewType: Int,
-                view: View,
-                position: Int?
+            parent: ViewGroup,
+            viewType: Int,
+            view: View,
+            position: Int?
         )
     }
 

@@ -76,6 +76,9 @@ ext {
     //EventBus
     eventbusVersion = '3.0.0'
 
+    //AvLoading
+    avloadingsVersion = '2.1.3'
+
 }
 
 

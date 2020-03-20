@@ -14,13 +14,13 @@ import com.soict.hoangviet.firebase.adapter.HomeAdapter
 import com.soict.hoangviet.firebase.adapter.MainNavigationAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.custom.ItemMenuNav
-import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.interactor.impl.MainInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.MainPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MainView
 import com.soict.hoangviet.firebase.utils.AppConstant
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_nav.view.*
 import kotlinx.android.synthetic.main.layout_main.*
@@ -36,15 +36,15 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
         const val ITEM_FRIEND = "friends"
         const val ITEM_PROFILE = "profile"
         const val ITEM_LOGOUT = "logout"
-        const val ITEM_MAIN_HOME = 0;
-        const val ITEM_MAIN_FRIEND = 1;
-        const val ITEM_MAIN_PROFILE = 2;
-        const val DELAY_LOGOUT = 1000L;
+        const val ITEM_MAIN_HOME = 0
+        const val ITEM_MAIN_FRIEND = 1
+        const val ITEM_MAIN_PROFILE = 2
+        const val DELAY_LOGOUT = 1000L
+        const val DELAY_LOADING = 1600L
     }
 
     override val mLayoutRes: Int
         get() = R.layout.activity_main
-    private var listFragment: ArrayList<Fragment> = arrayListOf()
     private var homeAdapter: HomeAdapter? = null
     private lateinit var mMainNavigationAdapter: MainNavigationAdapter
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
@@ -55,10 +55,28 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
     }
 
     override fun initView() {
+        showLoadingMain()
         setStatus(AppConstant.ONLINE)
         setToolbar()
         initListFragment()
         initNavigationDrawer()
+    }
+
+    private fun showLoadingMain() {
+        startAnim()
+        Handler(mainLooper).postDelayed({
+            stopAnim()
+        }, DELAY_LOADING)
+    }
+
+    private fun startAnim() {
+        rl_loading.visible()
+        avi.smoothToShow()
+    }
+
+    private fun stopAnim() {
+        rl_loading.gone()
+        avi.smoothToHide()
     }
 
     private fun setToolbar() {
@@ -67,17 +85,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
     }
 
     private fun initListFragment() {
-        val homeFragment = HomeFragment.getInstance()
-        val friendsFragment = FriendsFragment.getInstance()
-        val profileFragment = ProfileFragment.getInstance()
-        listFragment.add(homeFragment)
-        listFragment.add(friendsFragment)
-        listFragment.add(profileFragment)
-        homeAdapter = HomeAdapter(
-            supportFragmentManager,
-            listFragment,
-            arrayListOf("Home", "Friends", "Profile")
-        )
+        homeAdapter = HomeAdapter(supportFragmentManager)
         viewPager.adapter = homeAdapter
         viewPager.offscreenPageLimit = 2
         viewPager.currentItem = ITEM_MAIN_HOME

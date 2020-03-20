@@ -11,7 +11,10 @@ import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.inflate
 import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.utils.AppConstant
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_message_receiver.*
 import kotlinx.android.synthetic.main.item_message_receiver.view.*
+import kotlinx.android.synthetic.main.item_message_sender.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import kotlinx.android.synthetic.main.item_message_sender.view.tv_message_sender
 
@@ -19,13 +22,6 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     companion object {
         const val VIEW_TYPE_SENDER = 0
         const val VIEW_TYPE_RECEIVER = 1
-    }
-
-    override fun initLoadingViewHolder(parent: ViewGroup, viewType: Int): LoadingViewHolder {
-        return LoadingViewHolder(context.inflate(R.layout.layout_loadmore))
-    }
-
-    override fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     }
 
     override fun solveOnCreateViewHolder(
@@ -55,42 +51,40 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         }
     }
 
-    override fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHoler? {
+    override fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHolder? {
         return null
     }
 
-    override fun bindNormalViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun bindNormalViewHolder(holder: NormalViewHolder, position: Int) {
     }
 
-    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int): NormalViewHoler? {
-        return SenderViewHolder(context.inflate(R.layout.item_message_sender, parent, false))
-    }
+    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int) = SenderViewHolder(context.inflate(R.layout.item_message_sender, parent, false))
 
-    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int): NormalViewHoler? {
-        return ReceiverViewHolder(context.inflate(R.layout.item_message_receiver, parent, false))
-    }
+    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int) = ReceiverViewHolder(context.inflate(R.layout.item_message_receiver, parent, false))
 
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
-        val data: ChatsResponse = getItemPosition(position, ChatsResponse::class.java)
-        senderViewHolder.tvMessageSender.text = data.message
-        senderViewHolder.tvSeen.text =
-            if (data.seen == AppConstant.UNSEEN) "Đã gửi" else "Đã xem"
+        senderViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
     private fun bindReceiverMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val receiverViewHolder: ReceiverViewHolder = holder as ReceiverViewHolder
-        val data: ChatsResponse = getItemPosition(position, ChatsResponse::class.java)
-        receiverViewHolder.tvMessageReceiver.text = data.message
+        receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
-    class SenderViewHolder(itemView: View) : NormalViewHoler(itemView) {
-        val tvMessageSender: TextView = itemView.tv_message_sender
-        val tvSeen: TextView = itemView.tv_seen
+    class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!), LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            tv_message_sender.text = data.message
+            tv_seen.text = if (data.seen == AppConstant.UNSEEN) "Đã gửi" else "Đã xem"
+
+        }
     }
 
-    class ReceiverViewHolder(itemView: View) : NormalViewHoler(itemView) {
-        val imvAvatarReceiver: ImageView = itemView.imv_avatar_receiver
-        val tvMessageReceiver: TextView = itemView.tv_message_receiver
+    class ReceiverViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!), LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            tv_message_receiver.text = data.message
+        }
     }
 }

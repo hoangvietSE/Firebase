@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.soict.hoangviet.baseproject.extension.inflate
+import com.soict.hoangviet.firebase.R
 
 abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerViewAdapter(context) {
     companion object {
@@ -17,16 +19,16 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
 
     override fun solveOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         if (viewType == VIEW_TYPE_NORMAL_LOADING) {
-            return initLoadingViewHolder(parent, viewType)
+            return LoadingViewHolder(parent.inflate(R.layout.layout_loadmore))
         }
         return super.solveOnCreateViewHolder(parent, viewType)
     }
 
     override fun solveOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.solveOnBindViewHolder(holder, position)
-        if (mListWrapperModel[position].viewType == VIEW_TYPE_NORMAL_LOADING) {
-            onBindLoadingViewHolder(holder, position)
-        }
+//        if (mListWrapperModel[position].viewType == VIEW_TYPE_NORMAL_LOADING) {
+//            onBindLoadingViewHolder(holder, position)
+//        }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -69,9 +71,7 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
         mListener = listener
     }
 
-    abstract fun initLoadingViewHolder(parent: ViewGroup, viewType: Int): LoadingViewHolder
-
-    abstract fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int)
+//    abstract fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int)
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 

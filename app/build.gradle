@@ -73,6 +73,12 @@ android {
         targetCompatibility = '1.8'
         sourceCompatibility = '1.8'
     }
+    dataBinding{
+        enabled = true
+    }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -120,4 +126,7 @@ dependencies {
 
     //EventBus
     implementation "org.greenrobot:eventbus:$rootProject.eventbusVersion"
+
+    //AVLoading
+    implementation "com.wang.avi:library:$rootProject.avloadingsVersion"
 }

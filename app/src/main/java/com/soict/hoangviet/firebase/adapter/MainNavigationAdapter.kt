@@ -4,51 +4,51 @@ import android.content.Context
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.ItemMenuNav
 import com.soict.hoangviet.firebase.extension.inflate
-import kotlinx.android.synthetic.main.item_nav.view.*
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_nav.*
 
 class MainNavigationAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
-    override fun initLoadingViewHolder(parent: ViewGroup, viewType: Int): LoadingViewHolder {
-        return LoadingViewHolder(context.inflate(R.layout.layout_loadmore))
-    }
-
-    override fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    }
-
-    override fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHoler? {
+    override fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHolder? {
         return NavigationViewHolder(context.inflate(R.layout.item_nav, parent, false))
     }
 
-    override fun bindNormalViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val navigationViewHolder = holder as NavigationViewHolder
-        val data = getItemPosition(position, ItemMenuNav::class.java)
-        navigationViewHolder.itemText.text = data.description
-        if (data.selected) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorPrimary, null))
-            } else {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorPrimary))
-            }
-            navigationViewHolder.itemIcon.setImageResource(data.iconSelected)
-            navigationViewHolder.itemView.setBackgroundResource(R.drawable.bg_item_nav_selected)
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorAccent, null))
-            } else {
-                navigationViewHolder.itemText.setTextColor(context.resources.getColor(R.color.colorAccent))
-            }
-            navigationViewHolder.itemIcon.setImageResource(data.iconDefault)
-            navigationViewHolder.itemView.setBackgroundResource(R.drawable.bg_item_nav_unselected)
-        }
+    override fun bindNormalViewHolder(holder: NormalViewHolder, position: Int) {
+        holder.bind(getItemPosition(position, ItemMenuNav::class.java))
     }
 
-    class NavigationViewHolder(itemView: View) : NormalViewHoler(itemView) {
-        val itemIcon: ImageView = itemView.imv_item_nav
-        val itemText: TextView = itemView.tv_item_nav
+    class NavigationViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!), LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ItemMenuNav
+            tv_item_nav.text = data.description
+            if (data.selected) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    tv_item_nav.setTextColor(
+                        itemView.context.resources.getColor(
+                            R.color.colorPrimary,
+                            null
+                        )
+                    )
+                } else {
+                    tv_item_nav.setTextColor(itemView.context.resources.getColor(R.color.colorPrimary))
+                }
+                imv_item_nav.setImageResource(data.iconSelected)
+                tv_item_nav.setBackgroundResource(R.drawable.bg_item_nav_selected)
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    tv_item_nav.setTextColor(
+                        itemView.context.getColor(R.color.colorAccent)
+                    )
+                } else {
+                    tv_item_nav.setTextColor(itemView.context.resources.getColor(R.color.colorAccent))
+                }
+                imv_item_nav.setImageResource(data.iconDefault)
+                tv_item_nav.setBackgroundResource(R.drawable.bg_item_nav_unselected)
+            }
+
+        }
     }
 }
