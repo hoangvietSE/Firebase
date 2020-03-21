@@ -6,13 +6,12 @@ import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.ui.interactor.impl.DynamicLinkInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.DynamicLinkPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.DynamicLinkPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.DynamicLinkView
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_dynamiclink.*
 
 class DynamicLinkActivity : BaseActivity<DynamicLinkPresenter>(), DynamicLinkView {
@@ -71,7 +70,7 @@ class DynamicLinkActivity : BaseActivity<DynamicLinkPresenter>(), DynamicLinkVie
                 }
                 .addOnFailureListener {
                     hideLoading()
-                    ToastUtil.show(resources.getString(R.string.error_happen))
+                    toast(resources.getString(R.string.error_happen))
                 }
         // [END create_link_basic]
     }

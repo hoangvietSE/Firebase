@@ -3,11 +3,6 @@ package com.soict.hoangviet.firebase.data.network
 import okhttp3.logging.HttpLoggingInterceptor
 
 object ApiConstant {
-    interface RelativeUrl {
-        companion object {
-        }
-    }
-
     interface RequestParam {
         companion object {
             const val AUTHORIZATION_HEADER = "Authorization"

@@ -3,6 +3,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.os.CountDownTimer
 import android.text.Html
 import android.text.Spanned
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.PhoneSmsBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
@@ -13,7 +14,6 @@ import com.soict.hoangviet.firebase.ui.presenter.ConfirmPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ConfirmPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ConfirmView
 import com.soict.hoangviet.firebase.utils.NumberUtil
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_confirm.*
 import java.util.*
 
@@ -50,7 +50,7 @@ class ConfirmActivity : PhoneSmsBaseActivity<ConfirmPresenter>(), ConfirmView {
                 showLoading()
                 mTokenPhoneSms.confirmTokenPhoneSms(edt_otp)
             } else {
-                ToastUtil.show(resources.getString(R.string.active_otp_send_code_error))
+                toast(resources.getString(R.string.active_otp_send_code_error))
             }
         }
         imv_resend.setOnClickListener {
@@ -134,18 +134,18 @@ class ConfirmActivity : PhoneSmsBaseActivity<ConfirmPresenter>(), ConfirmView {
 
     override fun onVerifySmsFailed() {
         hideLoading()
-        ToastUtil.show(resources.getString(R.string.active_otp_code_error))
+        toast(resources.getString(R.string.active_otp_code_error))
     }
 
     override fun onAuthSuccess() {
         hideLoading()
-        ToastUtil.show(resources.getString(R.string.active_otp_success))
+        toast(resources.getString(R.string.active_otp_success))
         startActivity(LoginActivity::class.java)
         finish()
     }
 
     override fun onAuthError() {
         hideLoading()
-        ToastUtil.show(resources.getString(R.string.register_error))
+        toast(resources.getString(R.string.register_error))
     }
 }

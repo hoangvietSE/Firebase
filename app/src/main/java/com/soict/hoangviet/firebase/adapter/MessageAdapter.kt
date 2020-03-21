@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.soict.hoangviet.baseproject.extension.inflate
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.inflate
@@ -58,9 +59,9 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     override fun bindNormalViewHolder(holder: NormalViewHolder, position: Int) {
     }
 
-    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int) = SenderViewHolder(context.inflate(R.layout.item_message_sender, parent, false))
+    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int) = SenderViewHolder(parent.inflate(R.layout.item_message_sender))
 
-    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int) = ReceiverViewHolder(context.inflate(R.layout.item_message_receiver, parent, false))
+    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int) = ReceiverViewHolder(parent.inflate(R.layout.item_message_receiver))
 
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
@@ -77,7 +78,6 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             data as ChatsResponse
             tv_message_sender.text = data.message
             tv_seen.text = if (data.seen == AppConstant.UNSEEN) "Đã gửi" else "Đã xem"
-
         }
     }
 

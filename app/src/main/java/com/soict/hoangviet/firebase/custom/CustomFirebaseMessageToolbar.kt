@@ -22,7 +22,6 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
         defStyleAttr
     )
 
-
     var toolbar: ConstraintLayout? = null
     var imvLeft: ImageView? = null
     var imvRightOne: ImageView? = null
@@ -121,9 +120,7 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
         imvAvatar?.let {
             it.loadImageUrl(
                 context,
-                avatar,
-                R.drawable.ic_avatar,
-                R.drawable.ic_avatar
+                avatar
             )
         }
     }

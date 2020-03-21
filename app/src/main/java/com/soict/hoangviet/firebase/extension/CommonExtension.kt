@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.module.GlideApp
+import kotlinx.android.synthetic.main.item_user.view.*
 import java.util.regex.Pattern
 
 const val EMAIL_PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
@@ -81,8 +83,8 @@ fun ImageView.loadImageDrawable(
 fun ImageView.loadImageUrl(
     context: Context,
     string: String,
-    @DrawableRes placeHolder: Int,
-    @DrawableRes error: Int
+    @DrawableRes placeHolder: Int = R.drawable.ic_avatar,
+    @DrawableRes error: Int = R.drawable.ic_avatar
 ) {
     GlideApp.with(context)
         .load(string)

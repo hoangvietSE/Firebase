@@ -2,12 +2,15 @@ package com.soict.hoangviet.baseproject.extension
 
 import android.content.Context
 import android.inputmethodservice.InputMethodService
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.snackbar.Snackbar
+import com.soict.hoangviet.firebase.application.BaseApplication
 
 /**
  * Extension method to provide simpler access to {@link View#getResources()#getString(int)}.
@@ -182,3 +185,12 @@ inline fun <reified T : View> View.find(@IdRes id: Int) : T = findViewById(id)
  * Extension method to provide quicker access to the [LayoutInflater] from a [View].
  */
 fun View.getLayoutInflater() = context.getLayoutInflater()
+
+fun View.showCustomToast() {
+    with(Toast(BaseApplication.instance)) {
+        setGravity(Gravity.BOTTOM, 0, 0)
+        duration = Toast.LENGTH_SHORT
+        view = this@showCustomToast
+        show()
+    }
+}

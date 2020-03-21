@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.soict.hoangviet.firebase.utils.LogUtil
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import java.util.concurrent.atomic.AtomicInteger
 
 abstract class RecyclerViewAdapter(var context: Context) :

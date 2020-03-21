@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
@@ -7,7 +8,6 @@ import com.soict.hoangviet.firebase.ui.interactor.impl.LoginInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.LoginPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.LoginView
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edt_email
 import kotlinx.android.synthetic.main.activity_login.edt_password
@@ -44,30 +44,30 @@ class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
 
     override fun onAuthError() {
         hideLoading()
-        ToastUtil.show(resources.getString(R.string.login_error))
+        toast(resources.getString(R.string.login_error))
     }
 
     override fun onAuthSuccess() {
         hideLoading()
-        ToastUtil.show(resources.getString(R.string.login_success))
+        toast(resources.getString(R.string.login_success))
         mPresenter.saveCurrentUser()
         startActivityAndClearTask(MainActivity::class.java)
     }
 
     override fun onEmailEmpty() {
-        ToastUtil.show(resources.getString(R.string.register_email_empty))
+        toast(resources.getString(R.string.register_email_empty))
     }
 
     override fun onEmailError() {
-        ToastUtil.show(resources.getString(R.string.register_email_error))
+        toast(resources.getString(R.string.register_email_error))
     }
 
     override fun onPasswordError() {
-        ToastUtil.show(resources.getString(R.string.register_password_error))
+        toast(resources.getString(R.string.register_password_error))
     }
 
     override fun onPasswordEmpty() {
-        ToastUtil.show(resources.getString(R.string.register_password_empty))
+        toast(resources.getString(R.string.register_password_empty))
     }
 
     override fun onValidateSuccess(loginRequest: LoginRequest) {

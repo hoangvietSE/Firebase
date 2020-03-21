@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import beetech.com.carbooking.util.DateUtil
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.UpdateProfileAdapter
 import com.soict.hoangviet.firebase.common.BasePhotoActivity
@@ -17,7 +18,6 @@ import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.UpdateProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView
 import com.soict.hoangviet.firebase.utils.DialogUtil
-import com.soict.hoangviet.firebase.utils.ToastUtil
 import com.soict.hoangviet.firebase.widget.DatePickerDialogWidget
 import kotlinx.android.synthetic.main.activity_update_profile.*
 import kotlinx.android.synthetic.main.dialog_update_profile_choose.*
@@ -52,7 +52,7 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
                 selectedCalendar.set(year, month - 1, dayOfMonth)
                 val checkCalendar: Calendar = Calendar.getInstance(Locale.getDefault())
                 if (selectedCalendar.after(checkCalendar)) {
-                    ToastUtil.show(resources.getString(R.string.update_profile_error_date))
+                    toast(resources.getString(R.string.update_profile_error_date))
                     return
                 }
                 tv_birthday.text =
@@ -63,7 +63,7 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
     }
 
     private fun setListGender() {
-        mUpdateProfileAdapter = UpdateProfileAdapter(this, arrayListOf("Nam", "Nữ"))
+        mUpdateProfileAdapter = UpdateProfileAdapter(this)
         spinner_gender.adapter = mUpdateProfileAdapter
         spinner_gender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -151,23 +151,23 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
     }
 
     override fun onFullNameEmpty() {
-        ToastUtil.show(resources.getString(R.string.update_profile_name_empty))
+        toast(resources.getString(R.string.update_profile_name_empty))
     }
 
     override fun onBirthdayEmpty() {
-        ToastUtil.show(resources.getString(R.string.update_profile_birthday_empty))
+        toast(resources.getString(R.string.update_profile_birthday_empty))
     }
 
     override fun onAvatarUploadError() {
-        ToastUtil.show(resources.getString(R.string.update_profile_avatar_upload_error))
+        toast(resources.getString(R.string.update_profile_avatar_upload_error))
     }
 
     override fun uploadSuccess() {
-        ToastUtil.show("Cập nhật thành công")
+        toast("Cập nhật thành công")
         finish()
     }
 
     override fun uploadError() {
-        ToastUtil.show("Cập nhật thất bại. Vui lòng thử lại")
+        toast("Cập nhật thất bại. Vui lòng thử lại")
     }
 }

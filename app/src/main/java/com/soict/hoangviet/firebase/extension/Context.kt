@@ -182,19 +182,19 @@ fun Context.getLayoutInflater() =
 /*
  * Check network connection
  */
-fun Context.hasNetworkConnection(): Boolean? {
+fun Context.hasNetworkConnection(): Boolean {
     var isConnected: Boolean? = false // Initial Value
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
     if (activeNetwork != null && activeNetwork.isConnected)
         isConnected = true
-    return isConnected
+    return isConnected!!
 }
 
 /*
  * Set statusbar color
  */
-fun Context.setSatatusBarColor(context: WeakReference<Activity>, @ColorRes colorResId: Int) {
+fun Context.setStatusBarColor(context: WeakReference<Activity>, @ColorRes colorResId: Int) {
     if (Build.VERSION.SDK_INT >= 21) {
         val window = context.get()?.window
         window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)

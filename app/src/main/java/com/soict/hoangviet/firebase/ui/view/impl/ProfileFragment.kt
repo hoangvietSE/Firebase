@@ -62,9 +62,7 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
         row_gender.setDetail(if (user.gender == 0) "Nam" else "Nữ")
         imv_avatar.loadImageUrl(
             context!!,
-            user.avatar,
-            R.drawable.ic_avatar,
-            R.drawable.ic_avatar
+            user.avatar
         )
     }
 
