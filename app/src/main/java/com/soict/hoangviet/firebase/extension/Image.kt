@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import com.soict.hoangviet.baseproject.module.GlideApp
 import com.soict.hoangviet.firebase.module.GlideApp
 
 /**

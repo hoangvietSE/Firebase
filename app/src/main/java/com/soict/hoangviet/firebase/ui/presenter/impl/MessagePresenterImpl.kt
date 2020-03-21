@@ -5,7 +5,6 @@ import com.google.firebase.database.*
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView

@@ -79,6 +79,9 @@ ext {
     //AvLoading
     avloadingsVersion = '2.1.3'
 
+    // dependency injection
+    dagger2Version = '2.11'
+
 }
 
 

@@ -4,13 +4,11 @@ import android.text.TextUtils
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.extension.isValidateEmail
 import com.soict.hoangviet.firebase.extension.isValidatePassword
 import com.soict.hoangviet.firebase.ui.interactor.LoginInteractor
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.view.LoginView
-import com.soict.hoangviet.firebase.utils.AppConstant
 
 class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
     BasePresenterImpl<LoginView, LoginInteractor>(mView, mInteractor), LoginPresenter {

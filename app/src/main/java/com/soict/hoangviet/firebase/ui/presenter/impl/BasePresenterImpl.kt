@@ -3,9 +3,9 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.soict.hoangviet.baseproject.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.ui.interactor.BaseInterator
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
@@ -13,10 +13,11 @@ import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInteractor: I) :
-    BasePresenter {
-    protected var mView: V? = mView
-    protected var mInterator: I? = mInteractor
+abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>
+internal constructor(
+    protected var mInteractor: I?
+) : BasePresenter<V, I> {
+    protected var mView: V? = null
     protected var mCompositeDisposable: CompositeDisposable? = null
     protected val isAttached get() = mView != null
     private lateinit var userReference: DatabaseReference
@@ -24,10 +25,10 @@ abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInt
     protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
     protected val currentId = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
 
-    override fun onAttach() {
+    override fun onAttach(view: V?) {
         mCompositeDisposable = CompositeDisposable()
-        mView?.let {
-            it.initView()
+        view?.let {
+            mView = it
         }
     }
 
@@ -37,11 +38,15 @@ abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInt
 
     override fun onDetach() {
         mView = null
-        mInterator = null
+        mInteractor = null
         mCompositeDisposable?.let { it.clear() }
         userListener?.let {
             userReference.removeEventListener(it)
         }
+    }
+
+    override fun getView(): V? {
+        return mView
     }
 
     protected fun getCurrentUser(listener: RealTimeDatabaseListener<User>) {
@@ -68,7 +73,7 @@ abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>(mView: V, mInt
         userReference.addValueEventListener(userListener as ValueEventListener)
     }
 
-    protected fun removeValueListener(){
+    protected fun removeValueListener() {
         userReference.removeEventListener(userListener as ValueEventListener)
     }
 

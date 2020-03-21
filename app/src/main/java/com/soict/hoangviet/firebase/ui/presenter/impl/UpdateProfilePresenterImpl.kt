@@ -7,7 +7,6 @@ import com.google.firebase.storage.StorageReference
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.request.UpdateProfileRequest
 import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.data.sharepreference.AppSharePreference
 import com.soict.hoangviet.firebase.ui.interactor.UpdateProfileInteractor
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView

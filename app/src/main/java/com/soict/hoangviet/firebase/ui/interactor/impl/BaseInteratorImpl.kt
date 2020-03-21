@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.interactor.impl
 
 import com.google.gson.Gson
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.ApiConstant
 import com.soict.hoangviet.firebase.data.network.ApiError
 import com.soict.hoangviet.firebase.data.network.ICallBack
@@ -15,7 +16,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-open class BaseInteratorImpl() : BaseInterator {
+open class BaseInteractorImpl
+internal constructor(
+    protected var mAppSharePreference: SharePreference?
+) : BaseInterator {
 
     protected fun createRequestBody(request: Any): RequestBody {
         var rawString: String? = null

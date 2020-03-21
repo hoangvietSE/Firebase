@@ -1,5 +1,8 @@
 package com.soict.hoangviet.firebase.ui.presenter
 
-interface MainPresenter : BasePresenter {
+import com.soict.hoangviet.firebase.ui.interactor.MainInteractor
+import com.soict.hoangviet.firebase.ui.view.MainView
+
+interface MainPresenter : BasePresenter<MainView, MainInteractor> {
     fun setStatus(status: Int)
 }
