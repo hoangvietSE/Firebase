@@ -1,8 +1,6 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
-import com.soict.hoangviet.baseproject.data.sharepreference.AppSharePreference
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MainInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.view.MainView

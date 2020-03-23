@@ -12,10 +12,7 @@ import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
-import com.soict.hoangviet.firebase.ui.interactor.impl.MessageInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.MessagePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*

@@ -3,6 +3,7 @@ package com.soict.hoangviet.baseproject.data.sharepreference
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.utils.AppConstant
 
 class AppSharePreference constructor(var context: Context?) : SharePreference {

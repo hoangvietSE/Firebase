@@ -2,7 +2,7 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.database.*
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor

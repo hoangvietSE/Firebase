@@ -1,7 +1,6 @@
 package com.soict.hoangviet.firebase.ui.interactor.impl
 
 import com.google.gson.Gson
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.ApiConstant
 import com.soict.hoangviet.firebase.data.network.ApiError
 import com.soict.hoangviet.firebase.data.network.ICallBack

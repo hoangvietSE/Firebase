@@ -1,6 +1,6 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.SplashInteractor
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter

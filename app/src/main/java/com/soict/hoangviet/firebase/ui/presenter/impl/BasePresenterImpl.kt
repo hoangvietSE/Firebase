@@ -3,9 +3,7 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.soict.hoangviet.baseproject.data.sharepreference.AppSharePreference
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.BaseInterator
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter

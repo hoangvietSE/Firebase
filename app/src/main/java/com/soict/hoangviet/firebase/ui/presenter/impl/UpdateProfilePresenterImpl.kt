@@ -4,8 +4,7 @@ import android.net.Uri
 import android.text.TextUtils
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.request.UpdateProfileRequest
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.UpdateProfileInteractor

@@ -1,6 +1,4 @@
-package com.soict.hoangviet.baseproject.data.sharepreference
-
-import kotlin.reflect.KClass
+package com.soict.hoangviet.firebase.data.sharepreference
 
 interface SharePreference {
     fun <T> put(key: String, value: T)
