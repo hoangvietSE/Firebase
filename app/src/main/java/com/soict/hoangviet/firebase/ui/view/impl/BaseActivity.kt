@@ -19,6 +19,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
             setContentView(it)
         }
         mBaseLoadingDialog = BaseLoadingDialog.getInstance(this)
+        initView()
         initListener()
         subscribeTopic()
     }

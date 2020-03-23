@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
-import com.soict.hoangviet.firebase.ui.interactor.impl.SplashInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.SplashPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DialogUtil
 import javax.inject.Inject

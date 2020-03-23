@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.extension.inflate
-import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
-import dagger.android.AndroidInjection
-import dagger.android.DaggerActivity
-import dagger.android.DaggerFragment
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerAppCompatActivity
-import org.greenrobot.eventbus.EventBus
 
-abstract class BaseFragment : DaggerFragment(), BaseView {
+abstract class BaseFragment : Fragment(), BaseView {
     protected var parentActivity: DaggerAppCompatActivity? = null
     abstract val mLayoutRes: Int
 
@@ -27,6 +22,7 @@ abstract class BaseFragment : DaggerFragment(), BaseView {
             parentActivity = context
         }
         (parentActivity as BaseActivity).onFragmentAttached()
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

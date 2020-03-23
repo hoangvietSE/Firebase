@@ -8,8 +8,6 @@ import com.soict.hoangviet.firebase.di.builder.FragmentBuilder
 import com.soict.hoangviet.firebase.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
