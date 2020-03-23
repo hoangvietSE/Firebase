@@ -9,20 +9,22 @@ import com.soict.hoangviet.firebase.custom.PhoneSmsBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
-import com.soict.hoangviet.firebase.ui.interactor.impl.ConfirmInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.ConfirmPresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.ConfirmPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ConfirmView
 import com.soict.hoangviet.firebase.utils.NumberUtil
 import kotlinx.android.synthetic.main.activity_confirm.*
 import java.util.*
+import javax.inject.Inject
 
-class ConfirmActivity : PhoneSmsBaseActivity<ConfirmPresenter>(), ConfirmView {
+class ConfirmActivity : PhoneSmsBaseActivity(), ConfirmView {
     companion object {
         const val EXTRA_REGISTER_OBJECT = "extra_register_object"
         const val TIME_LEFT_IN_MILLS = 60000L
         const val TIME_INTERVAL = 1000L
     }
+
+    @Inject
+    lateinit var mPresenter: ConfirmPresenter
 
     override val mLayoutRes: Int
         get() = R.layout.activity_confirm
@@ -31,11 +33,6 @@ class ConfirmActivity : PhoneSmsBaseActivity<ConfirmPresenter>(), ConfirmView {
     private var mTimeLeftInMills: Long = 0L
     private var mCountDownTimer: CountDownTimer? = null
     private lateinit var registerRequest: RegisterRequest
-
-
-    override fun getPresenter(): ConfirmPresenter {
-        return ConfirmPresenterImpl(this, ConfirmInteractorImpl())
-    }
 
     override fun initView() {
         setToolbar()

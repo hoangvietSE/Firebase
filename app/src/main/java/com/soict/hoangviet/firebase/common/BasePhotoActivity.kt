@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-abstract class BasePhotoActivity<T : BasePresenter> : BaseActivity<T>() {
+abstract class BasePhotoActivity : BaseActivity() {
     private var cameraFilePath: String? = null
     private var mFileCreateImage: File? = null
     private var mPhotoCaptureUri: Uri? = null

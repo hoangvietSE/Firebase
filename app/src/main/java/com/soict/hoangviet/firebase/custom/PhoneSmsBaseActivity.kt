@@ -8,7 +8,7 @@ import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.impl.BaseActivity
 
-abstract class PhoneSmsBaseActivity<T : BasePresenter> : BaseActivity<T>(), TokenPhoneSms.SendTokenSmsListener,
+abstract class PhoneSmsBaseActivity : BaseActivity(), TokenPhoneSms.SendTokenSmsListener,
     AuthenticateCallBack {
 
     protected var mTokenPhoneSms = TokenPhoneSms(this, this)

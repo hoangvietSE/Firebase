@@ -13,14 +13,16 @@ import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.interactor.impl.MessageInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.MessagePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
+import javax.inject.Inject
 
-class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
+class MessageActivity : BaseActivity(), MessageView,
     EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
     RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     companion object {
@@ -30,14 +32,14 @@ class MessageActivity : BaseActivity<MessagePresenter>(), MessageView,
     override val mLayoutRes: Int
         get() = R.layout.activity_message
 
+    @Inject
+    lateinit var mPresenter: MessagePresenter
+
     private var mMessageAdapter: MessageAdapter? = null
     private lateinit var receiver: String
 
-    override fun getPresenter(): MessagePresenter {
-        return MessagePresenterImpl(this, MessageInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
         initAdapter()
         getDataIntent()
         readMessage()

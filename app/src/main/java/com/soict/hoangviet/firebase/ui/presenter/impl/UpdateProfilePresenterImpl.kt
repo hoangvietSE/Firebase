@@ -4,17 +4,25 @@ import android.net.Uri
 import android.text.TextUtils
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.request.UpdateProfileRequest
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.UpdateProfileInteractor
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView
+import com.soict.hoangviet.firebase.utils.AppConstant
 import com.soict.hoangviet.firebase.utils.FileUtil
 import org.greenrobot.eventbus.EventBus
+import javax.inject.Inject
 
-class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdateProfileInteractor) :
-    BasePresenterImpl<UpdateProfileView, UpdateProfileInteractor>(mView, mInteractor),
+class UpdateProfilePresenterImpl @Inject internal constructor(
+    updateProfileInteractor: UpdateProfileInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<UpdateProfileView, UpdateProfileInteractor>(
+    mInteractor = updateProfileInteractor,
+    mAppSharePreference = sharePreference
+),
     UpdateProfilePresenter {
     private var mAvatarUpload: Uri? = null
     private var mGenderPosition: Int? = null
@@ -82,18 +90,17 @@ class UpdateProfilePresenterImpl(mView: UpdateProfileView, mInteractor: UpdatePr
         mAvatarUploadUrl?.let { userRecored.put("avatar", it) }
         datebaseRef
             .getReference("Users")
-            .child(AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id)
+            .child(currentId!!)
             .updateChildren(userRecored)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     mView?.hideLoading()
-                    val mUser: User =
-                        AppSharePreference.getInstance(BaseApplication.instance).getUser()!!
+                    val mUser: User = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)!!
                     mUser.fullname = mUpdateProfileRequest.fullname
                     mUser.birthday = mUpdateProfileRequest.birthday
                     mUser.gender = mGenderPosition ?: 0
                     mUser.avatar = mAvatarUploadUrl ?: ""
-                    AppSharePreference.getInstance(BaseApplication.instance).setUser(mUser)
+                    mAppSharePreference?.put(AppConstant.SharePreference.USER, mUser)!!
                     EventBus.getDefault().postSticky(mUser)
                     mView?.uploadSuccess()
                 } else {

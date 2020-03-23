@@ -2,7 +2,7 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.database.*
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
@@ -10,16 +10,20 @@ import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import com.soict.hoangviet.firebase.utils.AppConstant
+import javax.inject.Inject
 
-class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
-    BasePresenterImpl<MessageView, MessageInteractor>(mView, mInteractor), MessagePresenter {
+class MessagePresenterImpl @Inject internal constructor(
+    messageInteractor: MessageInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<MessageView, MessageInteractor>(
+    mInteractor = messageInteractor,
+    mAppSharePreference = sharePreference), MessagePresenter {
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var mListChats: ArrayList<ChatsResponse> = arrayListOf()
     private var seenMessageRef: DatabaseReference? = null
     private var seenMessageListener: ValueEventListener? = null
     override fun sendMessage(receiver: String, msg: String) {
         val record: MutableMap<String, Any?> = mutableMapOf()
-        record["sender"] = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
+        record["sender"] = currentId
         record["receiver"] = receiver
         record["message"] = msg
         record["seen"] = AppConstant.UNSEEN
@@ -64,12 +68,12 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
                     val mChatsResponse: ChatsResponse =
                         snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
-                    if ((mChatsResponse.sender == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
+                    if ((mChatsResponse.sender == currentId
                                 && mChatsResponse.receiver == receiver)
                     ) {
                         mView?.addSender(mChatsResponse)
                     }
-                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
+                    if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
                         mView?.addReceiver(mChatsResponse)
@@ -120,7 +124,7 @@ class MessagePresenterImpl(mView: MessageView, mInteractor: MessageInteractor) :
                     val mChatsResponse: ChatsResponse =
                         snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
-                    if ((mChatsResponse.receiver == AppSharePreference.getInstance(BaseApplication.instance).getUser()!!.id
+                    if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
                         val record: MutableMap<String, Any> = mutableMapOf()

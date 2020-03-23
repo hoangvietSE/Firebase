@@ -9,24 +9,26 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.ui.interactor.impl.DynamicLinkInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.ConfirmPresenter
 import com.soict.hoangviet.firebase.ui.presenter.DynamicLinkPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.DynamicLinkPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.DynamicLinkView
 import kotlinx.android.synthetic.main.activity_dynamiclink.*
+import javax.inject.Inject
 
-class DynamicLinkActivity : BaseActivity<DynamicLinkPresenter>(), DynamicLinkView {
+class DynamicLinkActivity : BaseActivity(), DynamicLinkView {
     companion object {
         val TAG = DynamicLinkActivity::class.java.simpleName
     }
 
+    @Inject
+    lateinit var mPresenter: DynamicLinkPresenter
+
     override val mLayoutRes: Int
         get() = R.layout.activity_dynamiclink
 
-    override fun getPresenter(): DynamicLinkPresenter {
-        return DynamicLinkPresenterImpl(this, DynamicLinkInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
     }
 
     override fun initListener() {

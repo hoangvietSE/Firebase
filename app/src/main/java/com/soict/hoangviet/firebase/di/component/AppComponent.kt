@@ -4,22 +4,26 @@ import android.app.Application
 import android.content.Context
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.di.builder.ActivityBuilder
+import com.soict.hoangviet.firebase.di.builder.FragmentBuilder
 import com.soict.hoangviet.firebase.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Component(
     modules = [
-        (AndroidInjectionModule::class),
+        (AndroidSupportInjectionModule::class),//Important
         (AppModule::class),
-        (ActivityBuilder::class)]
+        (ActivityBuilder::class),
+        (FragmentBuilder::class)]
 )
 @Singleton
 interface AppComponent {
 
-    //Declare for component dependences in use
+    //Declare for component dependence in use
     fun getContext(): Context
 
     @Component.Builder

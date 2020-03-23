@@ -11,18 +11,18 @@ import com.soict.hoangviet.firebase.ui.view.RegisterView
 import kotlinx.android.synthetic.main.activity_login.edt_email
 import kotlinx.android.synthetic.main.activity_login.edt_password
 import kotlinx.android.synthetic.main.activity_register.*
+import javax.inject.Inject
 
 
-class RegisterActivity : BaseActivity<RegisterPresenter>(), RegisterView {
+class RegisterActivity : BaseActivity(), RegisterView {
     override val mLayoutRes: Int
         get() = R.layout.activity_register
 
-    override fun getPresenter(): RegisterPresenter {
-        return RegisterPresenterImpl(this, RegisterInteractorImpl())
-    }
+    @Inject
+    lateinit var mPresenter : RegisterPresenter
 
     override fun initView() {
-
+        mPresenter.onAttach(this)
     }
 
     override fun initListener() {

@@ -11,19 +11,22 @@ import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.extension.inflate
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
+import dagger.android.AndroidInjection
+import dagger.android.DaggerActivity
+import dagger.android.DaggerFragment
+import dagger.android.support.DaggerAppCompatActivity
 import org.greenrobot.eventbus.EventBus
 
-abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
-    protected var parentActivity: AppCompatActivity? = null
-    protected val mPresenter: P get() = getPresenter()
+abstract class BaseFragment : DaggerFragment(), BaseView {
+    protected var parentActivity: DaggerAppCompatActivity? = null
     abstract val mLayoutRes: Int
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseActivity<*>) {
+        if (context is BaseActivity) {
             parentActivity = context
         }
-        (parentActivity as BaseActivity<*>)?.onFragmentAttached()
+        (parentActivity as BaseActivity).onFragmentAttached()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +35,7 @@ abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mPresenter.onAttach()
+        initView()
         initListener()
     }
 
@@ -54,11 +57,9 @@ abstract class BaseFragment<P : BasePresenter> : Fragment(), BaseView {
 
     override fun onDetach() {
         super.onDetach()
-        (parentActivity as BaseActivity<*>).onFragmentDetached("")
+        (parentActivity as BaseActivity).onFragmentDetached("")
 
     }
-
-    abstract fun getPresenter(): P
 
     interface CallBack {
         fun onFragmentAttached()

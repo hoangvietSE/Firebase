@@ -6,7 +6,7 @@ import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.impl.BaseActivity
 
-abstract class FirebaseAuthBaseActivity<T : BasePresenter> : BaseActivity<T>(), AuthenticateCallBack {
+abstract class FirebaseAuthBaseActivity : BaseActivity(), AuthenticateCallBack {
     override fun initView() {
     }
 

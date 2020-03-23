@@ -6,6 +6,7 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.ui.interactor.impl.ProfileInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.presenter.ProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.ProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ProfileView
@@ -13,10 +14,13 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import javax.inject.Inject
 
-class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
+class ProfileFragment : BaseFragment(), ProfileView {
     override val mLayoutRes: Int
         get() = R.layout.fragment_profile
+    @Inject
+    lateinit var mPresenter: ProfilePresenter
     private lateinit var mUser: User
 
     companion object {
@@ -28,11 +32,8 @@ class ProfileFragment : BaseFragment<ProfilePresenter>(), ProfileView {
         }
     }
 
-    override fun getPresenter(): ProfilePresenter {
-        return ProfilePresenterImpl(this, ProfileInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }

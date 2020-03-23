@@ -2,12 +2,14 @@ package com.soict.hoangviet.baseproject.data.sharepreference
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.soict.hoangviet.firebase.utils.AppConstant
 
 class AppSharePreference constructor(var context: Context?) : SharePreference {
 
     private val mSharedPreferences: SharedPreferences
         get() = context?.getSharedPreferences(AppConstant.PREF_NAME, Context.MODE_PRIVATE)!!
+    private val mGson = Gson()
 
     override fun <T> put(key: String, value: T) {
         val editor = mSharedPreferences.edit()
@@ -17,7 +19,7 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
             is Int -> editor.putInt(key, value)
             is Long -> editor.putLong(key, value)
             is Float -> editor.putFloat(key, value)
-            else -> throw IllegalStateException("Type of value $key is not supported")
+            else -> put(key, toJsonFromObject(value))
         }
         editor.apply()
     }
@@ -29,8 +31,16 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
             Int::class.java -> mSharedPreferences.getInt(key, -1) as T
             Long::class.java -> mSharedPreferences.getLong(key, -1) as T
             Float::class.java -> mSharedPreferences.getFloat(key, -1.0f) as T
-            else -> throw IllegalStateException("Type of value $key is not supported")
+            else -> toGsonFromJson(get(key, String::class.java), clazz)
         }
+    }
+
+    private fun <T> toJsonFromObject(value: T): String {
+        return mGson.toJson(value)
+    }
+
+    private fun <T> toGsonFromJson(value: String, clazz: Class<T>): T {
+        return mGson.fromJson(value, clazz)
     }
 
     override fun setArrayListString(arrayName: String, list: ArrayList<String>) {

@@ -26,8 +26,9 @@ import kotlinx.android.synthetic.main.item_nav.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 import kotlinx.android.synthetic.main.layout_navigation.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter>(), MainView,
+class MainActivity : BaseActivity(), MainView,
     RecyclerViewAdapter.OnItemClickListener,
     RecyclerViewAdapter.OnItemPressListener, RecyclerViewAdapter.OnItemCancelListener {
     companion object {
@@ -50,11 +51,11 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView,
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var listItemNav: ArrayList<ItemMenuNav>
 
-    override fun getPresenter(): MainPresenter {
-        return MainPresenterImpl(this, MainInteractorImpl())
-    }
+    @Inject
+    lateinit var mPresenter: MainPresenter
 
     override fun initView() {
+        mPresenter.onAttach(this)
         showLoadingMain()
         setStatus(AppConstant.ONLINE)
         setToolbar()

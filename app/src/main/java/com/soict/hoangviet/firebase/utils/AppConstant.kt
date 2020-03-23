@@ -7,4 +7,8 @@ object AppConstant {
     const val UNSEEN = 0
     const val SEEN = 1
 
+    object SharePreference {
+        const val USER = "user"
+    }
+
 }

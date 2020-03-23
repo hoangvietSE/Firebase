@@ -14,15 +14,20 @@ import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.UserAdapter
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.FriendsInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.DynamicLinkPresenter
 import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.FriendsPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.FriendsView
 import kotlinx.android.synthetic.main.fragment_friends.*
+import javax.inject.Inject
 
-class FriendsFragment : BaseFragment<FriendsPresenter>(), FriendsView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
+class FriendsFragment : BaseFragment(), FriendsView, EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
         RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     override val mLayoutRes: Int
         get() = R.layout.fragment_friends
+
+    @Inject
+    lateinit var mPresenter: FriendsPresenter
 
     private var mUserAdpter: UserAdapter? = null
     private var mListUser: ArrayList<User> = arrayListOf()
@@ -38,11 +43,8 @@ class FriendsFragment : BaseFragment<FriendsPresenter>(), FriendsView, EndlessLo
         }
     }
 
-    override fun getPresenter(): FriendsPresenter {
-        return FriendsPresenterImpl(this, FriendsInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
         getCurrentUser()
     }
 

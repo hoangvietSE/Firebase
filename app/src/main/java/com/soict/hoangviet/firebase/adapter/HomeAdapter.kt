@@ -1,6 +1,5 @@
 package com.soict.hoangviet.firebase.adapter
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.soict.hoangviet.firebase.ui.view.impl.FriendsFragment
 import com.soict.hoangviet.firebase.ui.view.impl.HomeFragment

@@ -1,7 +1,7 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.text.TextUtils
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.isValidateEmail
@@ -9,9 +9,16 @@ import com.soict.hoangviet.firebase.extension.isValidatePassword
 import com.soict.hoangviet.firebase.ui.interactor.LoginInteractor
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.view.LoginView
+import com.soict.hoangviet.firebase.utils.AppConstant
+import javax.inject.Inject
 
-class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
-    BasePresenterImpl<LoginView, LoginInteractor>(mView, mInteractor), LoginPresenter {
+class LoginPresenterImpl @Inject internal constructor(
+    loginInteractor: LoginInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<LoginView, LoginInteractor>(
+    mInteractor = loginInteractor,
+    mAppSharePreference = sharePreference
+), LoginPresenter {
     override fun validateLogin(loginRequest: LoginRequest) {
         if (TextUtils.isEmpty(loginRequest.email)) {
             mView!!.onEmailEmpty()
@@ -35,7 +42,7 @@ class LoginPresenterImpl(mView: LoginView, mInteractor: LoginInteractor) :
     override fun saveCurrentUser() {
         getCurrentUser(object : RealTimeDatabaseListener<User> {
             override fun onLoadSuccess(data: User) {
-                AppSharePreference.getInstance(BaseApplication.instance).setUser(data)
+                mAppSharePreference?.put(AppConstant.SharePreference.USER, data)
             }
 
             override fun onLoadError() {

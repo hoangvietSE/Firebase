@@ -14,6 +14,7 @@ import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.loadImageUri
 import com.soict.hoangviet.firebase.module.GlideApp
 import com.soict.hoangviet.firebase.ui.interactor.impl.UpdateProfileInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.UpdateProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView
@@ -22,8 +23,9 @@ import com.soict.hoangviet.firebase.widget.DatePickerDialogWidget
 import kotlinx.android.synthetic.main.activity_update_profile.*
 import kotlinx.android.synthetic.main.dialog_update_profile_choose.*
 import java.util.*
+import javax.inject.Inject
 
-class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), UpdateProfileView {
+class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
     companion object {
         const val EXTRA_USER = "extra_user"
     }
@@ -31,14 +33,14 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
     override val mLayoutRes: Int
         get() = R.layout.activity_update_profile
 
+    @Inject
+    lateinit var mPresenter: UpdateProfilePresenter
+
     private var mUpdateProfileAdapter: UpdateProfileAdapter? = null
     private var mDatePickerDialogWidget: DatePickerDialogWidget? = null
 
-    override fun getPresenter(): UpdateProfilePresenter {
-        return UpdateProfilePresenterImpl(this, UpdateProfileInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
         initDatePicker()
         setListGender()
         getDataIntent()
@@ -46,20 +48,23 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
 
 
     private fun initDatePicker() {
-        mDatePickerDialogWidget = DatePickerDialogWidget(this, object : DatePickerDialogWidget.DatePickerListener {
-            override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
-                val selectedCalendar: Calendar = Calendar.getInstance()
-                selectedCalendar.set(year, month - 1, dayOfMonth)
-                val checkCalendar: Calendar = Calendar.getInstance(Locale.getDefault())
-                if (selectedCalendar.after(checkCalendar)) {
-                    toast(resources.getString(R.string.update_profile_error_date))
-                    return
+        mDatePickerDialogWidget =
+            DatePickerDialogWidget(this, object : DatePickerDialogWidget.DatePickerListener {
+                override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
+                    val selectedCalendar: Calendar = Calendar.getInstance()
+                    selectedCalendar.set(year, month - 1, dayOfMonth)
+                    val checkCalendar: Calendar = Calendar.getInstance(Locale.getDefault())
+                    if (selectedCalendar.after(checkCalendar)) {
+                        toast(resources.getString(R.string.update_profile_error_date))
+                        return
+                    }
+                    tv_birthday.text =
+                        "${DateUtil.getDateValue(dayOfMonth.toString())}/${DateUtil.getDateValue(
+                            month.toString()
+                        )}/" +
+                                "${DateUtil.getDateValue(year.toString())}"
                 }
-                tv_birthday.text =
-                    "${DateUtil.getDateValue(dayOfMonth.toString())}/${DateUtil.getDateValue(month.toString())}/" +
-                            "${DateUtil.getDateValue(year.toString())}"
-            }
-        })
+            })
     }
 
     private fun setListGender() {
@@ -69,7 +74,12 @@ class UpdateProfileActivity : BasePhotoActivity<UpdateProfilePresenter>(), Updat
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 mPresenter.setGender(position)
             }
 

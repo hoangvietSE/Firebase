@@ -4,18 +4,21 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.soict.hoangviet.baseproject.data.sharepreference.AppSharePreference
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.BaseInterator
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
+import com.soict.hoangviet.firebase.utils.AppConstant
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>
 internal constructor(
-    protected var mInteractor: I?
+    protected var mInteractor: I?,
+    protected var mAppSharePreference: SharePreference?
 ) : BasePresenter<V, I> {
     protected var mView: V? = null
     protected var mCompositeDisposable: CompositeDisposable? = null
@@ -23,7 +26,7 @@ internal constructor(
     private lateinit var userReference: DatabaseReference
     private var userListener: ValueEventListener? = null
     protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
-    protected val currentId = AppSharePreference.getInstance(BaseApplication.instance).getUser()?.id
+    protected val currentId = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id
 
     override fun onAttach(view: V?) {
         mCompositeDisposable = CompositeDisposable()

@@ -17,9 +17,7 @@ import retrofit2.Response
 import java.lang.Exception
 
 open class BaseInteractorImpl
-internal constructor(
-    protected var mAppSharePreference: SharePreference?
-) : BaseInterator {
+internal constructor() : BaseInterator {
 
     protected fun createRequestBody(request: Any): RequestBody {
         var rawString: String? = null

@@ -11,8 +11,8 @@ import dagger.Provides
 @Module
 class MainActivityModule {
     @Provides
-    internal fun provideMainInteractor(mMainInteractor: MainInteractorImpl)
-            : MainInteractor = mMainInteractor
+    internal fun provideMainInteractor(mainInteractorImpl: MainInteractorImpl)
+            : MainInteractor = mainInteractorImpl
 
     @Provides
     internal fun provideMainPresenter(mainPresenterImpl: MainPresenterImpl)

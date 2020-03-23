@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsListResponse
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.HomeResponse
@@ -12,9 +13,15 @@ import com.soict.hoangviet.firebase.ui.interactor.HomeInteractor
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.view.HomeView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
+import javax.inject.Inject
 
-class HomePresenterImpl(mView: HomeView, mInteractor: HomeInteractor) :
-    BasePresenterImpl<HomeView, HomeInteractor>(mView, mInteractor), HomePresenter {
+class HomePresenterImpl @Inject internal constructor(
+    homeInteractor: HomeInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<HomeView, HomeInteractor>(
+    mInteractor = homeInteractor,
+    mAppSharePreference = sharePreference
+), HomePresenter {
     private var mListUserChatId: ArrayList<ChatsListResponse> = arrayListOf()
     private var mListUserChat: ArrayList<HomeResponse> = arrayListOf()
     override fun getAllChatUsers() {

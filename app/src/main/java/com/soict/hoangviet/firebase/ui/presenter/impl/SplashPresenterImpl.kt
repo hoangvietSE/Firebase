@@ -1,17 +1,25 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.SplashInteractor
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.view.SplashView
+import com.soict.hoangviet.firebase.utils.AppConstant
+import javax.inject.Inject
 
-class SplashPresenterImpl(mView: SplashView, mInteractor: SplashInteractor) : BasePresenterImpl<SplashView, SplashInteractor>(mView, mInteractor), SplashPresenter {
+class SplashPresenterImpl @Inject internal constructor(
+    splashInteractor: SplashInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<SplashView, SplashInteractor>(
+    mInteractor = splashInteractor,
+    mAppSharePreference = sharePreference
+), SplashPresenter {
     override fun saveCurrentUser() {
-        getCurrentUser(object : RealTimeDatabaseListener<User>{
+        getCurrentUser(object : RealTimeDatabaseListener<User> {
             override fun onLoadSuccess(data: User) {
                 removeValueListener()
-                AppSharePreference.getInstance(BaseApplication.instance).setUser(data)
+                mAppSharePreference?.put(AppConstant.SharePreference.USER, data)
                 mView?.goToHomeScreen()
             }
 

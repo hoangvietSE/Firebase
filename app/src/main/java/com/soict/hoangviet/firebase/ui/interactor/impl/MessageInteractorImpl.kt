@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.interactor.impl
 
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
+import javax.inject.Inject
 
-class MessageInteractorImpl : BaseInteratorImpl(), MessageInteractor {
+class MessageInteractorImpl @Inject internal constructor(): BaseInteractorImpl(), MessageInteractor {
 }

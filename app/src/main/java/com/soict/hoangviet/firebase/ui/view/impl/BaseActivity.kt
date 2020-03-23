@@ -2,16 +2,15 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.soict.hoangviet.firebase.common.BaseLoadingDialog
-import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
+abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
     BaseFragment.CallBack {
     protected open val mLayoutRes: Int? = null
-    protected lateinit var mPresenter: P
     private var mBaseLoadingDialog: BaseLoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +18,6 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
         mLayoutRes?.let {
             setContentView(it)
         }
-        mPresenter = getPresenter()
-        mPresenter.onAttach()
         mBaseLoadingDialog = BaseLoadingDialog.getInstance(this)
         initListener()
         subscribeTopic()
@@ -36,7 +33,6 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.onDetach()
         unsubscribeTopic()
     }
 
@@ -51,8 +47,6 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
     override fun hideLoading() {
         mBaseLoadingDialog?.let { it.hideLoadingDialog() }
     }
-
-    abstract fun getPresenter(): P
 
     protected fun startActivity(classOfT: Class<*>) {
         startActivity(Intent(this, classOfT))

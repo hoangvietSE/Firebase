@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.text.TextUtils
+import com.soict.hoangviet.baseproject.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
 import com.soict.hoangviet.firebase.extension.isValidateEmail
 import com.soict.hoangviet.firebase.extension.isValidatePassword
@@ -8,9 +9,15 @@ import com.soict.hoangviet.firebase.extension.isValidatePhoneNumber
 import com.soict.hoangviet.firebase.ui.interactor.RegisterInteractor
 import com.soict.hoangviet.firebase.ui.presenter.RegisterPresenter
 import com.soict.hoangviet.firebase.ui.view.RegisterView
+import javax.inject.Inject
 
-class RegisterPresenterImpl(mView: RegisterView, mInteractor: RegisterInteractor) :
-        BasePresenterImpl<RegisterView, RegisterInteractor>(mView, mInteractor), RegisterPresenter {
+class RegisterPresenterImpl @Inject internal constructor(
+    registerInteractor: RegisterInteractor,
+    sharePreference: SharePreference
+) : BasePresenterImpl<RegisterView, RegisterInteractor>(
+    mInteractor = registerInteractor,
+    mAppSharePreference = sharePreference
+), RegisterPresenter {
     override fun validateRegister(registerRequest: RegisterRequest) {
         if (TextUtils.isEmpty(registerRequest.fullName)) {
             mView!!.onFullNameEmpty()

@@ -5,23 +5,25 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.ui.interactor.impl.LoginInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.LoginPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.LoginView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edt_email
 import kotlinx.android.synthetic.main.activity_login.edt_password
+import javax.inject.Inject
 
 
-class LoginActivity : FirebaseAuthBaseActivity<LoginPresenter>(), LoginView {
+class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     override val mLayoutRes: Int
         get() = R.layout.activity_login
 
-    override fun getPresenter(): LoginPresenter {
-        return LoginPresenterImpl(this, LoginInteractorImpl())
-    }
+    @Inject
+    lateinit var mPresenter: LoginPresenter
 
     override fun initView() {
+        mPresenter.onAttach(this)
     }
 
     override fun initListener() {

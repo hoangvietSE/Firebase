@@ -11,16 +11,21 @@ import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.data.network.response.HomeResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.interactor.impl.HomeInteractorImpl
+import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.presenter.impl.HomePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.HomeView
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
-class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
+class HomeFragment : BaseFragment(), HomeView,
     EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
     RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
     override val mLayoutRes: Int
         get() = R.layout.fragment_home
+
+    @Inject
+    lateinit var mPresenter: HomePresenter
 
     companion object {
         fun getInstance(): HomeFragment {
@@ -33,11 +38,8 @@ class HomeFragment : BaseFragment<HomePresenter>(), HomeView,
 
     private var mHomeUserChatsAdapter: HomeUserChatsAdapter? = null
 
-    override fun getPresenter(): HomePresenter {
-        return HomePresenterImpl(this, HomeInteractorImpl())
-    }
-
     override fun initView() {
+        mPresenter.onAttach(this)
         getAllChatUsers()
     }
 

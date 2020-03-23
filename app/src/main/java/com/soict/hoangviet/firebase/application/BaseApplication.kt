@@ -2,21 +2,25 @@ package com.soict.hoangviet.firebase.application
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
-import com.soict.hoangviet.firebase.BuildConfig
-import com.soict.hoangviet.firebase.utils.LogUtil
-import io.fabric.sdk.android.Fabric
+import androidx.fragment.app.Fragment
 import com.crashlytics.android.Crashlytics
+import com.soict.hoangviet.firebase.BuildConfig
 import com.soict.hoangviet.firebase.di.component.DaggerAppComponent
+import com.soict.hoangviet.firebase.utils.LogUtil
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.support.HasSupportFragmentInjector
+import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
 
-class BaseApplication : Application(), HasActivityInjector {
+class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
     @Inject
     internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     override fun activityInjector(): AndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
@@ -47,5 +51,9 @@ class BaseApplication : Application(), HasActivityInjector {
             .build()
         Fabric.with(fabric)
         // [END crash_enable_debug_mode]
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentDispatchingAndroidInjector
     }
 }
