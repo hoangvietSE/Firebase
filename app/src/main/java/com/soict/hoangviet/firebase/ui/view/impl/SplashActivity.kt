@@ -5,6 +5,10 @@ import android.content.Intent
 import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
+import com.soict.hoangviet.baseproject.extension.inResourceString
+import com.soict.hoangviet.baseproject.extension.startActivity
+import com.soict.hoangviet.baseproject.extension.toast
+import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DialogUtil
@@ -50,9 +54,14 @@ class SplashActivity : BaseActivity(), SplashView {
         finish()
     }
 
-    private fun goToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java).apply {
+    override fun showError() {
+        toast(inResourceString {
+            getString(R.string.error_happen)
         })
+    }
+
+    private fun goToLogin() {
+        startActivity<LoginActivity>()
         finish()
     }
 

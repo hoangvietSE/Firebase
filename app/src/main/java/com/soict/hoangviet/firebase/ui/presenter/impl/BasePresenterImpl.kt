@@ -24,7 +24,8 @@ internal constructor(
     private lateinit var userReference: DatabaseReference
     private var userListener: ValueEventListener? = null
     protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
-    protected val currentId = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id
+    protected val currentId =
+        mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id
 
     override fun onAttach(view: V?) {
         mCompositeDisposable = CompositeDisposable()
@@ -50,7 +51,7 @@ internal constructor(
         return mView
     }
 
-    protected fun getCurrentUser(listener: RealTimeDatabaseListener<User>) {
+    protected fun getCurrentUser(success: (User) -> Unit, error: () -> Unit) {
         userReference = FirebaseDatabase.getInstance().getReference("Users")
             .child(FirebaseAuth.getInstance().currentUser!!.uid)
         userListener = object : ValueEventListener {
@@ -59,14 +60,14 @@ internal constructor(
                 // Get Post object and use the values to update the UI
                 val user = dataSnapshot.getValue(User::class.java)
                 // [START_EXCLUDE]
-                user?.let { listener.onLoadSuccess(it) }
+                user?.let { success.invoke(it) }
                 // [END_EXCLUDE]
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
                 Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
-                listener.onLoadError()
+                error.invoke()
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }

@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.soict.hoangviet.baseproject.extension.click
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.utils.analytics.AnalyticsUtil
 import kotlinx.android.synthetic.main.activity_analytic.*

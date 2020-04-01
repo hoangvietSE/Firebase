@@ -6,9 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.impl.BaseActivity
 import com.soict.hoangviet.firebase.utils.LogUtil
 import com.soict.hoangviet.firebase.utils.PermissionUtil
