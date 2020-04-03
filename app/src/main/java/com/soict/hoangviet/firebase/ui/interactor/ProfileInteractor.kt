@@ -6,5 +6,4 @@ import com.soict.hoangviet.firebase.data.network.response.TestResponse
 import io.reactivex.disposables.Disposable
 
 interface ProfileInteractor : BaseInterator {
-    fun fetchListDriver(data: MutableMap<String, Any>, callBack: ICallBack<BaseListEntityResponse<TestResponse>>): Disposable
 }

@@ -4,8 +4,6 @@ import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.adapter.BaseRecyclerView
-import com.soict.hoangviet.firebase.adapter.EndlessLoadingRecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
@@ -19,11 +17,10 @@ import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import javax.inject.Inject
 
-class MessageActivity : BaseActivity(), MessageView,
-    EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
-    RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
+class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemClickListener {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
+        const val TOKEN_DEVICE_ID = "token_device_id"
     }
 
     override val mLayoutRes: Int
@@ -33,7 +30,12 @@ class MessageActivity : BaseActivity(), MessageView,
     lateinit var mPresenter: MessagePresenter
 
     private var mMessageAdapter: MessageAdapter? = null
-    private lateinit var receiver: String
+    private val receiver: String by lazy {
+        intent.getStringExtra(EXTRA_USER_ID)
+    }
+    private val receiverToken: String by lazy {
+        intent.getStringExtra(TOKEN_DEVICE_ID)
+    }
 
     override fun initView() {
         mPresenter.onAttach(this)
@@ -56,7 +58,6 @@ class MessageActivity : BaseActivity(), MessageView,
     }
 
     private fun getDataIntent() {
-        receiver = intent.getStringExtra(EXTRA_USER_ID)
         mPresenter.showInfoUserMessage(receiver)
     }
 
@@ -64,7 +65,7 @@ class MessageActivity : BaseActivity(), MessageView,
         btn_send.setOnClickListener {
             val msg: String = edt_message.text.toString()
             if (!TextUtils.isEmpty(msg)) {
-                mPresenter.sendMessage(receiver, msg)
+                mPresenter.sendMessage(receiver, msg, receiverToken)
             }
         }
         toolbar.imvLeft?.setOnClickListener {
@@ -99,9 +100,11 @@ class MessageActivity : BaseActivity(), MessageView,
 
     override fun onShowMessage() {
         recycler_view_message.setAdapter(mMessageAdapter!!)
-        recycler_view_message.setLoadingMoreListner(this)
+        recycler_view_message.setOnRefreshListener {
+        }
+        recycler_view_message.setLoadingMoreListener {
+        }
         recycler_view_message.setOnItemClickListener(this)
-        recycler_view_message.setOnRefreshingListener(this)
         recycler_view_message.setLinearLayoutManagerMessage()
         recycler_view_message.disableRefreshing()
     }
@@ -124,18 +127,12 @@ class MessageActivity : BaseActivity(), MessageView,
     override fun onFragmentDetached(tag: String) {
     }
 
-    override fun onLoadMore() {
-    }
-
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
         if (view.tv_seen.visibility == View.VISIBLE) {
             view.tv_seen.gone()
         } else if (view.tv_seen.visibility == View.GONE) {
             view.tv_seen.visible()
         }
-    }
-
-    override fun onSwipeRefresh() {
     }
 
     override fun onStop() {

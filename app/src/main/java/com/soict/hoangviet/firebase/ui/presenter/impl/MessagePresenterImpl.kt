@@ -17,11 +17,12 @@ class MessagePresenterImpl @Inject internal constructor(
     sharePreference: SharePreference
 ) : BasePresenterImpl<MessageView, MessageInteractor>(
     mInteractor = messageInteractor,
-    mAppSharePreference = sharePreference), MessagePresenter {
+    mAppSharePreference = sharePreference
+), MessagePresenter {
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var seenMessageRef: DatabaseReference? = null
     private var seenMessageListener: ValueEventListener? = null
-    override fun sendMessage(receiver: String, msg: String) {
+    override fun sendMessage(receiver: String, msg: String, receiverToken: String) {
         val record: MutableMap<String, Any?> = mutableMapOf()
         record["sender"] = currentId
         record["receiver"] = receiver
@@ -40,7 +41,6 @@ class MessagePresenterImpl @Inject internal constructor(
             }
 
         }
-        refSender.addListenerForSingleValueEvent(eventListenerSender)
         val refReceiver = datebaseRef.getReference("ChatsList").child(receiver).child(currentId!!)
         val eventListenerReceiver = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
@@ -53,8 +53,18 @@ class MessagePresenterImpl @Inject internal constructor(
             }
 
         }
+        refSender.addListenerForSingleValueEvent(eventListenerSender)
         refReceiver.addListenerForSingleValueEvent(eventListenerReceiver)
+        pushNotificationToReceiver(receiver, receiverToken)
         mView?.onSendSuccess()
+    }
+
+    private fun pushNotificationToReceiver(receiver: String, receiverToken: String) {
+        mInteractor?.pushNotificationToReceiver(receiver, receiverToken)
+            ?.subscribe({
+            }, {
+                handleThrowable(throwable = it)
+            })
     }
 
     override fun readMessage(receiver: String) {

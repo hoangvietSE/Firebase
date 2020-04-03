@@ -1,6 +1,11 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.text.TextUtils
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -40,14 +45,37 @@ class LoginPresenterImpl @Inject internal constructor(
     }
 
     override fun saveCurrentUser() {
-        getCurrentUser(object : RealTimeDatabaseListener<User> {
-            override fun onLoadSuccess(data: User) {
-                mAppSharePreference?.put(AppConstant.SharePreference.USER, data)
-            }
-
-            override fun onLoadError() {
-            }
-
+        getCurrentUser({
+            mAppSharePreference?.put(AppConstant.SharePreference.USER, it)
+        }, {
         })
+        getDeviceToken()
+    }
+
+    private fun getDeviceToken() {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("myLog", "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+                    // Get new Instance ID token
+                    val token = task.result?.token
+                    mAppSharePreference?.put(AppConstant.SharePreference.DEVICE_TOKEN, token ?: "")
+                    putDeviceToken(token)
+                    Log.d("myLog", token)
+                })
+        }
+    }
+
+    private fun putDeviceToken(token: String?) {
+        val record = mapOf(
+            "device_token" to token
+        )
+        FirebaseDatabase.getInstance()
+            .getReference(AppConstant.DataBaseRef.USERS)
+            .child(FirebaseAuth.getInstance().currentUser?.uid!!)
+            .updateChildren(record)
     }
 }

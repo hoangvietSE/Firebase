@@ -18,9 +18,7 @@ import com.soict.hoangviet.firebase.ui.view.HomeView
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment(), HomeView,
-    EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener,
-    RecyclerViewAdapter.OnItemClickListener, BaseRecyclerView.BaseSwipeRefreshListener {
+class HomeFragment : BaseFragment(), HomeView, RecyclerViewAdapter.OnItemClickListener {
     override val mLayoutRes: Int
         get() = R.layout.fragment_home
 
@@ -55,9 +53,13 @@ class HomeFragment : BaseFragment(), HomeView,
         context?.let {
             mHomeUserChatsAdapter = HomeUserChatsAdapter(it)
             recycler_view_user.setAdapter(mHomeUserChatsAdapter!!)
-            recycler_view_user.setLoadingMoreListner(this)
+            recycler_view_user.setLoadingMoreListener {
+
+            }
+            recycler_view_user.setOnRefreshListener {
+
+            }
             recycler_view_user.setOnItemClickListener(this)
-            recycler_view_user.setOnRefreshingListener(this)
             mHomeUserChatsAdapter?.addModels(mListUserChat, false)
             recycler_view_user.setLinearLayoutManager()
         }
@@ -67,13 +69,7 @@ class HomeFragment : BaseFragment(), HomeView,
         mHomeUserChatsAdapter?.notifyItemChanged(position)
     }
 
-    override fun onLoadMore() {
-    }
-
     override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
 
-    }
-
-    override fun onSwipeRefresh() {
     }
 }

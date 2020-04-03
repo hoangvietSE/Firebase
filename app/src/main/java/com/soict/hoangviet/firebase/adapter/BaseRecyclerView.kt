@@ -13,7 +13,6 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
     BaseCustomViewRelativeLayout(context, attrs) {
     private var mBaseAdapter: EndlessLoadingRecyclerViewAdapter? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null
-    private var mSwipeRefreshListener: BaseSwipeRefreshListener? = null
 
     override val layoutRes: Int
         get() = R.layout.layout_base_recycler_view
@@ -37,37 +36,17 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
     fun setLinearLayoutManager() {
         mLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recycler_view_actual.layoutManager = mLayoutManager
-        swipe_refresh_layout.setOnRefreshListener {
-            mSwipeRefreshListener?.let {
-                it.onSwipeRefresh()
-            }
-        }
     }
 
     fun setLinearLayoutManagerMessage() {
         val mLinearLayoutManager = LinearLayoutManager(context)
         recycler_view_actual.layoutManager = mLinearLayoutManager
         mLinearLayoutManager.stackFromEnd = true
-        swipe_refresh_layout.setOnRefreshListener {
-            mSwipeRefreshListener?.let {
-                it.onSwipeRefresh()
-            }
-        }
     }
-
 
     fun setGridLayoutManager(numberColumn: Int) {
         mLayoutManager = GridLayoutManager(context, numberColumn)
         recycler_view_actual.layoutManager = mLayoutManager
-        swipe_refresh_layout.setOnRefreshListener {
-            mSwipeRefreshListener?.let {
-                it.onSwipeRefresh()
-            }
-        }
-    }
-
-    fun setOnRefreshingListener(listener: BaseSwipeRefreshListener) {
-        this.mSwipeRefreshListener = listener
     }
 
     fun setOnItemClickListener(listener: RecyclerViewAdapter.OnItemClickListener) {
@@ -76,9 +55,9 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
         }
     }
 
-    fun setOnLoadMoreListener(listener: EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener) {
-        mBaseAdapter?.let {
-            it.setLoadingMoreListner(listener)
+    fun setOnRefreshListener(listener: () -> Unit) {
+        swipe_refresh_layout.setOnRefreshListener {
+            listener.invoke()
         }
     }
 
@@ -106,9 +85,9 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
         }
     }
 
-    fun setLoadingMoreListner(listener: EndlessLoadingRecyclerViewAdapter.OnLoadingMoreListener) {
+    fun setLoadingMoreListener(listener: () -> Unit) {
         mBaseAdapter?.let {
-            it.setLoadingMoreListner(listener)
+            it.setLoadingMoreListener(listener)
         }
     }
 
@@ -142,10 +121,5 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
 
     fun enableRefreshing() {
         swipe_refresh_layout.isEnabled = true
-    }
-
-
-    interface BaseSwipeRefreshListener {
-        fun onSwipeRefresh()
     }
 }

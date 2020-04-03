@@ -13,11 +13,14 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
         const val VIEW_TYPE_NORMAL_LOADING = -1
     }
 
-    private var mListener: OnLoadingMoreListener? = null
+    private var mListenerLoadingMore: (() -> Unit)? = null
     private var isLoading: Boolean = false
     private var enableLoadMore: Boolean = false
 
-    override fun solveOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    override fun solveOnCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder? {
         if (viewType == VIEW_TYPE_NORMAL_LOADING) {
             return LoadingViewHolder(parent.inflate(R.layout.layout_loadmore))
         }
@@ -41,10 +44,11 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
                 }
                 val mLayoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
-                val lastCompleteVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition()
+                val lastCompleteVisibleItemPosition =
+                    mLayoutManager.findLastCompletelyVisibleItemPosition()
                 if (firstVisibleItemPosition > 0 && lastCompleteVisibleItemPosition == itemCount - 1) {
                     isLoading = true
-                    mListener?.onLoadMore()
+                    mListenerLoadingMore?.invoke()
                 }
             }
         })
@@ -67,15 +71,11 @@ abstract class EndlessLoadingRecyclerViewAdapter(context: Context) : RecyclerVie
         this.enableLoadMore = enable
     }
 
-    fun setLoadingMoreListner(listener: OnLoadingMoreListener) {
-        mListener = listener
+    fun setLoadingMoreListener(listener: () -> Unit) {
+        mListenerLoadingMore = listener
     }
 
 //    abstract fun onBindLoadingViewHolder(holder: RecyclerView.ViewHolder, position: Int)
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    interface OnLoadingMoreListener {
-        fun onLoadMore()
-    }
 }

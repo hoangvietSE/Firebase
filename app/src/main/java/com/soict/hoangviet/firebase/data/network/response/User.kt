@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.data.network.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class User() : Parcelable {
     override fun describeContents(): Int {
@@ -16,6 +17,7 @@ class User() : Parcelable {
     var birthday: String = ""
     var avatar: String = ""
     var status: Int = 0
+    var deviceToken: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -26,6 +28,7 @@ class User() : Parcelable {
         birthday = parcel.readString()
         avatar = parcel.readString()
         status = parcel.readInt()
+        deviceToken = parcel.readString()
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -37,6 +40,7 @@ class User() : Parcelable {
         dest?.writeString(birthday)
         dest?.writeString(avatar)
         dest?.writeInt(status)
+        dest?.writeString(deviceToken)
     }
 
     companion object CREATOR : Parcelable.Creator<User> {

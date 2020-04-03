@@ -15,8 +15,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.data.network.response.NotificationResponse
-import com.soict.hoangviet.firebase.ui.view.impl.ProfileFragment
+import com.soict.hoangviet.firebase.data.network.request.DataNotification
+import com.soict.hoangviet.firebase.ui.view.impl.MessageActivity
+import org.json.JSONObject
 
 class AppFirebaseMessageService : FirebaseMessagingService() {
     companion object {
@@ -41,18 +42,15 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
         // Check if message contains a data payload.
 
         val data = remoteMessage.data?.let { it }
+        val js = data?.let { JSONObject(it) }
+        val dataNotification = Gson().fromJson(js.toString(), DataNotification::class.java)
 
-        val jsonData = data["notification"]
-
-        val notificationResponse = Gson().fromJson(jsonData, NotificationResponse::class.java)
-
-        sendNotification(notificationResponse)
+        sendNotification(dataNotification)
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body:${it.title} : ${it.body}")
         }
-
 
     }
 
@@ -64,14 +62,13 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "Refreshed token: $token")
-
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
     }
 
-    private fun sendNotification(notificationResponse: NotificationResponse) {
-        val intent = Intent(this, ProfileFragment::class.java).apply {
+    private fun sendNotification(dataNotification: DataNotification) {
+        val intent = Intent(this, MessageActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //            putExtra(ProfileFragment.EXTRA_TITLE, notificationResponse.title)
 //            putExtra(ProfileFragment.EXTRA_CONTENT, notificationResponse.content)
@@ -80,7 +77,7 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
             this, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT
         )
-        val bitmap = Glide.with(this).asBitmap().load(R.drawable.icon_timdatxe)
+        val bitmap = Glide.with(this).asBitmap().load(R.mipmap.ic_launcher)
             .submit(100, 100). // Width and height
                 get();
         val channelId = getString(R.string.default_notification_channel_id)
@@ -89,8 +86,7 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.icon_app_notification)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             .setLargeIcon(bitmap)
-            .setContentTitle(notificationResponse.title)
-            .setContentText(notificationResponse.content)
+            .setContentTitle(dataNotification.title)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)

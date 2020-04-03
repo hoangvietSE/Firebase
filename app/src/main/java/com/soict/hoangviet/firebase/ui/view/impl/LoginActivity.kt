@@ -4,14 +4,9 @@ import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
-import com.soict.hoangviet.firebase.ui.interactor.impl.LoginInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.LoginPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.LoginView
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login.edt_email
-import kotlinx.android.synthetic.main.activity_login.edt_password
 import javax.inject.Inject
 
 

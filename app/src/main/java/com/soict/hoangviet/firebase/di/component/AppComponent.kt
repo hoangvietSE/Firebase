@@ -6,6 +6,7 @@ import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.di.builder.ActivityBuilder
 import com.soict.hoangviet.firebase.di.builder.FragmentBuilder
 import com.soict.hoangviet.firebase.di.module.AppModule
+import com.soict.hoangviet.firebase.di.module.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -16,7 +17,8 @@ import javax.inject.Singleton
         (AndroidSupportInjectionModule::class),//Important
         (AppModule::class),
         (ActivityBuilder::class),
-        (FragmentBuilder::class)]
+        (FragmentBuilder::class),
+        (NetworkModule::class)]
 )
 @Singleton
 interface AppComponent {

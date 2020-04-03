@@ -1,7 +1,9 @@
 package com.soict.hoangviet.firebase.data.network
 
+import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
 import com.soict.hoangviet.firebase.data.network.response.BaseEntityResponse
 import com.soict.hoangviet.firebase.data.network.response.BaseListEntityResponse
+import com.soict.hoangviet.firebase.data.network.response.MessageNotificationResponse
 import com.soict.hoangviet.firebase.data.network.response.TestResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -32,5 +34,15 @@ interface ApiService {
 
     @GET("/v1/drivers/{${ApiConstant.RequestParam.ID}}/posts")
     @Headers("Content-Type:application/json")
-    fun getListDriver(@Header(ApiConstant.RequestParam.AUTHORIZATION_HEADER) authToken: String, @Path(ApiConstant.RequestParam.ID) id: Int, @QueryMap data: MutableMap<String, Any>): Single<Response<BaseListEntityResponse<TestResponse>>>
+    fun getListDriver(
+        @Header(ApiConstant.RequestParam.AUTHORIZATION_HEADER) authToken: String, @Path(
+            ApiConstant.RequestParam.ID
+        ) id: Int, @QueryMap data: MutableMap<String, Any>
+    ): Single<Response<BaseListEntityResponse<TestResponse>>>
+
+    @POST
+    fun pushNotification(
+        @Url urlFcm: String,
+        @Header(ApiConstant.RequestParam.AUTHORIZATION_HEADER) authToken: String,
+        @Body messageRequestBody: MessageRequestBody): Single<MessageNotificationResponse>
 }

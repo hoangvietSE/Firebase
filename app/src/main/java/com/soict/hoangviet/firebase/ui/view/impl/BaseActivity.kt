@@ -21,16 +21,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
         mBaseLoadingDialog = BaseLoadingDialog.getInstance(this)
         initView()
         initListener()
-        subscribeTopic()
     }
 
-    private fun subscribeTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("topic_app")
-            .addOnSuccessListener {
-            }
-            .addOnFailureListener {
-            }
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -38,7 +31,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
     }
 
     private fun unsubscribeTopic() {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("topic_app")
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("topic")
     }
 
     override fun showLoading() {

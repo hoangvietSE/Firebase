@@ -3,6 +3,12 @@ package com.soict.hoangviet.firebase.data.network
 import okhttp3.logging.HttpLoggingInterceptor
 
 object ApiConstant {
+    interface BaseUrl {
+        companion object{
+            const val FCM = "https://fcm.googleapis.com/fcm/send"
+        }
+    }
+
     interface RequestParam {
         companion object {
             const val AUTHORIZATION_HEADER = "Authorization"
@@ -74,6 +80,7 @@ object ApiConstant {
     interface HttpMessage {
         companion object {
             const val ERROR_TRY_AGAIN = "Có lỗi xảy ra. Vui lòng thử lại"
+            const val TIME_OUT = "Thời gian kết nối quá lâu. Vui lòng thử lại"
         }
     }
 
