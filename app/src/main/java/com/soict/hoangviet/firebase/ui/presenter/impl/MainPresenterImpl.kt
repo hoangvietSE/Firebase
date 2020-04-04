@@ -18,12 +18,7 @@ class MainPresenterImpl @Inject internal constructor(
     ), MainPresenter {
     override fun setStatus(status: Int) {
         val ref = datebaseRef.getReference("Users")
-            .child(
-                mAppSharePreference?.get(
-                    AppConstant.SharePreference.USER,
-                    User::class.java
-                )?.id!!
-            )
+            .child(currentId!!)
         val userRecored: MutableMap<String, Any> = mutableMapOf()
         userRecored.put("status", status)
         ref.updateChildren(userRecored)

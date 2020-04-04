@@ -8,4 +8,5 @@ interface LoginView : BaseView {
     fun onPasswordError()
     fun onPasswordEmpty()
     fun onValidateSuccess(loginRequest: LoginRequest)
+    fun goToMainScreen()
 }

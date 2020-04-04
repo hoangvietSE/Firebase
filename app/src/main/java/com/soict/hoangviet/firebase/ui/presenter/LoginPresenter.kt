@@ -7,4 +7,5 @@ import com.soict.hoangviet.firebase.ui.view.LoginView
 interface LoginPresenter : BasePresenter<LoginView, LoginInteractor> {
     fun validateLogin(loginRequest: LoginRequest)
     fun saveCurrentUser()
+    fun removeListener()
 }

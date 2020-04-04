@@ -22,7 +22,7 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
             is Float -> editor.putFloat(key, value)
             else -> put(key, toJsonFromObject(value))
         }
-        editor.apply()
+        editor.commit()
     }
 
     override fun <T> get(key: String, clazz: Class<T>): T {
@@ -34,6 +34,10 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
             Float::class.java -> mSharedPreferences.getFloat(key, -1.0f) as T
             else -> toGsonFromJson(get(key, String::class.java), clazz)
         }
+    }
+
+    override fun clearAllPreference() {
+        mSharedPreferences.edit().clear().commit()
     }
 
     private fun <T> toJsonFromObject(value: T): String {

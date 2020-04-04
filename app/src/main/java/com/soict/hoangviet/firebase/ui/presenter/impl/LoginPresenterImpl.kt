@@ -6,9 +6,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
-import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
-import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.extension.isValidateEmail
 import com.soict.hoangviet.firebase.extension.isValidatePassword
 import com.soict.hoangviet.firebase.ui.interactor.LoginInteractor
@@ -47,9 +46,14 @@ class LoginPresenterImpl @Inject internal constructor(
     override fun saveCurrentUser() {
         getCurrentUser({
             mAppSharePreference?.put(AppConstant.SharePreference.USER, it)
+            getView()?.goToMainScreen()
         }, {
         })
         getDeviceToken()
+    }
+
+    override fun removeListener() {
+        removeValueListener()
     }
 
     private fun getDeviceToken() {
@@ -71,7 +75,7 @@ class LoginPresenterImpl @Inject internal constructor(
 
     private fun putDeviceToken(token: String?) {
         val record = mapOf(
-            "device_token" to token
+            AppConstant.SharePreference.DEVICE_TOKEN to token
         )
         FirebaseDatabase.getInstance()
             .getReference(AppConstant.DataBaseRef.USERS)

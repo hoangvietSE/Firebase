@@ -14,6 +14,7 @@ import com.soict.hoangviet.firebase.adapter.HomeAdapter
 import com.soict.hoangviet.firebase.adapter.MainNavigationAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.custom.ItemMenuNav
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.interactor.impl.MainInteractorImpl
@@ -53,6 +54,9 @@ class MainActivity : BaseActivity(), MainView,
 
     @Inject
     lateinit var mPresenter: MainPresenter
+
+    @Inject
+    lateinit var mAppSharePreference: SharePreference
 
     override fun initView() {
         mPresenter.onAttach(this)
@@ -201,6 +205,7 @@ class MainActivity : BaseActivity(), MainView,
 
     private fun logoutApplication() {
         showLoading()
+        mAppSharePreference.clearAllPreference()
         Handler().postDelayed({
             FirebaseAuth.getInstance().signOut()
             hideLoading()

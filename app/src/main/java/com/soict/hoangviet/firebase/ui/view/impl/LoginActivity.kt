@@ -1,14 +1,15 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import com.soict.hoangviet.baseproject.extension.startActivity
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
 import com.soict.hoangviet.firebase.data.network.request.LoginRequest
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.presenter.LoginPresenter
 import com.soict.hoangviet.firebase.ui.view.LoginView
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
-
 
 class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     override val mLayoutRes: Int
@@ -16,6 +17,9 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
 
     @Inject
     lateinit var mPresenter: LoginPresenter
+
+    @Inject
+    lateinit var mAppSharePreference: SharePreference
 
     override fun initView() {
         mPresenter.onAttach(this)
@@ -45,10 +49,9 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     }
 
     override fun onAuthSuccess() {
-        hideLoading()
         toast(resources.getString(R.string.login_success))
+        hideLoading()
         mPresenter.saveCurrentUser()
-        startActivityAndClearTask(MainActivity::class.java)
     }
 
     override fun onEmailEmpty() {
@@ -70,5 +73,15 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     override fun onValidateSuccess(loginRequest: LoginRequest) {
         showLoading()
         login(loginRequest)
+    }
+
+    override fun goToMainScreen() {
+        startActivity<MainActivity>()
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.removeListener()
     }
 }
