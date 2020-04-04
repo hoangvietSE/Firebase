@@ -52,10 +52,6 @@ class LoginPresenterImpl @Inject internal constructor(
         getDeviceToken()
     }
 
-    override fun removeListener() {
-        removeValueListener()
-    }
-
     private fun getDeviceToken() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             FirebaseInstanceId.getInstance().instanceId

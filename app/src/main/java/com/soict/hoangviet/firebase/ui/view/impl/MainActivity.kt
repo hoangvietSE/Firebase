@@ -157,9 +157,9 @@ class MainActivity : BaseActivity(), MainView,
         listItemNav.add(itemLogout)
         mMainNavigationAdapter = MainNavigationAdapter(this)
         nav_list_item.setAdapter(mMainNavigationAdapter)
-        mMainNavigationAdapter?.setOnItemPressListener(this)
-        mMainNavigationAdapter?.setOnItemClickListener(this)
-        mMainNavigationAdapter?.setOnItemCancelListener(this)
+        mMainNavigationAdapter.setOnItemPressListener(this)
+        mMainNavigationAdapter.setOnItemClickListener(this)
+        mMainNavigationAdapter.setOnItemCancelListener(this)
         nav_list_item.addModels(listItemNav, false)
         nav_list_item.setLinearLayoutManager()
         nav_list_item.disableRefreshing()
@@ -279,5 +279,6 @@ class MainActivity : BaseActivity(), MainView,
     override fun onDestroy() {
         super.onDestroy()
         setStatus(AppConstant.OFFLINE)
+        mPresenter.onDetach()
     }
 }

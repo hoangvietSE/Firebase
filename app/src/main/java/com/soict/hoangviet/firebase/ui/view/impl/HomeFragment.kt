@@ -4,16 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.adapter.BaseRecyclerView
-import com.soict.hoangviet.firebase.adapter.EndlessLoadingRecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.HomeUserChatsAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.data.network.response.HomeResponse
-import com.soict.hoangviet.firebase.data.network.response.User
-import com.soict.hoangviet.firebase.ui.interactor.impl.HomeInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.HomePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.HomeView
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject

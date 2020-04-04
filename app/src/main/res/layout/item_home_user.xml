@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingStart="@dimen/content_padding_4_dp"
-    android:paddingTop="@dimen/content_padding_4_dp"
-    android:paddingEnd="@dimen/content_padding_4_dp">
+    android:orientation="vertical">
 
     <com.soict.hoangviet.firebase.custom.CircleImageView
         android:id="@+id/imv_avatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/margin_10_dp"
         android:src="@drawable/ic_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,9 +27,11 @@
         app:layout_constraintEnd_toEndOf="@id/imv_avatar" />
 
     <LinearLayout
+        android:id="@+id/ll_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_8_dp"
+        android:layout_marginStart="@dimen/margin_16_dp"
+        android:layout_marginEnd="@dimen/margin_16_dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@id/imv_avatar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,58 +44,42 @@
             android:layout_height="wrap_content"
             android:textColor="@color/md_black_1000"
             android:textSize="@dimen/text_size_16_sp"
-            android:textStyle="bold"
             tools:text="Khổng Tuấn Anh" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.7" />
-
             <TextView
                 android:id="@+id/tv_message"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Khổng Tuấn Anh fehwfuewfheuwfhewufefuew" />
-
-            <TextView
-                android:id="@+id/tv_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/content_padding_4_dp"
-                android:paddingEnd="@dimen/content_padding_4_dp"
-                android:text="\u00b7"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_time"
-                app:layout_constraintStart_toEndOf="@id/tv_message"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="07:29 PM"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_dot"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:text="Khổng Tuấn Anh fehwfuewfheuwfhewufefuewewfewfewfwewwfew" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </LinearLayout>
+
+    <View
+        style="@style/LineView"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/margin_10_dp"
+        app:layout_constraintEnd_toEndOf="@id/ll_message"
+        app:layout_constraintStart_toStartOf="@id/ll_message"
+        app:layout_constraintTop_toBottomOf="@id/ll_message" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="15 phút"
+        android:textSize="@dimen/text_size_10_sp"
+        app:layout_constraintEnd_toEndOf="@id/ll_message"
+        app:layout_constraintTop_toTopOf="@id/ll_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

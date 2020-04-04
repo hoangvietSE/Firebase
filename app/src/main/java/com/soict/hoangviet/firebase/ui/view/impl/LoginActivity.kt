@@ -82,6 +82,6 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.removeListener()
+        mPresenter.onDetach()
     }
 }
