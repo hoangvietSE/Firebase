@@ -8,5 +8,11 @@ data class DataNotification(
 	val title: String? = null,
 
 	@field:SerializedName("body")
-	val body: String? = null
+	val body: String? = null,
+
+	@field:SerializedName("receiverId")
+	val receiverId: String? = null,
+
+	@field:SerializedName("receiverToken")
+	val receiverToken: String? = null
 )

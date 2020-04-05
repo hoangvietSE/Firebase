@@ -2,7 +2,11 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.database.*
+import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.builder.DatabaseFirebase
+import com.soict.hoangviet.firebase.data.network.request.DataNotification
+import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -62,7 +66,13 @@ class MessagePresenterImpl @Inject internal constructor(
     }
 
     private fun pushNotificationToReceiver(receiver: String, receiverToken: String) {
-        mInteractor?.pushNotificationToReceiver(receiver, receiverToken)
+        mInteractor?.pushNotificationToReceiver(
+            MessageRequestBody(
+                DataNotification(
+                    title = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.fullname!!,
+                    body = BaseApplication.instance.getString(R.string.message_push_notification_title),
+                    receiverId = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id,
+                    receiverToken = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.deviceToken), receiverToken))
             ?.subscribe({
             }, {
                 handleThrowable(throwable = it)

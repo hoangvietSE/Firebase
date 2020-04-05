@@ -70,8 +70,8 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
     private fun sendNotification(dataNotification: DataNotification) {
         val intent = Intent(this, MessageActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            putExtra(ProfileFragment.EXTRA_TITLE, notificationResponse.title)
-//            putExtra(ProfileFragment.EXTRA_CONTENT, notificationResponse.content)
+            putExtra(MessageActivity.EXTRA_USER_ID, dataNotification.receiverId)
+            putExtra(MessageActivity.TOKEN_DEVICE_ID, dataNotification.receiverToken)
         }
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -87,6 +87,7 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
             .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             .setLargeIcon(bitmap)
             .setContentTitle(dataNotification.title)
+            .setContentText(dataNotification.body)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
