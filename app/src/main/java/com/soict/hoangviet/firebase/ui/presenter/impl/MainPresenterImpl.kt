@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
+import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MainInteractor
@@ -17,10 +18,12 @@ class MainPresenterImpl @Inject internal constructor(
         mAppSharePreference = sharePreference
     ), MainPresenter {
     override fun setStatus(status: Int) {
-        val ref = datebaseRef.getReference("Users")
+        val pairStatus = DatabaseFirebase.Builder()
+            .reference("Users")
             .child(currentId!!)
-        val userRecored: MutableMap<String, Any> = mutableMapOf()
-        userRecored.put("status", status)
-        ref.updateChildren(userRecored)
+            .build()
+        val userRecorded: MutableMap<String, Any> = mutableMapOf()
+        userRecorded.put("status", status)
+        pairStatus.first.updateChildren(userRecorded)
     }
 }

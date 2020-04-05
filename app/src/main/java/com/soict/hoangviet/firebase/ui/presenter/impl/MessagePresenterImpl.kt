@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.database.*
+import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -20,8 +21,11 @@ class MessagePresenterImpl @Inject internal constructor(
     mAppSharePreference = sharePreference
 ), MessagePresenter {
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var seenMessageRef: DatabaseReference? = null
-    private var seenMessageListener: ValueEventListener? = null
+    private lateinit var pairMessageSender: Pair<DatabaseReference, ValueEventListener>
+    private lateinit var pairMessageReceiver: Pair<DatabaseReference, ValueEventListener>
+    private lateinit var pairShowAllMessage: Pair<DatabaseReference, ValueEventListener>
+    private lateinit var pairShowInfoUser: Pair<DatabaseReference, ValueEventListener>
+    private lateinit var pairSeenMessage: Pair<DatabaseReference, ValueEventListener>
     override fun sendMessage(receiver: String, msg: String, receiverToken: String) {
         val record: MutableMap<String, Any?> = mutableMapOf()
         record["sender"] = currentId
@@ -29,33 +33,31 @@ class MessagePresenterImpl @Inject internal constructor(
         record["message"] = msg
         record["seen"] = AppConstant.UNSEEN
         messageRef.child("Chats").push().setValue(record)
-        val refSender = datebaseRef.getReference("ChatsList").child(currentId!!).child(receiver)
-        val eventListenerSender = object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
+        pairMessageSender = DatabaseFirebase.Builder()
+            .reference("ChatsList")
+            .child(currentId!!)
+            .child(receiver)
+            .onDataChange {
+                if (!it.exists()) {
+                    pairMessageSender.first.child("id").setValue(receiver)
+                }
+                pushNotificationToReceiver(receiver, receiverToken)
             }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    refSender.child("id").setValue(receiver)
+            .onCancelled {
+            }
+            .build()
+        pairMessageReceiver = DatabaseFirebase.Builder()
+            .reference("ChatsList")
+            .child(receiver)
+            .child(currentId!!)
+            .onDataChange {
+                if (!it.exists()) {
+                    pairMessageReceiver.first.child("id").setValue(currentId!!)
                 }
             }
-
-        }
-        val refReceiver = datebaseRef.getReference("ChatsList").child(receiver).child(currentId!!)
-        val eventListenerReceiver = object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
             }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    refReceiver.child("id").setValue(currentId!!)
-                }
-            }
-
-        }
-        refSender.addListenerForSingleValueEvent(eventListenerSender)
-        refReceiver.addListenerForSingleValueEvent(eventListenerReceiver)
-        pushNotificationToReceiver(receiver, receiverToken)
+            .build()
         mView?.onSendSuccess()
     }
 
@@ -68,12 +70,11 @@ class MessagePresenterImpl @Inject internal constructor(
     }
 
     override fun readMessage(receiver: String) {
-        val listMessageReference: DatabaseReference =
-            FirebaseDatabase.getInstance().getReference("Chats")
-        val listMessageListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        pairShowAllMessage = DatabaseFirebase.Builder()
+            .reference("Chats")
+            .onDataChange {
                 mView?.clearMessage()
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                for (snapshot: DataSnapshot in it.children) {
                     // Get Post object and use the values to update the UI
                     val mChatsResponse: ChatsResponse =
                         snapshot.getValue(ChatsResponse::class.java)!!
@@ -92,44 +93,41 @@ class MessagePresenterImpl @Inject internal constructor(
                 }
                 mView?.onShowMessage()
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        listMessageReference.addValueEventListener(listMessageListener as ValueEventListener)
+            .build()
     }
 
     override fun showInfoUserMessage(receiver: String?) {
-        val ref = datebaseRef.getReference("Users").child(receiver!!)
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        pairShowInfoUser = DatabaseFirebase.Builder()
+            .reference("Users")
+            .child(receiver!!)
+            .onDataChange {
                 Log.d(MainActivity.TAG, "load:success")
                 // Get Post object and use the values to update the UI
-                val user = dataSnapshot.getValue(User::class.java)
+                val user = it.getValue(User::class.java)
                 user?.let { mView?.showInfoUserMessage(it) }
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "load:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        ref.addValueEventListener(userListener)
+            .build()
     }
 
     override fun seenMessage(receiver: String) {
-        seenMessageRef = FirebaseDatabase.getInstance().getReference("Chats")
-        seenMessageListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
+        pairSeenMessage = DatabaseFirebase.Builder()
+            .reference("Chats")
+            .onDataChange {
+                for (snapshot in it.children) {
                     // Get Post object and use the values to update the UI
                     val mChatsResponse: ChatsResponse =
                         snapshot.getValue(ChatsResponse::class.java)!!
@@ -144,18 +142,16 @@ class MessagePresenterImpl @Inject internal constructor(
                     // [END_EXCLUDE]
                 }
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        seenMessageRef?.addValueEventListener(seenMessageListener as ValueEventListener)
+            .build()
     }
 
     override fun removeEventListenerSeenMessage() {
-        seenMessageRef?.removeEventListener(seenMessageListener as ValueEventListener)
+        pairSeenMessage.first.removeEventListener(pairSeenMessage.second)
     }
 }

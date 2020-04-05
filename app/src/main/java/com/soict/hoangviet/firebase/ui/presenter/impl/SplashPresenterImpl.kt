@@ -18,7 +18,6 @@ class SplashPresenterImpl @Inject internal constructor(
 ), SplashPresenter {
     override fun saveCurrentUser() {
         getCurrentUser({
-            removeValueListener()
             mAppSharePreference?.put(AppConstant.SharePreference.USER, it)
             mView?.goToHomeScreen()
         }, {

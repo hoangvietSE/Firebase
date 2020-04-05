@@ -137,6 +137,7 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
 
     override fun onStop() {
         super.onStop()
+        mPresenter.onDetach()
         mPresenter.removeEventListenerSeenMessage()
 
     }

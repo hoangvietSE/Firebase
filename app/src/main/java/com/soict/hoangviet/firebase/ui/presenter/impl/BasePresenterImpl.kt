@@ -2,15 +2,18 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.ApiConstant
 import com.soict.hoangviet.firebase.data.network.ApiError
 import com.soict.hoangviet.firebase.data.network.api.ApiException
 import com.soict.hoangviet.firebase.data.network.api.NetworkConnectionInterceptor
-import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.BaseInterator
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
@@ -21,7 +24,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import retrofit2.HttpException
 import java.io.IOException
-import java.lang.IllegalStateException
 import java.net.SocketException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
@@ -34,10 +36,9 @@ internal constructor(
     protected var mView: V? = null
     protected var mCompositeDisposable: CompositeDisposable? = null
     protected val isAttached get() = mView != null
-    private lateinit var userReference: DatabaseReference
-    private var userListener: ValueEventListener? = null
     protected var datebaseRef: FirebaseDatabase = FirebaseDatabase.getInstance()
     protected var currentId: String? = null
+    private var pairUser: Pair<DatabaseReference, ValueEventListener>? = null
 
     override fun onAttach(view: V?) {
         currentId = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id
@@ -55,8 +56,8 @@ internal constructor(
         mView = null
         mInteractor = null
         mCompositeDisposable?.let { it.clear() }
-        userListener?.let {
-            userReference.removeEventListener(it)
+        pairUser?.let {
+            it.first.removeEventListener(it.second)
         }
     }
 
@@ -65,31 +66,25 @@ internal constructor(
     }
 
     protected fun getCurrentUser(success: (User) -> Unit, error: () -> Unit) {
-        userReference = FirebaseDatabase.getInstance().getReference("Users")
+        pairUser = DatabaseFirebase.Builder()
+            .reference("Users")
             .child(FirebaseAuth.getInstance().currentUser!!.uid)
-        userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            .onDataChange { dataSnapshot ->
                 Log.d(MainActivity.TAG, "load:success")
                 // Get Post object and use the values to update the UI
                 val user = dataSnapshot.getValue(User::class.java)
                 // [START_EXCLUDE]
-                user?.let { success.invoke(it) }
+                user?.let { user -> success.invoke(user) }
                 // [END_EXCLUDE]
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "load:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "load:onCancelled", it.toException())
                 error.invoke()
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        userReference.addValueEventListener(userListener as ValueEventListener)
-    }
-
-    protected fun removeValueListener() {
-        userReference.removeEventListener(userListener as ValueEventListener)
+            .build()
     }
 
     private fun <T> gsonFromJson(json: String?, classOfT: Class<T>): T {

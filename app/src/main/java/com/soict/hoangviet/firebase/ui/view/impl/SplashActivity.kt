@@ -91,4 +91,9 @@ class SplashActivity : BaseActivity(), SplashView {
 
     override fun onFragmentDetached(tag: String) {
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.onDetach()
+    }
 }

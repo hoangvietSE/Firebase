@@ -28,11 +28,11 @@ class MainNavigationAdapter(context: Context) : EndlessLoadingRecyclerViewAdapte
             if (data.selected) {
                 tv_item_nav.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
                 imv_item_nav.setImageResource(data.iconSelected)
-                tv_item_nav.setBackgroundResource(R.drawable.bg_item_nav_selected)
+                itemView.setBackgroundResource(R.drawable.bg_item_nav_selected)
             } else {
                 tv_item_nav.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
                 imv_item_nav.setImageResource(data.iconDefault)
-                tv_item_nav.setBackgroundResource(R.drawable.bg_item_nav_unselected)
+                itemView.setBackgroundResource(R.drawable.bg_item_nav_unselected)
             }
 
         }
