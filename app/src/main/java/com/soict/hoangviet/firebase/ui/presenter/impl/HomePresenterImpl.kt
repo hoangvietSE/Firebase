@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsListResponse
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
@@ -25,39 +26,38 @@ class HomePresenterImpl @Inject internal constructor(
     private var mListUserChatId: ArrayList<ChatsListResponse> = arrayListOf()
     private var mListUserChat: ArrayList<HomeResponse> = arrayListOf()
     override fun getAllChatUsers() {
-        val ref = datebaseRef.getReference("ChatsList").child(currentId!!)
-        val chatsListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        DatabaseFirebase.Builder()
+            .reference("ChatsList")
+            .child(currentId!!)
+            .onDataChange {
                 mListUserChatId.clear()
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                for (snapshot: DataSnapshot in it.children) {
                     val mChatsListResponse: ChatsListResponse =
                         snapshot.getValue(ChatsListResponse::class.java)!!
                     mListUserChatId.add(mChatsListResponse)
                 }
                 fetchAll()
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        ref.addValueEventListener(chatsListener)
+            .build()
     }
 
     private fun fetchAll() {
-        val ref = datebaseRef.getReference("Users")
-        val userChatsListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        DatabaseFirebase.Builder()
+            .reference("Users")
+            .onDataChange {
                 mListUserChat.clear()
-                for (snapshot in dataSnapshot.children) {
+                for (snapshot in it.children) {
                     // Get Post object and use the values to update the UI
                     val user: User = snapshot.getValue(User::class.java)!!
                     // [START_EXCLUDE]
                     for (mChatsList in mListUserChatId) {
-                        if (user.id.equals(mChatsList.id)) {
+                        if (user.id == mChatsList.id) {
                             val homeResponse = HomeResponse(user)
                             mListUserChat.add(homeResponse)
                             fetchLastMessage(
@@ -75,15 +75,13 @@ class HomePresenterImpl @Inject internal constructor(
                 }
                 mView?.showAllChatUsers(mListUserChat)
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        ref.addValueEventListener(userChatsListener)
+            .build()
     }
 
     private fun fetchLastMessage(
@@ -91,20 +89,15 @@ class HomePresenterImpl @Inject internal constructor(
         position: Int,
         listener: LastMessageListener
     ) {
-        val ref = datebaseRef.getReference("Chats")
-        val lastMessageEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
+        DatabaseFirebase.Builder()
+            .reference("Chats")
+            .onDataChange {
+                for (snapshot in it.children) {
                     // Get Post object and use the values to update the UI
-                    val mChatResponse: ChatsResponse =
-                        snapshot.getValue(ChatsResponse::class.java)!!
+                    val mChatResponse: ChatsResponse = snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
-                    if ((mChatResponse.sender.equals(currentId) && mChatResponse.receiver.equals(
-                            homeResponse.user?.id
-                        ))
-                        || (mChatResponse.sender.equals(homeResponse.user?.id) && mChatResponse.receiver.equals(
-                            currentId
-                        ))
+                    if ((mChatResponse.sender == currentId && mChatResponse.receiver == homeResponse.user?.id)
+                        || (mChatResponse.sender == homeResponse.user?.id && mChatResponse.receiver == currentId)
                     ) {
                         homeResponse.lastMessage = mChatResponse.message
                         listener.onLastMessage(position)
@@ -112,15 +105,13 @@ class HomePresenterImpl @Inject internal constructor(
                     // [END_EXCLUDE]
                 }
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
+            .onCancelled {
                 // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.w(MainActivity.TAG, "loadPost:onCancelled", it.toException())
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
-        }
-        ref.addValueEventListener(lastMessageEventListener)
+            .build()
     }
 
     interface LastMessageListener {

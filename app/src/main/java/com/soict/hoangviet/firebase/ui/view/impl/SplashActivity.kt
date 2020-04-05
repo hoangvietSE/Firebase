@@ -51,6 +51,7 @@ class SplashActivity : BaseActivity(), SplashView {
     override fun goToHomeScreen() {
         startActivity(Intent(this, MainActivity::class.java).apply {
         })
+        mPresenter.onDetach()
         finish()
     }
 

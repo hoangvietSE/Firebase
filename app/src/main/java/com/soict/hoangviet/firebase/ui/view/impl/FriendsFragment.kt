@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.UserAdapter
+import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.view.FriendsView
@@ -23,11 +24,7 @@ class FriendsFragment : BaseFragment(), FriendsView,
 
     @Inject
     lateinit var mPresenter: FriendsPresenter
-
     private var mUserAdpter: UserAdapter? = null
-    private var mListUser: ArrayList<User> = arrayListOf()
-    private lateinit var userReference: DatabaseReference
-    private var userListener: ValueEventListener? = null
 
     companion object {
         fun getInstance(): FriendsFragment {
@@ -38,40 +35,7 @@ class FriendsFragment : BaseFragment(), FriendsView,
         }
     }
 
-    override fun initView() {
-        mPresenter.onAttach(this)
-        getCurrentUser()
-    }
-
-    private fun getCurrentUser() {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        userReference = FirebaseDatabase.getInstance().getReference("Users")
-        userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                mListUser.clear()
-                for (snapshot in dataSnapshot.children) {
-                    // Get Post object and use the values to update the UI
-                    val user = snapshot.getValue(User::class.java)
-                    // [START_EXCLUDE]
-                    if (!user?.id?.equals(currentUser?.uid)!!) {
-                        mListUser.add(user)
-                    }
-                    // [END_EXCLUDE]
-                }
-                initAdapter()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(MainActivity.TAG, "loadPost:onCancelled", databaseError.toException())
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
-            }
-        }
-        userReference.addValueEventListener(userListener as ValueEventListener)
-    }
-
-    private fun initAdapter() {
+    override fun initAdapter(mListUser: ArrayList<User>) {
         context?.let {
             mUserAdpter = UserAdapter(it)
             recycler_view_user.setAdapter(mUserAdpter!!)
@@ -85,6 +49,15 @@ class FriendsFragment : BaseFragment(), FriendsView,
         }
     }
 
+    override fun initView() {
+        mPresenter.onAttach(this)
+        getAllUser()
+    }
+
+    private fun getAllUser() {
+        mPresenter.getAllUser()
+    }
+
     override fun initListener() {
     }
 
@@ -94,5 +67,10 @@ class FriendsFragment : BaseFragment(), FriendsView,
             putExtra(MessageActivity.EXTRA_USER_ID, user?.id)
             putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.deviceToken)
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.onDetach()
     }
 }
