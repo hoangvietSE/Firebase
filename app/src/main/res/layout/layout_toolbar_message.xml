@@ -13,6 +13,7 @@
         android:background="@color/md_white_1000">
 
         <ImageView
+            android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             android:id="@+id/imv_left"
             android:layout_width="wrap_content"
@@ -22,7 +23,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             tools:src="@drawable/ic_back_white" />
 
         <com.soict.hoangviet.firebase.custom.CircleImageView
