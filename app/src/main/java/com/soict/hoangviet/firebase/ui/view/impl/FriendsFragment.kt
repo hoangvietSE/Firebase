@@ -15,6 +15,8 @@ import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.view.FriendsView
 import kotlinx.android.synthetic.main.fragment_friends.*
+import kotlinx.android.synthetic.main.fragment_friends.recycler_view_user
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class FriendsFragment : BaseFragment(), FriendsView,
@@ -46,6 +48,7 @@ class FriendsFragment : BaseFragment(), FriendsView,
             recycler_view_user.setOnItemClickListener(this)
             mUserAdpter?.addModels(mListUser, false)
             recycler_view_user.setLinearLayoutManager()
+            recycler_view_user.disableRefreshing()
         }
     }
 

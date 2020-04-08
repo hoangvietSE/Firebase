@@ -21,9 +21,9 @@
                 android:layout_height="wrap_content"
                 app:btm_background="@color/md_white_1000"
                 app:btm_icon_left="@drawable/ic_back_white"
-                app:btm_icon_right_one="@drawable/ic_info_primary"
-                app:btm_icon_right_three="@drawable/ic_call_primary"
-                app:btm_icon_right_two="@drawable/ic_video_primary" />
+                app:btm_icon_right_one="@drawable/ic_info"
+                app:btm_icon_right_three="@drawable/ic_phone"
+                app:btm_icon_right_two="@drawable/ic_video_cam" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -66,27 +66,19 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="@dimen/margin_32_dp"
-                        android:layout_height="@dimen/margin_32_dp"
-                        android:padding="@dimen/content_padding_4_dp"
+                        style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_sticker_primary" />
 
                     <ImageView
-                        android:layout_width="@dimen/margin_32_dp"
-                        android:layout_height="@dimen/margin_32_dp"
-                        android:padding="@dimen/content_padding_4_dp"
+                        style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_camera_primary" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/margin_32_dp"
-                        android:padding="@dimen/content_padding_4_dp"
+                        style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_album_primary" />
 
                     <ImageView
-                        android:layout_width="@dimen/margin_32_dp"
-                        android:layout_height="@dimen/margin_32_dp"
-                        android:padding="@dimen/content_padding_4_dp"
+                        style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_voice_primary" />
                 </LinearLayout>
 
@@ -125,9 +117,7 @@
 
             <ImageView
                 android:id="@+id/btn_send"
-                android:layout_width="@dimen/margin_32_dp"
-                android:layout_height="@dimen/margin_32_dp"
-                android:padding="@dimen/content_padding_4_dp"
+                style="@style/ButtonBottomMessage"
                 android:src="@drawable/ic_send_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

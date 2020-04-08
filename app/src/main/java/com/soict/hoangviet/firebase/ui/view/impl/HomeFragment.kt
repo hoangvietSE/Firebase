@@ -56,6 +56,7 @@ class HomeFragment : BaseFragment(), HomeView, RecyclerViewAdapter.OnItemClickLi
             recycler_view_user.setOnItemClickListener(this)
             mHomeUserChatsAdapter?.addModels(mListUserChat, false)
             recycler_view_user.setLinearLayoutManager()
+            recycler_view_user.disableRefreshing()
         }
     }
 
