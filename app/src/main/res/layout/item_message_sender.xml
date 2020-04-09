@@ -34,7 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@drawable/bg_message_sender"
-            android:padding="@dimen/content_padding_8_dp"
+            android:paddingStart="@dimen/content_padding_16_dp"
+            android:paddingTop="@dimen/content_padding_10_dp"
+            android:paddingEnd="@dimen/content_padding_10_dp"
+            android:paddingBottom="@dimen/content_padding_10_dp"
             android:textColor="@color/md_white_1000"
             tools:text="Hoàng Tiến Việt. Hanoi University of Science and Technology School of Information and Communication" />
     </RelativeLayout>

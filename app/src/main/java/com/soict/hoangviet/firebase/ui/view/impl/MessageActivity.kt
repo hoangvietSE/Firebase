@@ -3,6 +3,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
+import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import javax.inject.Inject
 
+
 class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemClickListener {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
@@ -28,7 +30,6 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
 
     @Inject
     lateinit var mPresenter: MessagePresenter
-
     private var mMessageAdapter: MessageAdapter? = null
     private val receiver: String by lazy {
         intent.getStringExtra(EXTRA_USER_ID)
@@ -70,6 +71,9 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         }
         toolbar.imvLeft?.setOnClickListener {
             finish()
+        }
+        btn_emoj.setOnClickListener {
+
         }
     }
 
