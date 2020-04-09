@@ -143,5 +143,5 @@ dependencies {
     //ViewPager 2
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha04'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
 }

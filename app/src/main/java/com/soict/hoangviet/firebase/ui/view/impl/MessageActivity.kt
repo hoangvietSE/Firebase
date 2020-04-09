@@ -1,12 +1,18 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
+import com.soict.hoangviet.baseproject.extension.loadImage
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
+import com.soict.hoangviet.firebase.data.local.Emoji
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.gone
@@ -31,6 +37,8 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
     @Inject
     lateinit var mPresenter: MessagePresenter
     private var mMessageAdapter: MessageAdapter? = null
+    private var mEmojiParentAdapter: EmojiParentAdapter? = null
+    private lateinit var mListEmoji: ArrayList<Emoji>
     private val receiver: String by lazy {
         intent.getStringExtra(EXTRA_USER_ID)
     }
@@ -44,6 +52,27 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         getDataIntent()
         readMessage()
         seenMessage()
+        initEmojiAdapter()
+    }
+
+    private fun initEmojiAdapter() {
+        mListEmoji = arrayListOf()
+        assets.list("emoji").forEach {
+            mListEmoji.add(
+                Emoji(
+                    it,
+                    ArrayList(assets.list("emoji/" + it).asList())
+                )
+            )
+        }
+        mEmojiParentAdapter = EmojiParentAdapter(this)
+        mEmojiParentAdapter?.addModels(mListEmoji, false)
+        vp_emoji.adapter = mEmojiParentAdapter
+        vp_emoji.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        // Set the icon and text for each tab
+        TabLayoutMediator(tl_emoji, vp_emoji) { tab, position ->
+
+        }.attach()
     }
 
     private fun seenMessage() {
