@@ -1,13 +1,12 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
-import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
-import com.soict.hoangviet.baseproject.extension.loadImage
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
@@ -29,6 +28,9 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
         const val TOKEN_DEVICE_ID = "token_device_id"
+        const val FACE_EMOJI = 0
+        const val FISH_EMOJI = 1
+        const val KITTY_EMOJI = 2
     }
 
     override val mLayoutRes: Int
@@ -71,8 +73,25 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         vp_emoji.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         // Set the icon and text for each tab
         TabLayoutMediator(tl_emoji, vp_emoji) { tab, position ->
-
+            when (position) {
+                FACE_EMOJI -> {
+                    setIconTabLayout(tab, "emoji/face_emoji/angel.png")
+                }
+                FISH_EMOJI -> {
+                    setIconTabLayout(tab, "emoji/fish_emoji/crab.png")
+                }
+                KITTY_EMOJI -> {
+                    setIconTabLayout(tab, "emoji/kitty_emoji/idea.png")
+                }
+            }
         }.attach()
+    }
+
+    fun setIconTabLayout(tab: TabLayout.Tab, stringFile: String) {
+        tab.icon = Drawable.createFromStream(
+            assets.open(stringFile),
+            null
+        )
     }
 
     private fun seenMessage() {
