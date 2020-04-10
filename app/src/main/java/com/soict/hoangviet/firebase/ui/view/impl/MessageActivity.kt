@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.item_message_sender.view.*
 import javax.inject.Inject
 
 
-class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemClickListener {
+class MessageActivity : BaseActivity(), MessageView {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
         const val TOKEN_DEVICE_ID = "token_device_id"
@@ -70,6 +71,9 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
             )
         }
         mEmojiParentAdapter = EmojiParentAdapter(this)
+        mEmojiParentAdapter?.onItemEmojiClick = { root, nameIcon ->
+            mPresenter.sendMessage(receiver, "emoji/${root}/${nameIcon}", receiverToken, AppConstant.TypeMessage.EMOJI)
+        }
         mEmojiParentAdapter?.addModels(mListEmoji, false)
         vp_emoji.adapter = mEmojiParentAdapter
         vp_emoji.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -141,8 +145,16 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER)
     }
 
+    override fun addSenderEmoji(mChatsResponse: ChatsResponse) {
+        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_EMOJI)
+    }
+
     override fun addReceiver(mChatsResponse: ChatsResponse) {
         mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER)
+    }
+
+    override fun addReceiverEmoji(mChatsResponse: ChatsResponse) {
+        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI)
     }
 
     override fun clearMessage() {
@@ -168,7 +180,13 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         }
         recycler_view_message.setLoadingMoreListener {
         }
-        recycler_view_message.setOnItemClickListener(this)
+        recycler_view_message.setOnItemClickListener { parent, viewType, view, position ->
+            if (view.tv_seen.visibility == View.VISIBLE) {
+                view.tv_seen.gone()
+            } else if (view.tv_seen.visibility == View.GONE) {
+                view.tv_seen.visible()
+            }
+        }
         recycler_view_message.setLinearLayoutManagerMessage()
         recycler_view_message.disableRefreshing()
     }
@@ -191,18 +209,14 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
     override fun onFragmentDetached(tag: String) {
     }
 
-    override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
-        if (view.tv_seen.visibility == View.VISIBLE) {
-            view.tv_seen.gone()
-        } else if (view.tv_seen.visibility == View.GONE) {
-            view.tv_seen.visible()
-        }
-    }
-
     override fun onStop() {
         super.onStop()
         mPresenter.onDetach()
         mPresenter.removeEventListenerSeenMessage()
+    }
 
+    override fun onBackPressed() {
+        if (ll_emoji.isShown) ll_emoji.gone()
+        else super.onBackPressed()
     }
 }

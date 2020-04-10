@@ -1,18 +1,17 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.HomeUserChatsAdapter
-import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.data.network.response.HomeResponse
+import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.view.HomeView
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment(), HomeView, RecyclerViewAdapter.OnItemClickListener {
+class HomeFragment : BaseFragment(), HomeView {
     override val mLayoutRes: Int
         get() = R.layout.fragment_home
 
@@ -53,7 +52,17 @@ class HomeFragment : BaseFragment(), HomeView, RecyclerViewAdapter.OnItemClickLi
             recycler_view_user.setOnRefreshListener {
 
             }
-            recycler_view_user.setOnItemClickListener(this)
+            recycler_view_user.setOnItemClickListener { parent, viewType, view, position ->
+                val user = mHomeUserChatsAdapter?.getItemPosition(position!!, HomeResponse::class.java)
+                startActivity(
+                    Intent(
+                        parentActivity?.let { it },
+                        MessageActivity::class.java
+                    ).apply {
+                        putExtra(MessageActivity.EXTRA_USER_ID, user?.user?.id)
+                        putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.user?.deviceToken)
+                    })
+            }
             mHomeUserChatsAdapter?.addModels(mListUserChat, false)
             recycler_view_user.setLinearLayoutManager()
             recycler_view_user.disableRefreshing()
@@ -62,9 +71,5 @@ class HomeFragment : BaseFragment(), HomeView, RecyclerViewAdapter.OnItemClickLi
 
     override fun notifyChange(position: Int) {
         mHomeUserChatsAdapter?.notifyItemChanged(position)
-    }
-
-    override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
-
     }
 }

@@ -2,6 +2,8 @@ package com.soict.hoangviet.firebase.adapter
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +51,7 @@ class BaseRecyclerView(context: Context?, attrs: AttributeSet?) :
         recycler_view_actual.layoutManager = mLayoutManager
     }
 
-    fun setOnItemClickListener(listener: RecyclerViewAdapter.OnItemClickListener) {
+    fun setOnItemClickListener(listener: ((parent: ViewGroup, viewType: Int, view: View, position: Int?) -> Unit)?) {
         mBaseAdapter?.let {
             it.setOnItemClickListener(listener)
         }

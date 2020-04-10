@@ -18,4 +18,10 @@ object AppConstant {
         const val CHATS_LIST = "ChatsList"
         const val USERS = "Users"
     }
+
+    object TypeMessage {
+        const val TEXT = 0
+        const val EMOJI = 1
+        const val IMAGE = 2
+    }
 }

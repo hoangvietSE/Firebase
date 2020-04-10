@@ -21,7 +21,7 @@ abstract class RecyclerViewAdapter(var context: Context) :
     protected var mListWrapperModelBackup: MutableList<WrapperModel> = mutableListOf()
     protected var mOnItemPressListener: OnItemPressListener? = null
     protected var mOnItemCancelListener: OnItemCancelListener? = null
-    protected var mOnItemClickListener: OnItemClickListener? = null
+    protected var mOnItemClickListener: ((parent: ViewGroup, viewType: Int, view: View, position: Int?) -> Unit)? = null
 
     protected fun backUp() {
         mListWrapperModelBackup.clear()
@@ -51,7 +51,9 @@ abstract class RecyclerViewAdapter(var context: Context) :
         mOnItemCancelListener = listener
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener) {
+    fun setOnItemClickListener(
+        listener: ((parent: ViewGroup, viewType: Int, view: View, position: Int?) -> Unit)?
+    ) {
         mOnItemClickListener = listener
     }
 
@@ -173,7 +175,7 @@ abstract class RecyclerViewAdapter(var context: Context) :
         view: View,
         position: Int?
     ) {
-        mOnItemClickListener?.onItemClick(parent, viewType, view, position)
+        mOnItemClickListener?.invoke(parent, viewType, view, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -276,15 +278,6 @@ abstract class RecyclerViewAdapter(var context: Context) :
 
     interface OnItemCancelListener {
         fun onItemCancel(view: View, position: Int?)
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(
-            parent: ViewGroup,
-            viewType: Int,
-            view: View,
-            position: Int?
-        )
     }
 
     interface OnItemSelectedListener {

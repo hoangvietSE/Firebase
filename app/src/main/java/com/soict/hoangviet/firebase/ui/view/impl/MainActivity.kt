@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainView,
-    RecyclerViewAdapter.OnItemClickListener,
     RecyclerViewAdapter.OnItemPressListener, RecyclerViewAdapter.OnItemCancelListener {
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
@@ -158,7 +157,17 @@ class MainActivity : BaseActivity(), MainView,
         mMainNavigationAdapter = MainNavigationAdapter(this)
         nav_list_item.setAdapter(mMainNavigationAdapter)
         mMainNavigationAdapter.setOnItemPressListener(this)
-        mMainNavigationAdapter.setOnItemClickListener(this)
+        mMainNavigationAdapter.setOnItemClickListener { parent, viewType, view, position ->
+            val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
+            handleEventTouch(view, data, false)
+            dataSetChangeAdapter(data, position)
+            closeDrawer()
+            when (data.code) {
+                ITEM_LOGOUT -> {
+                    logoutApplication()
+                }
+            }
+        }
         mMainNavigationAdapter.setOnItemCancelListener(this)
         nav_list_item.addModels(listItemNav, false)
         nav_list_item.setLinearLayoutManager()
@@ -189,18 +198,6 @@ class MainActivity : BaseActivity(), MainView,
     override fun onItemCancel(view: View, position: Int?) {
         val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
         handleEventTouch(view, data, false)
-    }
-
-    override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
-        val data = mMainNavigationAdapter.getItemPosition(position!!, ItemMenuNav::class.java)
-        handleEventTouch(view, data, false)
-        dataSetChangeAdapter(data, position)
-        closeDrawer()
-        when (data.code) {
-            ITEM_LOGOUT -> {
-                logoutApplication()
-            }
-        }
     }
 
     private fun logoutApplication() {

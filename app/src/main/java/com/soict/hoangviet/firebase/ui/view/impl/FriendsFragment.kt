@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.fragment_friends.recycler_view_user
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-class FriendsFragment : BaseFragment(), FriendsView,
-        RecyclerViewAdapter.OnItemClickListener {
+class FriendsFragment : BaseFragment(), FriendsView {
     override val mLayoutRes: Int
         get() = R.layout.fragment_friends
 
@@ -45,7 +44,17 @@ class FriendsFragment : BaseFragment(), FriendsView,
             }
             recycler_view_user.setLoadingMoreListener {
             }
-            recycler_view_user.setOnItemClickListener(this)
+            recycler_view_user.setOnItemClickListener { parent, viewType, view, position ->
+                val user = mUserAdpter?.getItemPosition(position!!, User::class.java)
+                startActivity(
+                    Intent(
+                        parentActivity?.let { it },
+                        MessageActivity::class.java
+                    ).apply {
+                        putExtra(MessageActivity.EXTRA_USER_ID, user?.id)
+                        putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.deviceToken)
+                    })
+            }
             mUserAdpter?.addModels(mListUser, false)
             recycler_view_user.setLinearLayoutManager()
             recycler_view_user.disableRefreshing()
@@ -62,14 +71,6 @@ class FriendsFragment : BaseFragment(), FriendsView,
     }
 
     override fun initListener() {
-    }
-
-    override fun onItemClick(parent: ViewGroup, viewType: Int, view: View, position: Int?) {
-        val user = mUserAdpter?.getItemPosition(position!!, User::class.java)
-        startActivity(Intent(parentActivity?.let { it }, MessageActivity::class.java).apply {
-            putExtra(MessageActivity.EXTRA_USER_ID, user?.id)
-            putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.deviceToken)
-        })
     }
 
     override fun onDestroy() {

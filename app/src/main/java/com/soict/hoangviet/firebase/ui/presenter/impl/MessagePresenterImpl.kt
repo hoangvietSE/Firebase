@@ -30,9 +30,10 @@ class MessagePresenterImpl @Inject internal constructor(
     private lateinit var pairShowAllMessage: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairShowInfoUser: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairSeenMessage: Pair<DatabaseReference, ValueEventListener>
-    override fun sendMessage(receiver: String, msg: String, receiverToken: String) {
+    override fun sendMessage(receiver: String, msg: String, receiverToken: String, type: Int) {
         val record: MutableMap<String, Any?> = mutableMapOf()
         record["sender"] = currentId
+        record["type"] = type
         record["receiver"] = receiver
         record["message"] = msg
         record["seen"] = AppConstant.UNSEND
@@ -132,12 +133,21 @@ class MessagePresenterImpl @Inject internal constructor(
                     if ((mChatsResponse.sender == currentId
                                 && mChatsResponse.receiver == receiver)
                     ) {
-                        mView?.addSender(mChatsResponse)
+                        when (mChatsResponse.type) {
+                            AppConstant.TypeMessage.TEXT -> mView?.addSender(mChatsResponse)
+                            AppConstant.TypeMessage.EMOJI -> mView?.addSenderEmoji(mChatsResponse)
+                            AppConstant.TypeMessage.IMAGE -> null
+                        }
+
                     }
                     if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
-                        mView?.addReceiver(mChatsResponse)
+                        when (mChatsResponse.type) {
+                            AppConstant.TypeMessage.TEXT -> mView?.addReceiver(mChatsResponse)
+                            AppConstant.TypeMessage.EMOJI -> mView?.addReceiverEmoji(mChatsResponse)
+                            AppConstant.TypeMessage.IMAGE -> null
+                        }
                     }
                     // [END_EXCLUDE]
                 }
