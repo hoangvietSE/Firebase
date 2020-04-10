@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.local.Emoji
+import com.soict.hoangviet.firebase.module.GlideApp
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_emoji_child.*
 

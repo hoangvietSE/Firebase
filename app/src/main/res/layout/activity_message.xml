@@ -5,6 +5,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -44,9 +45,8 @@
         android:id="@+id/card_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/vp_emoji"
         app:cardElevation="@dimen/radius_8_dp"
-        app:layout_constraintBottom_toTopOf="@id/vp_emoji">
+        app:layout_constraintBottom_toTopOf="@id/ll_emoji">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/csl_message"
@@ -132,21 +132,26 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_emoji"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toTopOf="@id/tl_emoji"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.tabs.TabLayout
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorGravity="top"
-        app:tabMode="scrollable"
-        android:id="@+id/tl_emoji"
+    <LinearLayout
+        android:id="@+id/ll_emoji"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorGravity="top"
+            app:tabMode="scrollable" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

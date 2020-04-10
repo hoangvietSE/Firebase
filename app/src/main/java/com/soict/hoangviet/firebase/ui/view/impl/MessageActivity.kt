@@ -1,12 +1,14 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.graphics.drawable.Drawable
+import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
@@ -120,8 +122,18 @@ class MessageActivity : BaseActivity(), MessageView, RecyclerViewAdapter.OnItemC
         toolbar.imvLeft?.setOnClickListener {
             finish()
         }
+        edt_message.setOnTouchListener { v, event ->
+            if (ll_emoji.isShown) ll_emoji.gone()
+            false
+        }
         btn_emoj.setOnClickListener {
-
+            hideSoftKeyboard()
+            Handler().postDelayed({
+                when {
+                    ll_emoji.isShown -> ll_emoji.gone()
+                    else -> ll_emoji.visible()
+                }
+            }, 300)
         }
     }
 

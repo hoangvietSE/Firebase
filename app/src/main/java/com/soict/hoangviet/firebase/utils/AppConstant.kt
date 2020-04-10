@@ -4,6 +4,7 @@ object AppConstant {
     const val PREF_NAME = "app_sharePreference"
     const val OFFLINE = 0
     const val ONLINE = 1
+    const val UNSEND = -1
     const val UNSEEN = 0
     const val SEEN = 1
 

@@ -4,5 +4,5 @@ class ChatsResponse {
     val sender: String = ""
     val receiver: String = ""
     val message: String = ""
-    val seen: Int = 0
+    val seen: Int? = null
 }

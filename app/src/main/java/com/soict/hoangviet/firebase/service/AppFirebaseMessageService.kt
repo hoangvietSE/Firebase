@@ -79,11 +79,11 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
         )
         val bitmap = Glide.with(this).asBitmap().load(R.mipmap.ic_launcher)
             .submit(100, 100). // Width and height
-                get();
+                get()
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.icon_app_notification)
+            .setSmallIcon(R.drawable.ic_notification_small)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             .setLargeIcon(bitmap)
             .setContentTitle(dataNotification.title)

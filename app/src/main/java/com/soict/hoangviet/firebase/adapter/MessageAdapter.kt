@@ -59,9 +59,11 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     override fun bindNormalViewHolder(holder: NormalViewHolder, position: Int) {
     }
 
-    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int) = SenderViewHolder(parent.inflate(R.layout.item_message_sender))
+    private fun initSenderMessageViewHolder(parent: ViewGroup, viewType: Int) =
+        SenderViewHolder(parent.inflate(R.layout.item_message_sender))
 
-    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int) = ReceiverViewHolder(parent.inflate(R.layout.item_message_receiver))
+    private fun initReceiverMessageViewHolder(parent: ViewGroup, viewType: Int) =
+        ReceiverViewHolder(parent.inflate(R.layout.item_message_receiver))
 
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
@@ -73,15 +75,21 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
-    class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!), LayoutContainer {
+    class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!),
+        LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
             tv_message_sender.text = data.message
-            tv_seen.text = if (data.seen == AppConstant.UNSEEN) "Đã gửi" else "Đã xem"
+            tv_seen.text = when (data.seen) {
+                AppConstant.UNSEND -> "Đang gửi"
+                AppConstant.UNSEEN -> "Đã gửi"
+                else -> "Đã xem"
+            }
         }
     }
 
-    class ReceiverViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!), LayoutContainer {
+    class ReceiverViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!),
+        LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
             tv_message_receiver.text = data.message

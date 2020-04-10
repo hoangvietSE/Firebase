@@ -2,20 +2,20 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.util.Log
 import com.google.firebase.database.*
-import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.request.DataNotification
 import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
-import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import com.soict.hoangviet.firebase.utils.AppConstant
 import javax.inject.Inject
+
 
 class MessagePresenterImpl @Inject internal constructor(
     messageInteractor: MessageInteractor,
@@ -35,8 +35,10 @@ class MessagePresenterImpl @Inject internal constructor(
         record["sender"] = currentId
         record["receiver"] = receiver
         record["message"] = msg
-        record["seen"] = AppConstant.UNSEEN
-        messageRef.child("Chats").push().setValue(record)
+        record["seen"] = AppConstant.UNSEND
+        //mChatId: Get random id for chat
+        val mChatId = messageRef.child("Chats").push().key
+        messageRef.child("Chats").child(mChatId!!).setValue(record)
         pairMessageSender = DatabaseFirebase.Builder()
             .reference("ChatsList")
             .child(currentId!!)
@@ -45,7 +47,7 @@ class MessagePresenterImpl @Inject internal constructor(
                 if (!it.exists()) {
                     pairMessageSender.first.child("id").setValue(receiver)
                 }
-                pushNotificationToReceiver(receiver, receiverToken)
+                detectNetwork(mChatId, receiver, receiverToken)
             }
             .onCancelled {
             }
@@ -65,14 +67,52 @@ class MessagePresenterImpl @Inject internal constructor(
         mView?.onSendSuccess()
     }
 
+    //Detecting Connection State
+    private fun detectNetwork(
+        mChatId: String,
+        receiver: String,
+        receiverToken: String
+    ) {
+        var processDone = false
+        val pairDetectNetwork = DatabaseFirebase.Builder()
+            .reference(".info/connected")
+            .onDataChange {
+                val connected = it.getValue(Boolean::class.java) ?: false
+                if (connected && !processDone) {
+                    Log.d("myLog", "connected")
+                    messageRef.child("Chats").child(mChatId)
+                        .updateChildren(mapOf("seen" to AppConstant.UNSEEN))
+                    pushNotificationToReceiver(receiver, receiverToken)
+                    processDone = true
+                } else {
+                    Log.d("myLog", "disconnected")
+                }
+            }
+            .onCancelled {
+            }
+            .build()
+    }
+
     private fun pushNotificationToReceiver(receiver: String, receiverToken: String) {
         mInteractor?.pushNotificationToReceiver(
             MessageRequestBody(
                 DataNotification(
-                    title = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.fullname!!,
-                    body = BaseApplication.instance.getString(R.string.message_push_notification_title),
-                    receiverId = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.id,
-                    receiverToken = mAppSharePreference?.get(AppConstant.SharePreference.USER, User::class.java)?.deviceToken), receiverToken))
+                    title = mAppSharePreference?.get(
+                        AppConstant.SharePreference.USER,
+                        User::class.java
+                    )?.fullname!!,
+                    body = "Bạn nhận được tin nhắn mới",
+                    receiverId = mAppSharePreference?.get(
+                        AppConstant.SharePreference.USER,
+                        User::class.java
+                    )?.id,
+                    receiverToken = mAppSharePreference?.get(
+                        AppConstant.SharePreference.USER,
+                        User::class.java
+                    )?.deviceToken
+                ), receiverToken
+            )
+        )
             ?.subscribe({
             }, {
                 handleThrowable(throwable = it)
