@@ -1,19 +1,18 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
-import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
-import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
+import com.soict.hoangviet.firebase.common.BasePhotoActivity
 import com.soict.hoangviet.firebase.data.local.Emoji
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -23,11 +22,10 @@ import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
-import kotlinx.android.synthetic.main.item_message_sender.view.*
 import javax.inject.Inject
 
 
-class MessageActivity : BaseActivity(), MessageView {
+class MessageActivity : BasePhotoActivity(), MessageView {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
         const val TOKEN_DEVICE_ID = "token_device_id"
@@ -72,7 +70,12 @@ class MessageActivity : BaseActivity(), MessageView {
         }
         mEmojiParentAdapter = EmojiParentAdapter(this)
         mEmojiParentAdapter?.onItemEmojiClick = { root, nameIcon ->
-            mPresenter.sendMessage(receiver, "emoji/${root}/${nameIcon}", receiverToken, AppConstant.TypeMessage.EMOJI)
+            mPresenter.sendMessage(
+                receiver,
+                "emoji/${root}/${nameIcon}",
+                receiverToken,
+                AppConstant.TypeMessage.EMOJI
+            )
         }
         mEmojiParentAdapter?.addModels(mListEmoji, false)
         vp_emoji.adapter = mEmojiParentAdapter
@@ -139,22 +142,17 @@ class MessageActivity : BaseActivity(), MessageView {
                 }
             }, 300)
         }
+        btn_send_image_capture.setOnClickListener {
+            openCamera()
+        }
     }
 
-    override fun addSender(mChatsResponse: ChatsResponse) {
-        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER)
+    override fun addSender(mChatsResponse: ChatsResponse, type: Int) {
+        mMessageAdapter?.addModel(mChatsResponse, type)
     }
 
-    override fun addSenderEmoji(mChatsResponse: ChatsResponse) {
-        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_EMOJI)
-    }
-
-    override fun addReceiver(mChatsResponse: ChatsResponse) {
-        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER)
-    }
-
-    override fun addReceiverEmoji(mChatsResponse: ChatsResponse) {
-        mMessageAdapter?.addModel(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI)
+    override fun addReceiver(mChatsResponse: ChatsResponse, type: Int) {
+        mMessageAdapter?.addModel(mChatsResponse, type)
     }
 
     override fun clearMessage() {
@@ -181,11 +179,6 @@ class MessageActivity : BaseActivity(), MessageView {
         recycler_view_message.setLoadingMoreListener {
         }
         recycler_view_message.setOnItemClickListener { parent, viewType, view, position ->
-            if (view.tv_seen.visibility == View.VISIBLE) {
-                view.tv_seen.gone()
-            } else if (view.tv_seen.visibility == View.GONE) {
-                view.tv_seen.visible()
-            }
         }
         recycler_view_message.setLinearLayoutManagerMessage()
         recycler_view_message.disableRefreshing()
@@ -218,5 +211,14 @@ class MessageActivity : BaseActivity(), MessageView {
     override fun onBackPressed() {
         if (ll_emoji.isShown) ll_emoji.gone()
         else super.onBackPressed()
+    }
+
+    override fun onTakeImageFileCaptureSuccess(cameraFilePath: String, uriImage: Uri) {
+        mPresenter.sendImageMessage(
+            receiver,
+            uriImage,
+            receiverToken,
+            AppConstant.TypeMessage.IMAGE
+        )
     }
 }

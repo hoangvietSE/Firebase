@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,13 +10,16 @@ import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_message_receiver.*
 import kotlinx.android.synthetic.main.item_message_receiver_emoji.*
+import kotlinx.android.synthetic.main.item_message_receiver_image_capture.*
 import kotlinx.android.synthetic.main.item_message_sender.*
-import kotlinx.android.synthetic.main.item_message_sender.tv_seen
 import kotlinx.android.synthetic.main.item_message_sender_emoji.*
+import kotlinx.android.synthetic.main.item_message_sender_image_capture.*
 
 
 class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
@@ -24,6 +28,8 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         const val VIEW_TYPE_RECEIVER = 1
         const val VIEW_TYPE_SENDER_EMOJI = 2
         const val VIEW_TYPE_RECEIVER_EMOJI = 3
+        const val VIEW_TYPE_SENDER_IMAGE_CAPTURE = 4
+        const val VIEW_TYPE_RECEIVER_IMAGE_CAPTURE = 5
     }
 
     override fun solveOnCreateViewHolder(
@@ -43,6 +49,12 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             VIEW_TYPE_RECEIVER_EMOJI -> {
                 return initReceiverEmojiViewHolder(parent)
             }
+            VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
+                return initSenderImageCaptureViewHolder(parent)
+            }
+            VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
+                return initReceiverImageCaptureViewHolder(parent)
+            }
         }
         return super.solveOnCreateViewHolder(parent, viewType)
     }
@@ -61,6 +73,12 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             }
             VIEW_TYPE_RECEIVER_EMOJI -> {
                 bindReceiverEmojiViewHolder(holder, position)
+            }
+            VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
+                bindSenderImageCaptureViewHolder(holder, position)
+            }
+            VIEW_TYPE_RECEIVER_IMAGE_CAPTURE -> {
+                bindReceiverImageCaptureViewHolder(holder, position)
             }
         }
     }
@@ -84,6 +102,12 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     private fun initReceiverEmojiViewHolder(parent: ViewGroup) =
         ReceiverEmojiViewHolder(parent.inflate(R.layout.item_message_receiver_emoji))
 
+    private fun initSenderImageCaptureViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? =
+        SenderImageCaptureViewHolder(parent.inflate(R.layout.item_message_sender_image_capture))
+
+    private fun initReceiverImageCaptureViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? =
+        ReceiverImageCaptureViewHolder(parent.inflate(R.layout.item_message_receiver_image_capture))
+
 
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
@@ -105,6 +129,14 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
+    private fun bindSenderImageCaptureViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+    }
+
+    private fun bindReceiverImageCaptureViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+    }
+
     class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!),
         LayoutContainer {
         override fun <T> bind(data: T) {
@@ -114,6 +146,13 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 AppConstant.UNSEND -> "Đang gửi"
                 AppConstant.UNSEEN -> "Đã gửi"
                 else -> "Đã xem"
+            }
+            itemView.setOnClickListener {
+                if (tv_seen.isShown) {
+                    tv_seen.gone()
+                } else {
+                    tv_seen.visible()
+                }
             }
         }
     }
@@ -134,6 +173,18 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             Glide.with(itemView.context)
                 .load(BitmapFactory.decodeStream(itemView.context.assets.open(data.message)))
                 .into(imv_sender_emoji)
+            tv_seen_emoji.text = when (data.seen) {
+                AppConstant.UNSEND -> "Đang gửi"
+                AppConstant.UNSEEN -> "Đã gửi"
+                else -> "Đã xem"
+            }
+            itemView.setOnClickListener {
+                if (tv_seen_emoji.isShown) {
+                    tv_seen_emoji.gone()
+                } else {
+                    tv_seen_emoji.visible()
+                }
+            }
         }
     }
 
@@ -145,6 +196,40 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             Glide.with(itemView.context)
                 .load(BitmapFactory.decodeStream(itemView.context.assets.open(data.message)))
                 .into(imv_receiver_emoji)
+        }
+    }
+
+    class SenderImageCaptureViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!),
+        LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            Glide.with(itemView.context)
+                .load(Uri.parse(data.message))
+                .into(imv_sender_image_capture)
+            tv_seen_image_capture.text = when (data.seen) {
+                AppConstant.UNSEND -> "Đang gửi"
+                AppConstant.UNSEEN -> "Đã gửi"
+                else -> "Đã xem"
+            }
+            itemView.setOnClickListener {
+                if (tv_seen_image_capture.isShown) {
+                    tv_seen_image_capture.gone()
+                } else {
+                    tv_seen_image_capture.visible()
+                }
+            }
+        }
+    }
+
+    class ReceiverImageCaptureViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!),
+        LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            Glide.with(itemView.context)
+                .load(Uri.parse(data.message))
+                .into(imv_receiver_image_capture)
         }
     }
 }

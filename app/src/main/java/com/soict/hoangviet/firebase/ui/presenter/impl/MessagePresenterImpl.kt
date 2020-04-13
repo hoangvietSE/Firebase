@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.database.*
 import com.soict.hoangviet.firebase.application.BaseApplication
@@ -133,21 +134,12 @@ class MessagePresenterImpl @Inject internal constructor(
                     if ((mChatsResponse.sender == currentId
                                 && mChatsResponse.receiver == receiver)
                     ) {
-                        when (mChatsResponse.type) {
-                            AppConstant.TypeMessage.TEXT -> mView?.addSender(mChatsResponse)
-                            AppConstant.TypeMessage.EMOJI -> mView?.addSenderEmoji(mChatsResponse)
-                            AppConstant.TypeMessage.IMAGE -> null
-                        }
-
+                        mView?.addSender(mChatsResponse, mChatsResponse.type)
                     }
                     if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
-                        when (mChatsResponse.type) {
-                            AppConstant.TypeMessage.TEXT -> mView?.addReceiver(mChatsResponse)
-                            AppConstant.TypeMessage.EMOJI -> mView?.addReceiverEmoji(mChatsResponse)
-                            AppConstant.TypeMessage.IMAGE -> null
-                        }
+                        mView?.addReceiver(mChatsResponse, mChatsResponse.type)
                     }
                     // [END_EXCLUDE]
                 }
@@ -213,5 +205,14 @@ class MessagePresenterImpl @Inject internal constructor(
 
     override fun removeEventListenerSeenMessage() {
         pairSeenMessage.first.removeEventListener(pairSeenMessage.second)
+    }
+
+    override fun sendImageMessage(
+        receiver: String,
+        uriImage: Uri,
+        receiverToken: String,
+        image: Int
+    ) {
+
     }
 }

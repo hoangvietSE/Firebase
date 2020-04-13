@@ -28,19 +28,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imv_sender_emoji"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:id="@+id/imv_sender_image_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            tools:src="@drawable/angel" />
+            tools:src="@drawable/img_vertical" />
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_seen_emoji"
+        android:id="@+id/tv_seen_image_capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_16_dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@id/rl_message"
         app:layout_constraintTop_toBottomOf="@id/rl_message"
         tools:text="Đã xem" />

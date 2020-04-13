@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.ui.view.impl.BaseActivity
 import com.soict.hoangviet.firebase.utils.LogUtil
 import com.soict.hoangviet.firebase.utils.PermissionUtil
@@ -98,23 +99,16 @@ abstract class BasePhotoActivity : BaseActivity() {
 
     private fun createFileImage(): File {
         // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_"
-        //This is the directory in which the file will be created. This is the default location of Camera photos
-        val storageDir = File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DCIM
-                ), "Camera"
-        )
-        val image = File.createTempFile(
-                imageFileName, /* prefix */
-                ".jpg", /* suffix */
-                storageDir      /* directory */
-        )
-        // Save a file: path for using again
-        cameraFilePath = "file://" + image.absolutePath
-        return image
-
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            cameraFilePath = absolutePath
+        }
     }
 
     private fun dispatchTakePictureIntentPreLollipop() {
@@ -149,8 +143,8 @@ abstract class BasePhotoActivity : BaseActivity() {
                     }
                 }
             } else {
-                LogUtil.d("Denied: Permission")
-                PermissionUtil.openSettingPermission(this, REQUEST_SETTING)
+                toast("Vui lòng cấp quyền truy cập")
+//                PermissionUtil.openSettingPermission(this, REQUEST_SETTING)
             }
         }
     }

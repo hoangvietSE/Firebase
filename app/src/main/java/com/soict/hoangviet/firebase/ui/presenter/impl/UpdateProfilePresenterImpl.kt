@@ -4,9 +4,10 @@ import android.net.Uri
 import android.text.TextUtils
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
+import com.soict.hoangviet.firebase.builder.StorageFirebase
 import com.soict.hoangviet.firebase.data.network.request.UpdateProfileRequest
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.UpdateProfileInteractor
 import com.soict.hoangviet.firebase.ui.presenter.UpdateProfilePresenter
 import com.soict.hoangviet.firebase.ui.view.UpdateProfileView
@@ -40,20 +41,10 @@ class UpdateProfilePresenterImpl @Inject internal constructor(
         }
         mView?.showLoading()
         if (mAvatarUpload != null) {
-            val fileReference = storageRef.child(
-                "${System.currentTimeMillis()}.${FileUtil.getFileExtension(mAvatarUpload!!)}"
-            )
-            fileReference
+            StorageFirebase.Builder()
+                .child("${System.currentTimeMillis()}.${FileUtil.getFileExtension(mAvatarUpload!!)}")
                 .putFile(mAvatarUpload!!)
-                .continueWithTask { task ->
-                    if (!task.isSuccessful) {
-                        task.exception?.let {
-                            throw it
-                        }
-                    }
-                    return@continueWithTask fileReference.downloadUrl
-                }
-                .addOnCompleteListener {
+                .onCompleteListener {
                     if (it.isSuccessful) {
                         mAvatarUploadUrl = it.result!!.toString()
                         updateProfileUser(mUpdateProfileRequest)
@@ -62,10 +53,11 @@ class UpdateProfilePresenterImpl @Inject internal constructor(
                         mView?.onAvatarUploadError()
                     }
                 }
-                .addOnFailureListener {
+                .onFailureListener {
                     mView?.hideLoading()
                     mView?.onAvatarUploadError()
                 }
+                .build()
         } else {
             updateProfileUser(mUpdateProfileRequest)
         }

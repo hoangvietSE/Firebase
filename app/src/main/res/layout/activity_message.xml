@@ -76,6 +76,7 @@
                         android:src="@drawable/ic_sticker_primary" />
 
                     <ImageView
+                        android:id="@+id/btn_send_image_capture"
                         style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_camera_primary" />
 
