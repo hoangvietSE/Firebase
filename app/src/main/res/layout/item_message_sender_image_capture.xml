@@ -27,11 +27,14 @@
         app:layout_constraintStart_toStartOf="@id/guidelineVertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imv_sender_image_capture"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:maxHeight="200dp"
+            app:riv_corner_radius="@dimen/radius_10_dp"
             tools:src="@drawable/img_vertical" />
 
         <ProgressBar

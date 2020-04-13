@@ -141,10 +141,7 @@ class MessagePresenterImpl @Inject internal constructor(
                         User::class.java
                     )?.fullname!!,
                     body = "Bạn nhận được tin nhắn mới",
-                    receiverId = mAppSharePreference?.get(
-                        AppConstant.SharePreference.USER,
-                        User::class.java
-                    )?.id,
+                    receiverId = receiver,
                     receiverToken = mAppSharePreference?.get(
                         AppConstant.SharePreference.USER,
                         User::class.java
