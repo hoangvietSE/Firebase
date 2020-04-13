@@ -14,6 +14,7 @@ import com.soict.hoangviet.firebase.ui.interactor.HomeInteractor
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.view.HomeView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
+import com.soict.hoangviet.firebase.utils.AppConstant
 import javax.inject.Inject
 
 class HomePresenterImpl @Inject internal constructor(
@@ -97,9 +98,20 @@ class HomePresenterImpl @Inject internal constructor(
                     val mChatResponse: ChatsResponse = snapshot.getValue(ChatsResponse::class.java)!!
                     // [START_EXCLUDE]
                     if ((mChatResponse.sender == currentId && mChatResponse.receiver == homeResponse.user?.id)
-                        || (mChatResponse.sender == homeResponse.user?.id && mChatResponse.receiver == currentId)
                     ) {
-                        homeResponse.lastMessage = mChatResponse.message
+                        when(mChatResponse.type){
+                            AppConstant.TypeMessage.TEXT-> homeResponse.lastMessage = mChatResponse.message
+                            AppConstant.TypeMessage.EMOJI-> homeResponse.lastMessage = "Bạn đã gửi một nhãn dán"
+                            AppConstant.TypeMessage.IMAGE-> homeResponse.lastMessage = "Bạn đã gửi một ảnh"
+                        }
+                        listener.onLastMessage(position)
+                    }
+                    if((mChatResponse.sender == homeResponse.user?.id && mChatResponse.receiver == currentId)){
+                        when(mChatResponse.type){
+                            AppConstant.TypeMessage.TEXT-> homeResponse.lastMessage = mChatResponse.message
+                            AppConstant.TypeMessage.EMOJI-> homeResponse.lastMessage = "Bạn đã nhận được một nhãn dán"
+                            AppConstant.TypeMessage.IMAGE-> homeResponse.lastMessage = "Bạn đã nhận được một ảnh"
+                        }
                         listener.onLastMessage(position)
                     }
                     // [END_EXCLUDE]

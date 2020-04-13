@@ -2,21 +2,12 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.adapter.RecyclerViewAdapter
 import com.soict.hoangviet.firebase.adapter.UserAdapter
-import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.FriendsPresenter
 import com.soict.hoangviet.firebase.ui.view.FriendsView
 import kotlinx.android.synthetic.main.fragment_friends.*
-import kotlinx.android.synthetic.main.fragment_friends.recycler_view_user
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class FriendsFragment : BaseFragment(), FriendsView {

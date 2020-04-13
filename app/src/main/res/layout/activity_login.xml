@@ -6,9 +6,9 @@
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginBottom="@dimen/margin_16_dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_16_dp">
 
         <ImageView
             android:id="@+id/imv_background"
@@ -64,7 +64,6 @@
                         android:src="@drawable/ic_email" />
 
                     <EditText
-                        android:inputType="text"
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -72,6 +71,7 @@
                         android:layout_toRightOf="@id/imv_email"
                         android:background="@drawable/bg_white"
                         android:hint="@string/register_email_hint"
+                        android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
                         android:minLines="1"
@@ -104,7 +104,8 @@
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true" android:layout_toRightOf="@id/imv_password"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imv_password"
                         android:background="@drawable/bg_white"
                         android:hint="@string/register_password_hint"
                         android:inputType="textPassword"
