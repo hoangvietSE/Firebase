@@ -12,6 +12,7 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
+import com.soict.hoangviet.firebase.module.GlideApp
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_message_receiver.*
@@ -52,7 +53,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
                 return initSenderImageCaptureViewHolder(parent)
             }
-            VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
+            VIEW_TYPE_RECEIVER_IMAGE_CAPTURE -> {
                 return initReceiverImageCaptureViewHolder(parent)
             }
         }
@@ -108,7 +109,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     private fun initReceiverImageCaptureViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? =
         ReceiverImageCaptureViewHolder(parent.inflate(R.layout.item_message_receiver_image_capture))
 
-
+    //TEXT
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val senderViewHolder: SenderViewHolder = holder as SenderViewHolder
         senderViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
@@ -119,6 +120,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
+    //EMOJI
     private fun bindSenderEmojiViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val receiverViewHolder: SenderEmojiViewHolder = holder as SenderEmojiViewHolder
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
@@ -129,12 +131,15 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
+    //IMAGE CAPTURE
     private fun bindSenderImageCaptureViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+        val senderViewHolder: SenderImageCaptureViewHolder = holder as SenderImageCaptureViewHolder
+        senderViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
     private fun bindReceiverImageCaptureViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+        val receiverViewHolder: ReceiverImageCaptureViewHolder = holder as ReceiverImageCaptureViewHolder
+        receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
     class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!),
@@ -227,7 +232,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
-            Glide.with(itemView.context)
+            GlideApp.with(itemView.context)
                 .load(Uri.parse(data.message))
                 .into(imv_receiver_image_capture)
         }

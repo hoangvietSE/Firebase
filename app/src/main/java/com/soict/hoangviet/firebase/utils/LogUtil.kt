@@ -15,7 +15,7 @@ object LogUtil {
      */
     fun d(objects: Any) {
         if (isDebug) {
-            Log.d(LogUtil::class.java.simpleName, objects.toString())
+            Log.d("myLog", objects.toString())
         }
     }
 
@@ -28,7 +28,7 @@ object LogUtil {
                     stringBuilder.append(" ")
                 }
             }
-            Log.d(LogUtil::class.java.simpleName, stringBuilder.toString())
+            Log.d("myLog", stringBuilder.toString())
         }
     }
 
@@ -37,7 +37,7 @@ object LogUtil {
      */
     fun e(objects: Any) {
         if (isDebug) {
-            Log.e(LogUtil::class.java.simpleName, objects.toString())
+            Log.e("myLog", objects.toString())
         }
     }
 
@@ -50,7 +50,7 @@ object LogUtil {
                     stringBuilder.append(" ")
                 }
             }
-            Log.e(LogUtil::class.java.simpleName, stringBuilder.toString())
+            Log.e("myLog", stringBuilder.toString())
         }
     }
 
@@ -59,7 +59,7 @@ object LogUtil {
      */
     fun i(objects: Any) {
         if (isDebug) {
-            Log.i(LogUtil::class.java.simpleName, objects.toString())
+            Log.i("myLog", objects.toString())
         }
     }
 
@@ -72,7 +72,7 @@ object LogUtil {
                     stringBuilder.append(" ")
                 }
             }
-            Log.i(LogUtil::class.java.simpleName, stringBuilder.toString())
+            Log.i("myLog", stringBuilder.toString())
         }
     }
 
@@ -81,7 +81,7 @@ object LogUtil {
      */
     fun w(objects: Any) {
         if (isDebug) {
-            Log.w(LogUtil::class.java.simpleName, objects.toString())
+            Log.w("myLog", objects.toString())
         }
     }
 
@@ -94,7 +94,7 @@ object LogUtil {
                     stringBuilder.append(" ")
                 }
             }
-            Log.w(LogUtil::class.java.simpleName, stringBuilder.toString())
+            Log.w("myLog", stringBuilder.toString())
         }
     }
 
@@ -103,7 +103,7 @@ object LogUtil {
      */
     fun v(objects: Any) {
         if (isDebug) {
-            Log.v(LogUtil::class.java.simpleName, objects.toString())
+            Log.v("myLog", objects.toString())
         }
     }
 
@@ -116,7 +116,7 @@ object LogUtil {
                     stringBuilder.append(" ")
                 }
             }
-            Log.v(LogUtil::class.java.simpleName, stringBuilder.toString())
+            Log.v("myLog", stringBuilder.toString())
         }
     }
 

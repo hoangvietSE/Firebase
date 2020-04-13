@@ -2,9 +2,13 @@ package com.soict.hoangviet.firebase.ui.presenter.impl
 
 import android.net.Uri
 import android.util.Log
-import com.google.firebase.database.*
-import com.soict.hoangviet.firebase.application.BaseApplication
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.builder.DatabaseFirebase
+import com.soict.hoangviet.firebase.builder.StorageFirebase
 import com.soict.hoangviet.firebase.data.network.request.DataNotification
 import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
@@ -15,6 +19,8 @@ import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import com.soict.hoangviet.firebase.utils.AppConstant
+import com.soict.hoangviet.firebase.utils.FileUtil
+import com.soict.hoangviet.firebase.utils.LogUtil
 import javax.inject.Inject
 
 
@@ -134,12 +140,20 @@ class MessagePresenterImpl @Inject internal constructor(
                     if ((mChatsResponse.sender == currentId
                                 && mChatsResponse.receiver == receiver)
                     ) {
-                        mView?.addSender(mChatsResponse, mChatsResponse.type)
+                        when(mChatsResponse.type){
+                            AppConstant.TypeMessage.TEXT-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER)
+                            AppConstant.TypeMessage.EMOJI-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_EMOJI)
+                            AppConstant.TypeMessage.IMAGE-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE)
+                        }
                     }
                     if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
-                        mView?.addReceiver(mChatsResponse, mChatsResponse.type)
+                        when(mChatsResponse.type){
+                            AppConstant.TypeMessage.TEXT-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER)
+                            AppConstant.TypeMessage.EMOJI-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI)
+                            AppConstant.TypeMessage.IMAGE-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_IMAGE_CAPTURE)
+                        }
                     }
                     // [END_EXCLUDE]
                 }
@@ -211,8 +225,8 @@ class MessagePresenterImpl @Inject internal constructor(
         receiver: String,
         uriImage: Uri,
         receiverToken: String,
-        image: Int
+        type: Int
     ) {
-
+        sendMessage(receiver, uriImage.toString(), receiverToken, type)
     }
 }

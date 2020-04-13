@@ -13,7 +13,7 @@
     android:paddingBottom="@dimen/content_padding_8_dp">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/guidelineVertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,14 +24,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="@id/guidelineVertical"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imv_sender_image_capture"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_alignParentEnd="true"
+            android:maxHeight="150dp"
             tools:src="@drawable/img_vertical" />
     </RelativeLayout>
 
@@ -40,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_16_dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/rl_message"
         app:layout_constraintTop_toBottomOf="@id/rl_message"
         tools:text="Đã xem" />

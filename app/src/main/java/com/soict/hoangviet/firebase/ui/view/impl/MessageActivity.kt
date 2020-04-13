@@ -202,8 +202,8 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     override fun onFragmentDetached(tag: String) {
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         mPresenter.onDetach()
         mPresenter.removeEventListenerSeenMessage()
     }
