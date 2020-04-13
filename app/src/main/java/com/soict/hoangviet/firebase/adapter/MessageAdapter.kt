@@ -2,22 +2,17 @@ package com.soict.hoangviet.firebase.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestListener
 import com.soict.hoangviet.baseproject.extension.inflate
 import com.soict.hoangviet.baseproject.extension.loadImageListener
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.gone
-import com.soict.hoangviet.firebase.extension.loadImageUri
-import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.extension.visible
-import com.soict.hoangviet.firebase.module.GlideApp
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_message_receiver.*
@@ -26,7 +21,6 @@ import kotlinx.android.synthetic.main.item_message_receiver_image_capture.*
 import kotlinx.android.synthetic.main.item_message_sender.*
 import kotlinx.android.synthetic.main.item_message_sender_emoji.*
 import kotlinx.android.synthetic.main.item_message_sender_image_capture.*
-import kotlinx.android.synthetic.main.layout_main.view.*
 
 
 class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {

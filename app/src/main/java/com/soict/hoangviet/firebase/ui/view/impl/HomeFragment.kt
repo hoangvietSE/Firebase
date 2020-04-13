@@ -5,9 +5,9 @@ import android.os.Bundle
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.HomeUserChatsAdapter
 import com.soict.hoangviet.firebase.data.network.response.HomeResponse
-import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.ui.presenter.HomePresenter
 import com.soict.hoangviet.firebase.ui.view.HomeView
+import com.soict.hoangviet.firebase.utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -61,6 +61,8 @@ class HomeFragment : BaseFragment(), HomeView {
                     ).apply {
                         putExtra(MessageActivity.EXTRA_USER_ID, user?.user?.id)
                         putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.user?.deviceToken)
+                        LogUtil.d(user?.user?.fullname!!)
+                        LogUtil.d(user?.user?.deviceToken!!)
                     })
             }
             mHomeUserChatsAdapter?.addModels(mListUserChat, false)
