@@ -32,8 +32,17 @@
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:layout_alignParentEnd="true"
-            android:maxHeight="150dp"
             tools:src="@drawable/img_vertical" />
+
+        <ProgressBar
+            android:id="@+id/progress_loading_image"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_16_dp"
+            android:theme="@style/progressBarRed" />
+
     </RelativeLayout>
 
     <TextView

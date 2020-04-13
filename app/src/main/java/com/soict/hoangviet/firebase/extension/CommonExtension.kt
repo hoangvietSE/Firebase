@@ -96,8 +96,8 @@ fun ImageView.loadImageUrl(
 fun ImageView.loadImageUri(
     context: Context,
     uri: Uri,
-    @DrawableRes placeHolder: Int,
-    @DrawableRes error: Int
+    @DrawableRes placeHolder: Int = R.drawable.ic_avatar,
+    @DrawableRes error: Int = R.drawable.ic_avatar
 ){
     GlideApp.with(context)
         .load(uri)

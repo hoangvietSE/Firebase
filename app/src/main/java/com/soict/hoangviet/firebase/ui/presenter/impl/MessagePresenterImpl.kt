@@ -20,7 +20,6 @@ import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
 import com.soict.hoangviet.firebase.utils.AppConstant
 import com.soict.hoangviet.firebase.utils.FileUtil
-import com.soict.hoangviet.firebase.utils.LogUtil
 import javax.inject.Inject
 
 
@@ -55,7 +54,10 @@ class MessagePresenterImpl @Inject internal constructor(
                 if (!it.exists()) {
                     pairMessageSender.first.child("id").setValue(receiver)
                 }
-                detectNetwork(mChatId, receiver, receiverToken)
+                when (type) {
+                    AppConstant.TypeMessage.IMAGE -> detectNetworkPushImage(mChatId, receiver, receiverToken, msg, type)
+                    else -> detectNetwork(mChatId, receiver, receiverToken)
+                }
             }
             .onCancelled {
             }
@@ -75,6 +77,35 @@ class MessagePresenterImpl @Inject internal constructor(
         mView?.onSendSuccess()
     }
 
+    private fun detectNetworkPushImage(mChatId: String, receiver: String, receiverToken: String, msg: String, type: Int) {
+        var processDone = false
+        DatabaseFirebase.Builder()
+            .reference(".info/connected")
+            .onDataChange {
+                val connected = it.getValue(Boolean::class.java) ?: false
+                if (connected && !processDone) {
+                    Log.d("myLog", "connected")
+                    StorageFirebase.Builder()
+                        .child("${System.currentTimeMillis()}.${FileUtil.getFileExtension(Uri.parse(msg)!!)}")
+                        .putFile(Uri.parse(msg))
+                        .onCompleteListener {
+                            //Change to url image
+                            messageRef.child("Chats").child(mChatId).updateChildren(mapOf("message" to it.result.toString()))
+                            detectNetwork(mChatId, receiver, receiverToken)
+                            processDone = true
+                        }
+                        .onFailureListener {
+                        }
+                        .build()
+                } else {
+                    Log.d("myLog", "disconnected")
+                }
+            }
+            .onCancelled {
+            }
+            .build()
+    }
+
     //Detecting Connection State
     private fun detectNetwork(
         mChatId: String,
@@ -82,7 +113,7 @@ class MessagePresenterImpl @Inject internal constructor(
         receiverToken: String
     ) {
         var processDone = false
-        val pairDetectNetwork = DatabaseFirebase.Builder()
+        DatabaseFirebase.Builder()
             .reference(".info/connected")
             .onDataChange {
                 val connected = it.getValue(Boolean::class.java) ?: false
@@ -140,19 +171,41 @@ class MessagePresenterImpl @Inject internal constructor(
                     if ((mChatsResponse.sender == currentId
                                 && mChatsResponse.receiver == receiver)
                     ) {
-                        when(mChatsResponse.type){
-                            AppConstant.TypeMessage.TEXT-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER)
-                            AppConstant.TypeMessage.EMOJI-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_EMOJI)
-                            AppConstant.TypeMessage.IMAGE-> mView?.addSender(mChatsResponse, MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE)
+                        when (mChatsResponse.type) {
+                            AppConstant.TypeMessage.TEXT -> mView?.addSender(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_SENDER
+                            )
+                            AppConstant.TypeMessage.EMOJI -> mView?.addSender(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_SENDER_EMOJI
+                            )
+                            AppConstant.TypeMessage.IMAGE -> mView?.addSender(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE
+                            )
                         }
                     }
                     if ((mChatsResponse.receiver == currentId
                                 && mChatsResponse.sender == receiver)
                     ) {
-                        when(mChatsResponse.type){
-                            AppConstant.TypeMessage.TEXT-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER)
-                            AppConstant.TypeMessage.EMOJI-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI)
-                            AppConstant.TypeMessage.IMAGE-> mView?.addReceiver(mChatsResponse, MessageAdapter.VIEW_TYPE_RECEIVER_IMAGE_CAPTURE)
+                        when (mChatsResponse.type) {
+                            AppConstant.TypeMessage.TEXT -> mView?.addReceiver(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_RECEIVER
+                            )
+                            AppConstant.TypeMessage.EMOJI -> mView?.addReceiver(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI
+                            )
+                            AppConstant.TypeMessage.IMAGE -> {
+                                if(mChatsResponse.seen != AppConstant.UNSEND) {
+                                    mView?.addReceiver(
+                                        mChatsResponse,
+                                        MessageAdapter.VIEW_TYPE_RECEIVER_IMAGE_CAPTURE
+                                    )
+                                }
+                            }
                         }
                     }
                     // [END_EXCLUDE]

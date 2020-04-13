@@ -2,15 +2,20 @@ package com.soict.hoangviet.firebase.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestListener
 import com.soict.hoangviet.baseproject.extension.inflate
+import com.soict.hoangviet.baseproject.extension.loadImageListener
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.gone
+import com.soict.hoangviet.firebase.extension.loadImageUri
+import com.soict.hoangviet.firebase.extension.loadImageUrl
 import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.module.GlideApp
 import com.soict.hoangviet.firebase.utils.AppConstant
@@ -21,6 +26,7 @@ import kotlinx.android.synthetic.main.item_message_receiver_image_capture.*
 import kotlinx.android.synthetic.main.item_message_sender.*
 import kotlinx.android.synthetic.main.item_message_sender_emoji.*
 import kotlinx.android.synthetic.main.item_message_sender_image_capture.*
+import kotlinx.android.synthetic.main.layout_main.view.*
 
 
 class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
@@ -138,7 +144,8 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     }
 
     private fun bindReceiverImageCaptureViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val receiverViewHolder: ReceiverImageCaptureViewHolder = holder as ReceiverImageCaptureViewHolder
+        val receiverViewHolder: ReceiverImageCaptureViewHolder =
+            holder as ReceiverImageCaptureViewHolder
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
@@ -209,9 +216,32 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
-            Glide.with(itemView.context)
-                .load(Uri.parse(data.message))
-                .into(imv_sender_image_capture)
+            when (data.seen) {
+                AppConstant.UNSEND -> {
+                    imv_sender_image_capture.loadImageListener(
+                        itemView.context,
+                        Uri.parse(data.message),
+                        {
+                            progress_loading_image.gone()
+                        },
+                        {
+                            progress_loading_image.visible()
+                        }
+                    )
+                }
+                else -> {
+                    imv_sender_image_capture.loadImageListener(
+                        itemView.context,
+                        data.message,
+                        {
+                            progress_loading_image.gone()
+                        },
+                        {
+                            progress_loading_image.visible()
+                        }
+                    )
+                }
+            }
             tv_seen_image_capture.text = when (data.seen) {
                 AppConstant.UNSEND -> "Đang gửi"
                 AppConstant.UNSEEN -> "Đã gửi"
@@ -232,9 +262,16 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
-            GlideApp.with(itemView.context)
-                .load(Uri.parse(data.message))
-                .into(imv_receiver_image_capture)
+            imv_receiver_image_capture.loadImageListener(
+                itemView.context,
+                data.message,
+                {
+                    progress_loading_image_receiver.gone()
+                },
+                {
+                    progress_loading_image_receiver.visible()
+                }
+            )
         }
     }
 }
