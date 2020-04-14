@@ -3,6 +3,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.os.CountDownTimer
 import android.text.Html
 import android.text.Spanned
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.PhoneSmsBaseActivity
@@ -42,7 +43,7 @@ class ConfirmActivity : PhoneSmsBaseActivity(), ConfirmView {
     }
 
     override fun initListener() {
-        btn_confirm.setOnClickListener {
+        btn_confirm.onAvoidDoubleClick {
             if (mCheckSendSmsSuccess) {
                 showLoading()
                 mTokenPhoneSms.confirmTokenPhoneSms(edt_otp)

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.crashlytics.android.Crashlytics
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import io.fabric.sdk.android.Fabric
 
@@ -44,7 +45,7 @@ class CrashlyticActivity : AppCompatActivity() {
         // [START crash_force_crash]
         val crashButton = Button(this)
         crashButton.text = "Crash!"
-        crashButton.setOnClickListener {
+        crashButton.onAvoidDoubleClick {
             //            Crashlytics.getInstance().crash() // Force a crash
             logCaughtEx()
         }

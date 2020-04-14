@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import beetech.com.carbooking.util.DateUtil
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.UpdateProfileAdapter
@@ -96,10 +97,10 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
     }
 
     override fun initListener() {
-        rowBirthday.setOnClickListener {
+        rowBirthday.onAvoidDoubleClick {
             mDatePickerDialogWidget?.showDatePickerDialog()
         }
-        imv_choose_image.setOnClickListener {
+        imv_choose_image.onAvoidDoubleClick {
             val dialog = DialogUtil.customDialog(
                 this,
                 R.layout.dialog_update_profile_choose,
@@ -113,16 +114,16 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
                 }
             )
             dialog.show()
-            dialog.btn_album.setOnClickListener {
+            dialog.btn_album.onAvoidDoubleClick {
                 dialog.dismiss()
                 openGallery()
             }
-            dialog.btn_capture.setOnClickListener {
+            dialog.btn_capture.onAvoidDoubleClick {
                 dialog.dismiss()
                 openCamera()
             }
         }
-        btn_update.setOnClickListener {
+        btn_update.onAvoidDoubleClick {
             val mUpdateProfileRequest = UpdateProfileRequest()
             mUpdateProfileRequest.apply {
                 email = tv_email.text.toString()

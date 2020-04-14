@@ -23,5 +23,6 @@ object AppConstant {
         const val TEXT = 0
         const val EMOJI = 1
         const val IMAGE = 2
+        const val ALBUM = 3
     }
 }

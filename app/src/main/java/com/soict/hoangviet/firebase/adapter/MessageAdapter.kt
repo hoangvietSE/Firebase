@@ -2,9 +2,9 @@ package com.soict.hoangviet.firebase.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
@@ -17,10 +17,13 @@ import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_message_receiver.*
 import kotlinx.android.synthetic.main.item_message_receiver_emoji.*
+import kotlinx.android.synthetic.main.item_message_receiver_image_album.*
 import kotlinx.android.synthetic.main.item_message_receiver_image_capture.*
 import kotlinx.android.synthetic.main.item_message_sender.*
 import kotlinx.android.synthetic.main.item_message_sender_emoji.*
+import kotlinx.android.synthetic.main.item_message_sender_image_album.*
 import kotlinx.android.synthetic.main.item_message_sender_image_capture.*
+import kotlinx.android.synthetic.main.item_message_sender_image_capture.tv_seen_image_capture
 
 
 class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
@@ -31,13 +34,15 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         const val VIEW_TYPE_RECEIVER_EMOJI = 3
         const val VIEW_TYPE_SENDER_IMAGE_CAPTURE = 4
         const val VIEW_TYPE_RECEIVER_IMAGE_CAPTURE = 5
+        const val VIEW_TYPE_SENDER_ALBUM = 6
+        const val VIEW_TYPE_RECEIVER_ALBUM = 7
     }
 
     override fun solveOnCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder? {
-        when (viewType) {
+        return when (viewType) {
             VIEW_TYPE_SENDER -> {
                 return initSenderMessageViewHolder(parent)
             }
@@ -56,13 +61,19 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             VIEW_TYPE_RECEIVER_IMAGE_CAPTURE -> {
                 return initReceiverImageCaptureViewHolder(parent)
             }
+            VIEW_TYPE_SENDER_ALBUM -> {
+                return initSenderAlbum(parent)
+            }
+            VIEW_TYPE_RECEIVER_ALBUM -> {
+                return initReceiverAlbum(parent)
+            }
+            else -> super.solveOnCreateViewHolder(parent, viewType)
         }
-        return super.solveOnCreateViewHolder(parent, viewType)
     }
 
     override fun solveOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.solveOnBindViewHolder(holder, position)
-        when (mListWrapperModel[position].viewType) {
+        when (getItemViewType(position)) {
             VIEW_TYPE_SENDER -> {
                 bindSenderMessageViewHolder(holder, position)
             }
@@ -81,6 +92,12 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             VIEW_TYPE_RECEIVER_IMAGE_CAPTURE -> {
                 bindReceiverImageCaptureViewHolder(holder, position)
             }
+            VIEW_TYPE_SENDER_ALBUM -> {
+                bindSenderAlbum(holder, position)
+            }
+            VIEW_TYPE_RECEIVER_ALBUM -> {
+                bindReceiverAlbum(holder, position)
+            }
         }
     }
 
@@ -91,23 +108,35 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
     override fun bindNormalViewHolder(holder: NormalViewHolder, position: Int) {
     }
 
+    //TEXT
     private fun initSenderMessageViewHolder(parent: ViewGroup) =
         SenderViewHolder(parent.inflate(R.layout.item_message_sender))
 
     private fun initReceiverMessageViewHolder(parent: ViewGroup) =
         ReceiverViewHolder(parent.inflate(R.layout.item_message_receiver))
 
+    //EMOJI
     private fun initSenderEmojiViewHolder(parent: ViewGroup) =
         SenderEmojiViewHolder(parent.inflate(R.layout.item_message_sender_emoji))
 
     private fun initReceiverEmojiViewHolder(parent: ViewGroup) =
         ReceiverEmojiViewHolder(parent.inflate(R.layout.item_message_receiver_emoji))
 
-    private fun initSenderImageCaptureViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? =
+    //IMAGE CAPTURE
+    private fun initSenderImageCaptureViewHolder(parent: ViewGroup) =
         SenderImageCaptureViewHolder(parent.inflate(R.layout.item_message_sender_image_capture))
 
     private fun initReceiverImageCaptureViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? =
         ReceiverImageCaptureViewHolder(parent.inflate(R.layout.item_message_receiver_image_capture))
+
+    //ALBUM
+    private fun initSenderAlbum(parent: ViewGroup): RecyclerView.ViewHolder? {
+        return SenderAlbumViewHolder(parent.inflate(R.layout.item_message_sender_image_album))
+    }
+
+    private fun initReceiverAlbum(parent: ViewGroup): RecyclerView.ViewHolder? {
+        return ReceiverAlbumViewHolder(parent.inflate(R.layout.item_message_receiver_image_album))
+    }
 
     //TEXT
     private fun bindSenderMessageViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -143,6 +172,18 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
     }
 
+    //ALBUM
+    private fun bindSenderAlbum(holder: RecyclerView.ViewHolder, position: Int) {
+        val senderViewHolder: SenderAlbumViewHolder = holder as SenderAlbumViewHolder
+        senderViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
+    }
+
+    private fun bindReceiverAlbum(holder: RecyclerView.ViewHolder, position: Int) {
+        val receiverViewHolder: ReceiverAlbumViewHolder =
+            holder as ReceiverAlbumViewHolder
+        receiverViewHolder.bind(getItemPosition(position, ChatsResponse::class.java))
+    }
+
     class SenderViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!),
         LayoutContainer {
         override fun <T> bind(data: T) {
@@ -152,13 +193,6 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 AppConstant.UNSEND -> "Đang gửi"
                 AppConstant.UNSEEN -> "Đã gửi"
                 else -> "Đã xem"
-            }
-            itemView.setOnClickListener {
-                if (tv_seen.isShown) {
-                    tv_seen.gone()
-                } else {
-                    tv_seen.visible()
-                }
             }
         }
     }
@@ -184,13 +218,6 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 AppConstant.UNSEEN -> "Đã gửi"
                 else -> "Đã xem"
             }
-            itemView.setOnClickListener {
-                if (tv_seen_emoji.isShown) {
-                    tv_seen_emoji.gone()
-                } else {
-                    tv_seen_emoji.visible()
-                }
-            }
         }
     }
 
@@ -212,16 +239,17 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             data as ChatsResponse
             when (data.seen) {
                 AppConstant.UNSEND -> {
-                    imv_sender_image_capture.loadImageListener(
-                        itemView.context,
-                        Uri.parse(data.message),
-                        {
-                            progress_loading_image.gone()
-                        },
-                        {
-                            progress_loading_image.visible()
-                        }
-                    )
+                    progress_loading_image.visible()
+//                    imv_sender_image_capture.loadImageListener(
+//                        itemView.context,
+//                        Uri.parse(data.message),
+//                        {
+//                            progress_loading_image.gone()
+//                        },
+//                        {
+//                            progress_loading_image.visible()
+//                        }
+//                    )
                 }
                 else -> {
                     imv_sender_image_capture.loadImageListener(
@@ -240,13 +268,6 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 AppConstant.UNSEND -> "Đang gửi"
                 AppConstant.UNSEEN -> "Đã gửi"
                 else -> "Đã xem"
-            }
-            itemView.setOnClickListener {
-                if (tv_seen_image_capture.isShown) {
-                    tv_seen_image_capture.gone()
-                } else {
-                    tv_seen_image_capture.visible()
-                }
             }
         }
     }
@@ -267,5 +288,43 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 }
             )
         }
+    }
+
+    class SenderAlbumViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!), LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
+            rcv_sender_msg_album.adapter = messageAlbumAdapter
+            val gridLayoutManager = object : GridLayoutManager(itemView.context, 3,GridLayoutManager.VERTICAL, false){
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+
+                override fun isLayoutRTL(): Boolean {
+                    return true
+                }
+            }
+            rcv_sender_msg_album.layoutManager = gridLayoutManager
+            rcv_sender_msg_album.setOnClickListener {
+
+            }
+            messageAlbumAdapter.addModels(data.listImage!!, false)
+        }
+    }
+
+    class ReceiverAlbumViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!), LayoutContainer {
+        override fun <T> bind(data: T) {
+            data as ChatsResponse
+            val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
+            rcv_receiver_msg_album.adapter = messageAlbumAdapter
+            rcv_receiver_msg_album.layoutManager = GridLayoutManager(itemView.context, 3)
+            rcv_receiver_msg_album.setOnClickListener {
+
+            }
+            messageAlbumAdapter.addModels(data.listImage!!, false)
+        }
+
     }
 }

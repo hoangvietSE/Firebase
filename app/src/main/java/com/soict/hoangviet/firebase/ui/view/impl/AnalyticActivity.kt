@@ -3,6 +3,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.soict.hoangviet.baseproject.extension.click
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.utils.analytics.AnalyticsUtil
 import kotlinx.android.synthetic.main.activity_analytic.*
@@ -19,16 +20,16 @@ class AnalyticActivity : AppCompatActivity() {
     }
 
     private fun setListener() {
-        btn_first.setOnClickListener {
+        btn_first.onAvoidDoubleClick {
             AnalyticsUtil.trackEvent("button_first")
         }
-        btn_second.setOnClickListener {
+        btn_second.onAvoidDoubleClick {
             AnalyticsUtil.trackEvent("button_second")
         }
-        btn_third.setOnClickListener {
+        btn_third.onAvoidDoubleClick {
             AnalyticsUtil.trackEvent("button_third")
         }
-        btn_fourth.setOnClickListener {
+        btn_fourth.onAvoidDoubleClick {
             AnalyticsUtil.trackEvent("button_fourth")
         }
     }

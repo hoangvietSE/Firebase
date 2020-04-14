@@ -1,6 +1,7 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.Intent
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.request.RegisterRequest
@@ -26,7 +27,7 @@ class RegisterActivity : BaseActivity(), RegisterView {
     }
 
     override fun initListener() {
-        btn_register.setOnClickListener {
+        btn_register.onAvoidDoubleClick {
             val registerRegisterActivity = RegisterRequest()
             registerRegisterActivity.email = edt_email.text.toString()
             registerRegisterActivity.fullName = edt_fullname.text.toString()

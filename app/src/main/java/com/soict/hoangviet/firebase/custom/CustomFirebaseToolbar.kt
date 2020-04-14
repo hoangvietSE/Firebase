@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.widget.BaseCustomViewConstrainLayout
@@ -31,7 +32,7 @@ class CustomFirebaseToolbar : BaseCustomViewConstrainLayout {
         imvRightOne = findViewById(R.id.imv_right_one)
         toolbarTitle = findViewById(R.id.toolbar_title)
         toolbarMainName = findViewById(R.id.toolbar_main_name)
-        imvFunction?.setOnClickListener {
+        imvFunction?.onAvoidDoubleClick {
         }
     }
 

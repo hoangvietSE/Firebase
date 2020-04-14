@@ -179,8 +179,8 @@ abstract class RecyclerViewAdapter(var context: Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val viewHoler = solveOnCreateViewHolder(parent, viewType)
-        viewHoler?.itemView?.setOnTouchListener { view, event ->
+        val viewHolder = solveOnCreateViewHolder(parent, viewType)
+        viewHolder?.itemView?.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     mOnItemPressListener?.onItemPress(view, getViewByPosition(view))
@@ -201,7 +201,7 @@ abstract class RecyclerViewAdapter(var context: Context) :
             }
             false
         }
-        return viewHoler!!
+        return viewHolder!!
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

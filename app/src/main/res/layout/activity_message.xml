@@ -81,6 +81,7 @@
                         android:src="@drawable/ic_camera_primary" />
 
                     <ImageView
+                        android:id="@+id/btn_send_image_album"
                         style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_album_primary" />
 

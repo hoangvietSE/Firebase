@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.startActivity
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
@@ -26,13 +27,13 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     }
 
     override fun initListener() {
-        btn_login.setOnClickListener {
+        btn_login.onAvoidDoubleClick {
             val loginRequest = LoginRequest()
             loginRequest.email = edt_email.text.toString()
             loginRequest.password = edt_password.text.toString()
             mPresenter?.validateLogin(loginRequest)
         }
-        tv_member.setOnClickListener {
+        tv_member.onAvoidDoubleClick {
             startActivity(RegisterActivity::class.java)
         }
     }

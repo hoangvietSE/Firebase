@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.ui.presenter.DynamicLinkPresenter
@@ -29,7 +30,7 @@ class DynamicLinkActivity : BaseActivity(), DynamicLinkView {
     }
 
     override fun initListener() {
-        btn_share.setOnClickListener {
+        btn_share.onAvoidDoubleClick {
             createDynamicLink()
         }
     }

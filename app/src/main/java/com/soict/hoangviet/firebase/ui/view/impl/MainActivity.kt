@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.HomeAdapter
 import com.soict.hoangviet.firebase.adapter.MainNavigationAdapter
@@ -179,7 +180,7 @@ class MainActivity : BaseActivity(), MainView,
         bottom_bar.onItemSelected = {
             viewPager.currentItem = it
         }
-        imv_function.setOnClickListener {
+        imv_function.onAvoidDoubleClick {
             openDrawer()
         }
     }

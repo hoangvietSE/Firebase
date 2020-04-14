@@ -36,13 +36,24 @@ class MessagePresenterImpl @Inject internal constructor(
     private lateinit var pairShowAllMessage: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairShowInfoUser: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairSeenMessage: Pair<DatabaseReference, ValueEventListener>
-    override fun sendMessage(receiver: String, msg: String, receiverToken: String, type: Int) {
+    override fun sendMessage(
+        receiver: String,
+        msg: String,
+        receiverToken: String,
+        type: Int,
+        listImage: ArrayList<String>
+    ) {
         val record: MutableMap<String, Any?> = mutableMapOf()
         record["sender"] = currentId
         record["type"] = type
         record["receiver"] = receiver
         record["message"] = msg
         record["seen"] = AppConstant.UNSEND
+        when (type) {
+            AppConstant.TypeMessage.ALBUM -> {
+                record["listImage"] = listImage
+            }
+        }
         //mChatId: Get random id for chat
         val mChatId = messageRef.child("Chats").push().key
         messageRef.child("Chats").child(mChatId!!).setValue(record)
@@ -55,7 +66,24 @@ class MessagePresenterImpl @Inject internal constructor(
                     pairMessageSender.first.child("id").setValue(receiver)
                 }
                 when (type) {
-                    AppConstant.TypeMessage.IMAGE -> detectNetworkPushImage(mChatId, receiver, receiverToken, msg, type)
+                    AppConstant.TypeMessage.IMAGE -> detectNetworkPushImage(
+                        mChatId,
+                        receiver,
+                        receiverToken,
+                        msg
+                    )
+                    AppConstant.TypeMessage.ALBUM -> {
+                        listImage.forEachIndexed { index, image ->
+                            detectNetworkPushImage(
+                                mChatId,
+                                receiver,
+                                receiverToken,
+                                image,
+                                position = index,
+                                isLastItem = index == (listImage.size - 1)
+                            )
+                        }
+                    }
                     else -> detectNetwork(mChatId, receiver, receiverToken)
                 }
             }
@@ -77,7 +105,14 @@ class MessagePresenterImpl @Inject internal constructor(
         mView?.onSendSuccess()
     }
 
-    private fun detectNetworkPushImage(mChatId: String, receiver: String, receiverToken: String, msg: String, type: Int) {
+    private fun detectNetworkPushImage(
+        mChatId: String,
+        receiver: String,
+        receiverToken: String,
+        msg: String,
+        position: Int = -1,
+        isLastItem: Boolean = false
+    ) {
         var processDone = false
         DatabaseFirebase.Builder()
             .reference(".info/connected")
@@ -86,12 +121,32 @@ class MessagePresenterImpl @Inject internal constructor(
                 if (connected && !processDone) {
                     Log.d("myLog", "connected")
                     StorageFirebase.Builder()
-                        .child("${System.currentTimeMillis()}.${FileUtil.getFileExtension(Uri.parse(msg)!!)}")
+                        .child(
+                            "${System.currentTimeMillis()}.${FileUtil.getFileExtension(
+                                Uri.parse(
+                                    msg
+                                )!!
+                            )}"
+                        )
                         .putFile(Uri.parse(msg))
                         .onCompleteListener {
                             //Change to url image
-                            messageRef.child("Chats").child(mChatId).updateChildren(mapOf("message" to it.result.toString()))
-                            detectNetwork(mChatId, receiver, receiverToken)
+                            when (position) {
+                                -1 -> {
+                                    //IMAGE
+                                    messageRef.child("Chats").child(mChatId)
+                                        .updateChildren(mapOf("message" to it.result.toString()))
+                                    detectNetwork(mChatId, receiver, receiverToken)
+                                }
+                                else -> {
+                                    //ALBUM
+                                    messageRef.child("Chats").child(mChatId).child("listImage")
+                                        .updateChildren(mapOf(position.toString() to it.result.toString()))
+                                    if (isLastItem) {
+                                        detectNetwork(mChatId, receiver, receiverToken)
+                                    }
+                                }
+                            }
                             processDone = true
                         }
                         .onFailureListener {
@@ -184,6 +239,10 @@ class MessagePresenterImpl @Inject internal constructor(
                                 mChatsResponse,
                                 MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE
                             )
+                            AppConstant.TypeMessage.ALBUM -> mView?.addSender(
+                                mChatsResponse,
+                                MessageAdapter.VIEW_TYPE_SENDER_ALBUM
+                            )
                         }
                     }
                     if ((mChatsResponse.receiver == currentId
@@ -199,10 +258,18 @@ class MessagePresenterImpl @Inject internal constructor(
                                 MessageAdapter.VIEW_TYPE_RECEIVER_EMOJI
                             )
                             AppConstant.TypeMessage.IMAGE -> {
-                                if(mChatsResponse.seen != AppConstant.UNSEND) {
+                                if (mChatsResponse.seen != AppConstant.UNSEND) {
                                     mView?.addReceiver(
                                         mChatsResponse,
                                         MessageAdapter.VIEW_TYPE_RECEIVER_IMAGE_CAPTURE
+                                    )
+                                }
+                            }
+                            AppConstant.TypeMessage.ALBUM -> {
+                                if (mChatsResponse.seen != AppConstant.UNSEND) {
+                                    mView?.addReceiver(
+                                        mChatsResponse,
+                                        MessageAdapter.VIEW_TYPE_RECEIVER_ALBUM
                                     )
                                 }
                             }
@@ -281,5 +348,23 @@ class MessagePresenterImpl @Inject internal constructor(
         type: Int
     ) {
         sendMessage(receiver, uriImage.toString(), receiverToken, type)
+    }
+
+    override fun sendAlbumMessage(
+        receiver: String,
+        path: ArrayList<Uri>?,
+        receiverToken: String,
+        image: Int
+    ) {
+        val listImage = arrayListOf<String>()
+        path?.forEach {
+            listImage.add(it.toString())
+        }
+        sendMessage(
+            receiver = receiver,
+            receiverToken = receiverToken,
+            type = image,
+            listImage = listImage
+        )
     }
 }

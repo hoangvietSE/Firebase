@@ -12,6 +12,19 @@ import androidx.databinding.ViewDataBinding
 import com.google.android.material.snackbar.Snackbar
 import com.soict.hoangviet.firebase.application.BaseApplication
 
+const val CLICK_THROTTLE_DELAY = 800L
+
+fun View.onAvoidDoubleClick(
+    throttleDelay: Long = CLICK_THROTTLE_DELAY,
+    onClick: (View) -> Unit
+) {
+    setOnClickListener {
+        onClick(this)
+        isClickable = false
+        postDelayed({ isClickable = true }, throttleDelay)
+    }
+}
+
 /**
  * Extension method to provide simpler access to {@link View#getResources()#getString(int)}.
  */

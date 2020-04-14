@@ -6,4 +6,5 @@ class ChatsResponse {
     val receiver: String = ""
     val message: String = ""
     val seen: Int? = null
+    val listImage: ArrayList<String> = arrayListOf()
 }

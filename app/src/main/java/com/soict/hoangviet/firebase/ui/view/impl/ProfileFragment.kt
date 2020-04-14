@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.Intent
 import android.os.Bundle
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.extension.loadImageUrl
@@ -41,7 +42,7 @@ class ProfileFragment : BaseFragment(), ProfileView {
     }
 
     override fun initListener() {
-        row_information.setOnClickListener {
+        row_information.onAvoidDoubleClick {
             val intent = Intent(context, UpdateProfileActivity::class.java).apply {
                 putExtra(UpdateProfileActivity.EXTRA_USER, mUser)
             }

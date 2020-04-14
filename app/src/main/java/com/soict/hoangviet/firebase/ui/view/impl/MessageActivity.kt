@@ -1,14 +1,20 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
+import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import com.sangcomz.fishbun.define.Define
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
@@ -21,7 +27,12 @@ import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
+import com.soict.hoangviet.firebase.utils.LogUtil
 import kotlinx.android.synthetic.main.activity_message.*
+import kotlinx.android.synthetic.main.item_message_sender.*
+import kotlinx.android.synthetic.main.item_message_sender.view.*
+import kotlinx.android.synthetic.main.item_message_sender_emoji.view.*
+import kotlinx.android.synthetic.main.item_message_sender_image_capture.view.*
 import javax.inject.Inject
 
 
@@ -48,6 +59,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     private val receiverToken: String by lazy {
         intent.getStringExtra(TOKEN_DEVICE_ID)
     }
+    var path = ArrayList<Uri>()
 
     override fun initView() {
         mPresenter.onAttach(this)
@@ -120,20 +132,20 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     }
 
     override fun initListener() {
-        btn_send.setOnClickListener {
+        btn_send.onAvoidDoubleClick {
             val msg: String = edt_message.text.toString()
             if (!TextUtils.isEmpty(msg)) {
                 mPresenter.sendMessage(receiver, msg, receiverToken)
             }
         }
-        toolbar.imvLeft?.setOnClickListener {
+        toolbar.imvLeft?.onAvoidDoubleClick {
             finish()
         }
         edt_message.setOnTouchListener { v, event ->
             if (ll_emoji.isShown) ll_emoji.gone()
             false
         }
-        btn_emoj.setOnClickListener {
+        btn_emoj.onAvoidDoubleClick {
             hideSoftKeyboard()
             Handler().postDelayed({
                 when {
@@ -142,9 +154,21 @@ class MessageActivity : BasePhotoActivity(), MessageView {
                 }
             }, 300)
         }
-        btn_send_image_capture.setOnClickListener {
+        btn_send_image_capture.onAvoidDoubleClick {
             openCamera()
         }
+        btn_send_image_album.onAvoidDoubleClick {
+            openAlbumFishbun()
+        }
+    }
+
+    private fun openAlbumFishbun() {
+        FishBun.with(this)
+            .setImageAdapter(GlideAdapter())
+            .setMaxCount(5)
+            .setMinCount(1)
+            .setActionBarColor(Color.parseColor("#7505b7"), Color.parseColor("#5f00a8"), true)
+            .startAlbum()
     }
 
     override fun addSender(mChatsResponse: ChatsResponse, type: Int) {
@@ -179,9 +203,22 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         recycler_view_message.setLoadingMoreListener {
         }
         recycler_view_message.setOnItemClickListener { parent, viewType, view, position ->
+            when (viewType) {
+                MessageAdapter.VIEW_TYPE_SENDER -> showHideSeenMessage(view.tv_seen)
+                MessageAdapter.VIEW_TYPE_SENDER_EMOJI -> showHideSeenMessage(view.tv_seen_emoji)
+                MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE -> showHideSeenMessage(view.tv_seen_image_capture)
+            }
         }
         recycler_view_message.setLinearLayoutManagerMessage()
         recycler_view_message.disableRefreshing()
+    }
+
+    private fun showHideSeenMessage(view: View) {
+        if (view.isShown) {
+            view.gone()
+        } else {
+            view.visible()
+        }
     }
 
     override fun onSendSuccess() {
@@ -220,5 +257,30 @@ class MessageActivity : BasePhotoActivity(), MessageView {
             receiverToken,
             AppConstant.TypeMessage.IMAGE
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Define.ALBUM_REQUEST_CODE && resultCode == RESULT_OK) {
+            path = data!!.getParcelableArrayListExtra(Define.INTENT_PATH)
+            when (path.size) {
+                1 -> {
+                    mPresenter.sendImageMessage(
+                        receiver,
+                        path[0],
+                        receiverToken,
+                        AppConstant.TypeMessage.IMAGE
+                    )
+                }
+                else -> {
+                    mPresenter.sendAlbumMessage(
+                        receiver,
+                        path,
+                        receiverToken,
+                        AppConstant.TypeMessage.ALBUM
+                    )
+                }
+            }
+        }
     }
 }

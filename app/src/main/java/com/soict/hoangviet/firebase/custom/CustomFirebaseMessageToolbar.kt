@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.loadImageUrl
@@ -48,7 +49,7 @@ class CustomFirebaseMessageToolbar : BaseCustomViewConstrainLayout {
         toolbarMainName = findViewById(R.id.toolbar_main_name)
         imvOnline = findViewById(R.id.imv_online)
         tvActive = findViewById(R.id.tv_active)
-        imvLeft?.setOnClickListener {
+        imvLeft?.onAvoidDoubleClick {
         }
     }
 
