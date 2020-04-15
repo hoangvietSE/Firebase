@@ -22,15 +22,11 @@ inline fun <reified T : Any> ImageView.loadImage(
     @DrawableRes placeHolder: Int,
     @DrawableRes error: Int
 ) {
-    when (T::class) {
-        Int::class.java, String::class.java, Uri::class.java -> {
-            GlideApp.with(context)
-                .load(image)
-                .placeholder(placeHolder)
-                .error(error)
-                .into(this)
-        }
-    }
+    GlideApp.with(context)
+        .load(image)
+        .placeholder(placeHolder)
+        .error(error)
+        .into(this)
 }
 
 fun ImageView.loadImageListener(

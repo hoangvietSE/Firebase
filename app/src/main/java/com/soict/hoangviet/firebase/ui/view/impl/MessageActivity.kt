@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.view.View
@@ -19,6 +20,7 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.common.BasePhotoActivity
+import com.soict.hoangviet.firebase.custom.ZoomImageDialogFragment
 import com.soict.hoangviet.firebase.data.local.Emoji
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -27,12 +29,9 @@ import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.view.MessageView
 import com.soict.hoangviet.firebase.utils.AppConstant
-import com.soict.hoangviet.firebase.utils.LogUtil
 import kotlinx.android.synthetic.main.activity_message.*
-import kotlinx.android.synthetic.main.item_message_sender.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import kotlinx.android.synthetic.main.item_message_sender_emoji.view.*
-import kotlinx.android.synthetic.main.item_message_sender_image_capture.view.*
 import javax.inject.Inject
 
 
@@ -60,6 +59,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         intent.getStringExtra(TOKEN_DEVICE_ID)
     }
     var path = ArrayList<Uri>()
+    lateinit var zoomImageDialogFragment: ZoomImageDialogFragment
 
     override fun initView() {
         mPresenter.onAttach(this)
@@ -206,11 +206,32 @@ class MessageActivity : BasePhotoActivity(), MessageView {
             when (viewType) {
                 MessageAdapter.VIEW_TYPE_SENDER -> showHideSeenMessage(view.tv_seen)
                 MessageAdapter.VIEW_TYPE_SENDER_EMOJI -> showHideSeenMessage(view.tv_seen_emoji)
-                MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE -> showHideSeenMessage(view.tv_seen_image_capture)
+                MessageAdapter.VIEW_TYPE_SENDER_IMAGE_CAPTURE -> {
+                    zoomImageDialogFragment(
+                        mMessageAdapter?.getItemPosition(
+                            position!!,
+                            ChatsResponse::class.java
+                        )!!
+                    )
+                }
             }
         }
         recycler_view_message.setLinearLayoutManagerMessage()
         recycler_view_message.disableRefreshing()
+    }
+
+    private fun zoomImageDialogFragment(data: ChatsResponse) {
+        zoomImageDialogFragment = ZoomImageDialogFragment()
+        zoomImageDialogFragment.arguments = Bundle().apply {
+            putString(ZoomImageDialogFragment.EXTRA_URL, data.message)
+        }
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragmentPrev = supportFragmentManager.findFragmentByTag("zoomImageDialogFragment")
+        fragmentPrev?.let {
+            fragmentTransaction.remove(fragmentPrev)
+        }
+        fragmentTransaction.addToBackStack(null)
+        zoomImageDialogFragment.show(supportFragmentManager, "zoomImageDialogFragment")
     }
 
     private fun showHideSeenMessage(view: View) {
