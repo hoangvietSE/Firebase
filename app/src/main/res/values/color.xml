@@ -7,4 +7,5 @@
     <color name="colorOnline">#05df29</color>
     <color name="colorOffline">#bfbfbf</color>
     <color name="colorMessageScreen">#e0dfe1</color>
+    <color name="colorInfoBackground">#1f1e1f</color>
 </resources>

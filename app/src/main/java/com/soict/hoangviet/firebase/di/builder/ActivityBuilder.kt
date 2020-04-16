@@ -31,4 +31,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(UpdateProfileActivityModule::class)])
     abstract fun bindUpdateProfileActivity(): UpdateProfileActivity
 
+    @ContributesAndroidInjector(modules = [(InfoActivityModule::class)])
+    abstract fun bindInfoActivity(): InfoActivity
+
 }
