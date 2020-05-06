@@ -10,7 +10,7 @@ import com.soict.hoangviet.firebase.R
 class BaseLoadingDialog private constructor(private val context: Context) {
 
     private var mDialog: Dialog? = null
-    private var shown: Boolean? = null
+    private var shown: Boolean = false
 
     //Before initialize instance of class
     //Before class constructor
@@ -29,14 +29,13 @@ class BaseLoadingDialog private constructor(private val context: Context) {
             setContentView(R.layout.layout_loading)
             setCancelable(false)
             setCanceledOnTouchOutside(false)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-        shown = false
     }
 
     fun showLoadingDialog() {
         if (!(context as Activity).isFinishing) {
-            if (!shown!! && mDialog != null) {
+            if (shown && mDialog != null) {
                 force()
                 mDialog?.show()
             }
@@ -45,7 +44,7 @@ class BaseLoadingDialog private constructor(private val context: Context) {
     }
 
     fun hideLoadingDialog() {
-        if (shown!! && (mDialog?.isShowing!!) && mDialog != null) {
+        if (shown && (mDialog?.isShowing!!) && mDialog != null) {
             initialization()
             mDialog?.dismiss()
         }

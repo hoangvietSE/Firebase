@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.define.Define
+import com.soict.hoangviet.baseproject.extension.hideFragmentByTag
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.startActivity
@@ -21,7 +22,7 @@ import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
 import com.soict.hoangviet.firebase.common.BasePhotoActivity
-import com.soict.hoangviet.firebase.custom.ZoomImageDialogFragment
+import com.soict.hoangviet.firebase.custom.dialogfragment.ZoomImageDialogFragment
 import com.soict.hoangviet.firebase.data.local.Emoji
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -225,16 +226,8 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     }
 
     private fun zoomImageDialogFragment(data: ChatsResponse) {
-        zoomImageDialogFragment = ZoomImageDialogFragment()
-        zoomImageDialogFragment.arguments = Bundle().apply {
-            putString(ZoomImageDialogFragment.EXTRA_URL, data.message)
-        }
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragmentPrev = supportFragmentManager.findFragmentByTag("zoomImageDialogFragment")
-        fragmentPrev?.let {
-            fragmentTransaction.remove(fragmentPrev)
-        }
-        fragmentTransaction.addToBackStack(null)
+        zoomImageDialogFragment = ZoomImageDialogFragment.getInstance(data.message)
+        hideFragmentByTag("zoomImageDialogFragment")
         zoomImageDialogFragment.show(supportFragmentManager, "zoomImageDialogFragment")
     }
 

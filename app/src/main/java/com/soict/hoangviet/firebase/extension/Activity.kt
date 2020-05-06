@@ -1,14 +1,21 @@
 package com.soict.hoangviet.baseproject.extension
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
     val fragmentTransaction = beginTransaction()
@@ -16,29 +23,48 @@ fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
     fragmentTransaction.commit()
 }
 
-fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment) {
+fun AppCompatActivity.hideFragmentByTag(tag: String) {
+    val ft = supportFragmentManager.beginTransaction()
+    val frag = supportFragmentManager.findFragmentByTag(tag)
+    frag?.let {
+        ft.remove(it)
+    }
+    ft.addToBackStack(null)
+}
+
+fun AppCompatActivity.addFragment(
+    frameId: Int,
+    fragment: Fragment,
+    bundle: Bundle? = null,
+    addToBackStack: Boolean = false
+) {
     supportFragmentManager.inTransaction {
+        if (addToBackStack) {
+            addToBackStack(fragment::class.java.simpleName)
+        }
+        bundle?.let { fragment.arguments = it }
         add(frameId, fragment)
     }
 }
 
-fun AppCompatActivity.addAndToBackStack(frameId: Int, fragment: Fragment) {
+fun AppCompatActivity.replaceFragment(
+    frameId: Int,
+    fragment: Fragment,
+    bundle: Bundle? = null,
+    addToBackStack: Boolean = false
+) {
     supportFragmentManager.inTransaction {
-        add(frameId, fragment)
-        addToBackStack(null)
-    }
-}
-
-fun AppCompatActivity.replaceFragment(frameId: Int, fragment: Fragment) {
-    supportFragmentManager.inTransaction {
+        if (addToBackStack) {
+            addToBackStack(fragment::class.java.simpleName)
+        }
+        bundle?.let { fragment.arguments = it }
         replace(frameId, fragment)
     }
 }
 
-fun AppCompatActivity.replaceAndToBackStack(frameId: Int, fragment: Fragment) {
-    supportFragmentManager.inTransaction {
-        replace(frameId, fragment)
-        addToBackStack(null)
+fun Fragment.removeFragment() {
+    requireActivity().supportFragmentManager.inTransaction {
+        remove(this@removeFragment)
     }
 }
 
@@ -61,7 +87,26 @@ fun AppCompatActivity.inResourceDrawable(func: Resources.() -> Drawable): Drawab
  */
 fun Activity.hideSoftKeyboard() {
     if (currentFocus != null) {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
     }
+}
+
+@SuppressLint("CheckResult")
+fun completable(func: () -> Unit): Disposable {
+    return Completable.fromCallable {
+    }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            func()
+        }
+}
+
+fun completableTimer(func: () -> Unit, timer: Long = 2L): Disposable {
+    return Completable.timer(timer, TimeUnit.SECONDS)
+        .subscribe {
+            func()
+        }
 }
