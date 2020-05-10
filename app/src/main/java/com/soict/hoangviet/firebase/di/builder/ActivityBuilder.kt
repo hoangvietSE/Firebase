@@ -34,4 +34,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(InfoActivityModule::class)])
     abstract fun bindInfoActivity(): InfoActivity
 
+    @ContributesAndroidInjector(modules = [(TutorialActivityModule::class)])
+    abstract fun bindTutorialActivity(): TutorialActivity
+
 }

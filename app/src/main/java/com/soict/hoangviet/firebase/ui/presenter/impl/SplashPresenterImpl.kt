@@ -24,4 +24,20 @@ class SplashPresenterImpl @Inject internal constructor(
             getView()?.showError()
         })
     }
+
+    override fun checkFirstTimeForApp() {
+        when {
+            //First time share preference is false
+            !mAppSharePreference?.get(
+                AppConstant.SharePreference.FIRST_TIME_APP,
+                Boolean::class.java
+            )!! -> {
+                mAppSharePreference?.put(AppConstant.SharePreference.FIRST_TIME_APP, true)
+                mView?.goToTutorialScreen()
+            }
+            else -> {
+                mView?.checkCurrentUser()
+            }
+        }
+    }
 }

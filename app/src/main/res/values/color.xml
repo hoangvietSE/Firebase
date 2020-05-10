@@ -8,4 +8,7 @@
     <color name="colorOffline">#bfbfbf</color>
     <color name="colorMessageScreen">#e0dfe1</color>
     <color name="colorInfoBackground">#1f1e1f</color>
+    <color name="colorTutorialOne">#d2ddfd</color>
+    <color name="colorTutorialTwo">#02bbc0</color>
+    <color name="colorTutorialThree">#ffffff</color>
 </resources>

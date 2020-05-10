@@ -6,7 +6,6 @@ import com.soict.hoangviet.firebase.ui.presenter.InfoPresenter
 import javax.inject.Inject
 
 class InfoActivity : BaseActivity(), InfoView {
-
     override val mLayoutRes: Int
         get() = R.layout.activity_info
 

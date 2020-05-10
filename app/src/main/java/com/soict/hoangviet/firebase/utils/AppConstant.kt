@@ -1,7 +1,7 @@
 package com.soict.hoangviet.firebase.utils
 
 object AppConstant {
-    const val PREF_NAME = "app_sharePreference"
+    const val PREF_DEFAULT = "app_sharePreference"
     const val OFFLINE = 0
     const val ONLINE = 1
     const val UNSEND = -1
@@ -11,6 +11,7 @@ object AppConstant {
     object SharePreference {
         const val USER = "user"
         const val DEVICE_TOKEN = "deviceToken"
+        const val FIRST_TIME_APP = "firstTimeApp"
     }
 
     object DataBaseRef {

@@ -2,6 +2,7 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
@@ -9,6 +10,7 @@ import com.soict.hoangviet.baseproject.extension.inResourceString
 import com.soict.hoangviet.baseproject.extension.startActivity
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DialogUtil
@@ -34,13 +36,13 @@ class SplashActivity : BaseActivity(), SplashView {
 
     private fun checkNetworkConnection() {
         if (hasNetworkConnection()) {
-            checkCurrentUser()
+            mPresenter.checkFirstTimeForApp()
         } else {
             showAlertNoNetworkConnection()
         }
     }
 
-    private fun checkCurrentUser() {
+    override fun checkCurrentUser() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             mPresenter.saveCurrentUser()
         } else {
@@ -59,6 +61,11 @@ class SplashActivity : BaseActivity(), SplashView {
         toast(inResourceString {
             getString(R.string.error_happen)
         })
+    }
+
+    override fun goToTutorialScreen() {
+        startActivity<TutorialActivity>()
+        finish()
     }
 
     private fun goToLogin() {

@@ -3,13 +3,14 @@ package com.soict.hoangviet.baseproject.data.sharepreference
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.sangcomz.fishbun.define.Define
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.utils.AppConstant
 
 class AppSharePreference constructor(var context: Context?) : SharePreference {
 
     private val mSharedPreferences: SharedPreferences
-        get() = context?.getSharedPreferences(AppConstant.PREF_NAME, Context.MODE_PRIVATE)!!
+        get() = context?.getSharedPreferences(AppConstant.PREF_DEFAULT, Context.MODE_PRIVATE)!!
     private val mGson = Gson()
 
     override fun <T> put(key: String, value: T) {
@@ -37,7 +38,12 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
     }
 
     override fun clearAllPreference() {
-        mSharedPreferences.edit().clear().commit()
+        val editor = mSharedPreferences.edit()
+        editor.apply {
+            remove(AppConstant.SharePreference.USER)
+            remove(AppConstant.SharePreference.DEVICE_TOKEN)
+        }
+        editor.apply()
     }
 
     private fun <T> toJsonFromObject(value: T): String {

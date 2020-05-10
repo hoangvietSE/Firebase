@@ -5,6 +5,9 @@
     <string name="error_happen">Có lỗi xảy ra. Vui lòng thử lại!</string>
     <string name="share_option">Chọn hình thức chia sẻ</string>
 
+    <!--Tutorial-->
+    <string name="tutorial_button">Bắt đầu</string>
+
     <!--Main-->
     <string name="main_login_title">Đăng nhập</string>
     <string name="main_register_title">Đăng ký</string>

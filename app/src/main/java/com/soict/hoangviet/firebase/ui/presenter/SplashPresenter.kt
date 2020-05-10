@@ -5,4 +5,5 @@ import com.soict.hoangviet.firebase.ui.view.SplashView
 
 interface SplashPresenter : BasePresenter<SplashView, SplashInteractor> {
     fun saveCurrentUser()
+    fun checkFirstTimeForApp()
 }
