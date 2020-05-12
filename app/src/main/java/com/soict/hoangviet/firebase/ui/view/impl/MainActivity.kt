@@ -3,10 +3,8 @@ package com.soict.hoangviet.firebase.ui.view.impl
 import android.os.Build
 import android.os.Handler
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
@@ -18,9 +16,7 @@ import com.soict.hoangviet.firebase.custom.ItemMenuNav
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
-import com.soict.hoangviet.firebase.ui.interactor.impl.MainInteractorImpl
 import com.soict.hoangviet.firebase.ui.presenter.MainPresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.MainPresenterImpl
 import com.soict.hoangviet.firebase.ui.view.MainView
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_main.*
@@ -180,7 +176,7 @@ class MainActivity : BaseActivity(), MainView,
         bottom_bar.onItemSelected = {
             viewPager.currentItem = it
         }
-        imv_function.onAvoidDoubleClick {
+        imv_back.onAvoidDoubleClick {
             openDrawer()
         }
     }

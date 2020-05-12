@@ -16,8 +16,8 @@ import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.define.Define
 import com.soict.hoangviet.baseproject.extension.hideFragmentByTag
 import com.soict.hoangviet.baseproject.extension.hideSoftKeyboard
+import com.soict.hoangviet.baseproject.extension.launchActivity
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
-import com.soict.hoangviet.baseproject.extension.startActivity
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.EmojiParentAdapter
 import com.soict.hoangviet.firebase.adapter.MessageAdapter
@@ -163,7 +163,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
             openAlbumFishbun()
         }
         toolbar.imvRightOne?.setOnClickListener {
-            startActivity<InfoActivity>()
+            launchActivity<InfoActivity>()
         }
     }
 

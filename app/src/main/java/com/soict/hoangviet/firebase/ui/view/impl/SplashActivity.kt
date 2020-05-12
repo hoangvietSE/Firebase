@@ -2,15 +2,13 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
 import com.soict.hoangviet.baseproject.extension.inResourceString
-import com.soict.hoangviet.baseproject.extension.startActivity
+import com.soict.hoangviet.baseproject.extension.launchActivity
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
-import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DialogUtil
@@ -64,12 +62,12 @@ class SplashActivity : BaseActivity(), SplashView {
     }
 
     override fun goToTutorialScreen() {
-        startActivity<TutorialActivity>()
+        launchActivity<TutorialActivity>()
         finish()
     }
 
     private fun goToLogin() {
-        startActivity<LoginActivity>()
+        launchActivity<LoginActivity>()
         finish()
     }
 

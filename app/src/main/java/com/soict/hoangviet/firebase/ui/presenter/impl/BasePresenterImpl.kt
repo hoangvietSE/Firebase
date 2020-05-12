@@ -14,7 +14,7 @@ import com.soict.hoangviet.firebase.data.network.api.ApiException
 import com.soict.hoangviet.firebase.data.network.api.NetworkConnectionInterceptor
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
-import com.soict.hoangviet.firebase.ui.interactor.BaseInterator
+import com.soict.hoangviet.firebase.ui.interactor.BaseInteractor
 import com.soict.hoangviet.firebase.ui.presenter.BasePresenter
 import com.soict.hoangviet.firebase.ui.view.BaseView
 import com.soict.hoangviet.firebase.ui.view.impl.MainActivity
@@ -28,7 +28,7 @@ import java.net.SocketException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-abstract class BasePresenterImpl<V : BaseView, I : BaseInterator>
+abstract class BasePresenterImpl<V : BaseView, I : BaseInteractor>
 internal constructor(
     protected var mInteractor: I?,
     protected var mAppSharePreference: SharePreference?

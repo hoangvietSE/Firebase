@@ -1,4 +1,4 @@
 package com.soict.hoangviet.firebase.ui.interactor
 
-interface UpdateProfileInteractor : BaseInterator {
+interface UpdateProfileInteractor : BaseInteractor {
 }

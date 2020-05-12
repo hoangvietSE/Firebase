@@ -1,7 +1,7 @@
 package com.soict.hoangviet.firebase.ui.view.impl;
 
 import androidx.viewpager2.widget.ViewPager2
-import com.soict.hoangviet.baseproject.extension.startActivity
+import com.soict.hoangviet.baseproject.extension.launchActivity
 import com.soict.hoangviet.firebase.R;
 import com.soict.hoangviet.firebase.adapter.TutorialAdapter
 import com.soict.hoangviet.firebase.data.local.entity.TutorialEntity
@@ -34,7 +34,7 @@ class TutorialActivity : BaseActivity(), TutorialView {
             ), false
         )
         mTutorialAdapter.setOnStartClickListener {
-            startActivity<LoginActivity>()
+            launchActivity<LoginActivity>()
             finish()
         }
         vp_tutorial.adapter = mTutorialAdapter

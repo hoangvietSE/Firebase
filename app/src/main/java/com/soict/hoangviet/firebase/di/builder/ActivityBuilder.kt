@@ -37,4 +37,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(TutorialActivityModule::class)])
     abstract fun bindTutorialActivity(): TutorialActivity
 
+    @ContributesAndroidInjector(modules = [(NotificationActivityModule::class)])
+    abstract fun bindNotificationActivity(): NotificationActivity
+
 }

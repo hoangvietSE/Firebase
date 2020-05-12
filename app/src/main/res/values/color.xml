@@ -12,4 +12,5 @@
     <color name="colorTutorialOne">#d2ddfd</color>
     <color name="colorTutorialTwo">#02bbc0</color>
     <color name="colorTutorialThree">#ffffff</color>
+    <color name="switch_bg_selected">#fabbfc</color>
 </resources>

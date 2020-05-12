@@ -70,8 +70,8 @@ class AppFirebaseMessageService : FirebaseMessagingService() {
     private fun sendNotification(dataNotification: DataNotification) {
         val intent = Intent(this, MessageActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(MessageActivity.EXTRA_USER_ID, dataNotification.receiverId)
-            putExtra(MessageActivity.TOKEN_DEVICE_ID, dataNotification.receiverToken)
+            putExtra(MessageActivity.EXTRA_USER_ID, dataNotification.senderId)
+            putExtra(MessageActivity.TOKEN_DEVICE_ID, dataNotification.senderToken)
         }
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,

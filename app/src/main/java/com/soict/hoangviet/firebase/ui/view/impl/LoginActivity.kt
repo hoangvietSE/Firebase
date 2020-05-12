@@ -1,7 +1,7 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import com.soict.hoangviet.baseproject.extension.launchActivity
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
-import com.soict.hoangviet.baseproject.extension.startActivity
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.custom.FirebaseAuthBaseActivity
@@ -77,7 +77,7 @@ class LoginActivity : FirebaseAuthBaseActivity(), LoginView {
     }
 
     override fun goToMainScreen() {
-        startActivity<MainActivity>()
+        launchActivity<MainActivity>()
         finish()
     }
 

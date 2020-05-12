@@ -11,8 +11,8 @@ data class DataNotification(
 	val body: String? = null,
 
 	@field:SerializedName("receiverId")
-	val receiverId: String? = null,
+	val senderId: String? = null,
 
 	@field:SerializedName("receiverToken")
-	val receiverToken: String? = null
+	val senderToken: String? = null
 )

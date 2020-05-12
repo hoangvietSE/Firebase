@@ -51,7 +51,6 @@ class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentIn
             .application(this)
             .build()
             .inject(this)
-//        subscribeTopic()
         getDeviceToken()
     }
 

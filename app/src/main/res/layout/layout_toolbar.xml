@@ -8,15 +8,18 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imv_function"
+        android:id="@+id/imv_back"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="0dp"
+        android:clickable="true"
+        android:background="?selectableItemBackgroundBorderless"
         android:scaleX="0.7"
         android:scaleY="0.7"
+        android:tint="@color/md_white_1000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_back_white" />
+        tools:src="@drawable/ic_back" />
 
     <TextView
         android:id="@+id/toolbar_main_name"
@@ -27,7 +30,7 @@
         android:textSize="@dimen/text_size_18_sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imv_function"
+        app:layout_constraintStart_toEndOf="@id/imv_back"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Home" />
 
@@ -43,39 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Đăng nhập" />
-
-    <ImageView
-        android:id="@+id/imv_right_one"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="0dp"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_info_primary" />
-
-    <ImageView
-        android:id="@+id/imv_right_second"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="0dp"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imv_right_one"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_video_primary" />
-
-    <ImageView
-        android:id="@+id/imv_right_three"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="0dp"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imv_right_second"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_call_primary" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

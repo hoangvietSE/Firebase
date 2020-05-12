@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BaseToolbar">
-        <attr name="bt_icon" format="integer|reference" />
-        <attr name="bt_title" format="string" />
+    <declare-styleable name="CustomFirebaseToolbar">
+        <attr name="cft_icon" format="integer|reference" />
+        <attr name="cft_title" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BaseToolbarMessage">

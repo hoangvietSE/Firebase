@@ -4,6 +4,6 @@ import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
 import com.soict.hoangviet.firebase.data.network.response.MessageNotificationResponse
 import io.reactivex.Single
 
-interface MessageInteractor : BaseInterator {
+interface MessageInteractor : BaseInteractor {
     fun pushNotificationToReceiver(messageRequestBody: MessageRequestBody): Single<MessageNotificationResponse>
 }

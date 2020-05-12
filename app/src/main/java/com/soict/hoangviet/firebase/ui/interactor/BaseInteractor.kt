@@ -1,5 +1,5 @@
 package com.soict.hoangviet.firebase.ui.interactor
 
-interface BaseInterator {
+interface BaseInteractor {
 
 }
