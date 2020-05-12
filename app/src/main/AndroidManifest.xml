@@ -67,7 +67,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.view.impl.InfoActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

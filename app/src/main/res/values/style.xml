@@ -74,6 +74,4 @@
         <item name="android:background">?selectableItemBackgroundBorderless</item>
         <!--        <item name="android:colorControlHighlight">@color/colorPrimary</item>-->
     </style>
-
-
 </resources>
