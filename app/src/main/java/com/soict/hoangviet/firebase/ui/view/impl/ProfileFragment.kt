@@ -5,13 +5,13 @@ import android.os.Bundle
 import com.soict.hoangviet.baseproject.extension.launchActivity
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.custom.dialogfragment.LanguageDialogFragment
 import com.soict.hoangviet.firebase.data.network.response.User
+import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.extension.loadImageUrl
-import com.soict.hoangviet.firebase.ui.interactor.impl.ProfileInteractorImpl
-import com.soict.hoangviet.firebase.ui.presenter.MessagePresenter
 import com.soict.hoangviet.firebase.ui.presenter.ProfilePresenter
-import com.soict.hoangviet.firebase.ui.presenter.impl.ProfilePresenterImpl
 import com.soict.hoangviet.firebase.ui.view.ProfileView
+import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -23,6 +23,8 @@ class ProfileFragment : BaseFragment(), ProfileView {
         get() = R.layout.fragment_profile
     @Inject
     lateinit var mPresenter: ProfilePresenter
+    @Inject
+    lateinit var mSharePreference: SharePreference
     private lateinit var mUser: User
 
     companion object {
@@ -50,6 +52,22 @@ class ProfileFragment : BaseFragment(), ProfileView {
         }
         row_notification.onAvoidDoubleClick {
             requireActivity().launchActivity<NotificationActivity>()
+        }
+        row_language.onAvoidDoubleClick {
+            val languageDialogFragment = LanguageDialogFragment.getInstance(mSharePreference)
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            val fragment =
+                requireActivity().supportFragmentManager.findFragmentByTag(AppConstant.DialogFragmentTag.LANGUAGE)
+            fragment?.let {
+                fragmentTransaction.remove(it)
+            }
+            fragmentTransaction.addToBackStack(null)
+            languageDialogFragment.show(fragmentTransaction, AppConstant.DialogFragmentTag.LANGUAGE)
+            languageDialogFragment.setOnClickLanguageListener {
+                requireActivity().launchActivity<MainActivity> {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+            }
         }
     }
 

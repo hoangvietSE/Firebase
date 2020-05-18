@@ -110,8 +110,8 @@ fun completable(func: () -> Unit): Disposable {
         }
 }
 
-fun completableTimer(func: () -> Unit, timer: Long = 2L): Disposable {
-    return Completable.timer(timer, TimeUnit.SECONDS)
+fun completableTimer(func: () -> Unit, timer: Long = 2000L): Disposable {
+    return Completable.timer(timer, TimeUnit.MILLISECONDS)
         .subscribe {
             func()
         }

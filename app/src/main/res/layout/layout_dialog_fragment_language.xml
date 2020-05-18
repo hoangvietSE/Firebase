@@ -15,11 +15,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_32_dp"
-            android:padding="@dimen/content_padding_4_dp">
+            android:padding="@dimen/content_padding_8_dp">
 
             <ImageView
                 android:id="@+id/imv_flag_vn"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/flag_viet_nam" />
@@ -39,11 +39,11 @@
             android:id="@+id/rl_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/content_padding_4_dp">
+            android:padding="@dimen/content_padding_8_dp">
 
             <ImageView
                 android:id="@+id/imv_flag_en"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/flag_english" />

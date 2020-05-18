@@ -27,4 +27,14 @@ object AppConstant {
         const val IMAGE = 2
         const val ALBUM = 3
     }
+
+    object DialogFragmentTag {
+        const val LANGUAGE = "language"
+    }
+
+    object Language {
+        const val VIETNAMESE = "vi"
+        const val ENGLISH = "en"
+    }
+
 }
