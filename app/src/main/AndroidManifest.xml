@@ -18,9 +18,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:theme="@style/ChangePasswordTheme"
-            android:name=".ui.view.impl.ChangePasswordActivity"
+            android:name=".ui.view.impl.FaqActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.impl.ChangePasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ChangePasswordTheme" />
         <activity
             android:name=".ui.view.impl.NotificationActivity"
             android:screenOrientation="portrait" />

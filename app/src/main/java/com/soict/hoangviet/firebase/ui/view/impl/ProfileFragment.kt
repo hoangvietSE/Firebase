@@ -72,6 +72,9 @@ class ProfileFragment : BaseFragment(), ProfileView {
         row_changepass.onAvoidDoubleClick {
             requireActivity().launchActivity<ChangePasswordActivity>()
         }
+        row_faq.onAvoidDoubleClick {
+            requireActivity().launchActivity<FaqActivity>()
+        }
     }
 
     override fun onDetach() {

@@ -43,4 +43,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(ChangePasswordActivityModule::class)])
     abstract fun bindChangePasswordActivity(): ChangePasswordActivity
 
+    @ContributesAndroidInjector(modules = [(FaqActivityModule::class)])
+    abstract fun bindFaqActivity(): FaqActivity
+
 }
