@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tutorial_button">Start</string>
+    <string name="main_login_title">Login</string>
+    <string name="main_register_title">Register</string>
+    <string name="login_toolbar_title">Login</string>
+    <string name="login_email_hint"><b>Email</b></string>
+    <string name="login_password_hint"><b>Mật khẩu</b></string>
+    <string name="login_button_title">Login</string>
+    <string name="login_success">Successful login</string>
+    <string name="login_error">Failed login. Please try again</string>
+    <string name="login_no_account_yet">Are you member? <u>Register</u></string>
+    <string name="login_social">Login with</string>
+    <string name="register_toolbar_title">Register</string>
+    <string name="register_email_hint"><font size="12">Email</font></string>
+    <string name="register_password_hint"><font size="12">Password</font></string>
+    <string name="register_username_hint"><font size="12">Username</font></string>
+    <string name="register_phone_hint"><font size="12">Phone number</font></string>
+    <string name="register_button_title">Register</string>
+    <string name="register_fullname_empty">Please enter full name</string>
+    <string name="register_email_empty">Please enter email</string>
+    <string name="register_email_error">Please enter valid email</string>
+    <string name="register_phone_empty">Please enter phone number</string>
+    <string name="register_phone_error">Please enter valid phone number</string>
+    <string name="register_password_empty">Please enter password</string>
+    <string name="register_password_error">Password must be at least 6 characters</string>
+    <string name="register_success">Successful register. Please login</string>
+    <string name="register_error">Failed register. Please try again</string>
+    <string name="register_member_already">Do you have account? <font color="#CE93D8">Login</font></string>
+    <string name="menu_home">Home</string>
+    <string name="menu_friends">Friends</string>
+    <string name="menu_profile">Profile</string>
+    <string name="profile_setting_update">Update infomation</string>
+    <string name="profile_setting_notification">Notifcation setting</string>
+    <string name="profile_setting_language">Language setting</string>
+    <string name="profile_setting_changepass">Change password</string>
+    <string name="profile_setting_faq">FAQ</string>
+    <string name="profile_setting_contact">Contact</string>
+    <string name="active_otp_title_toolbar">Accuracy account</string>
+    <string name="active_otp_title">Confirm</string>
+    <string name="active_otp_phone">Phone number</string>
+    <string name="active_otp_phone_hint"><font size="14">Enter phone number</font></string>
+    <string name="active_otp_code">OTP code</string>
+    <string name="active_otp_code_hint"><font size="14">Please enter OTP code</font></string>
+    <string name="active_otp_resend">Resend OTP code</string>
+    <string name="active_otp_send">Get OTP code</string>
+    <string name="notification_title_screen">Notification setting</string>
+    <string name="notification_toolbar_title">Notification</string>
+    <string name="message_push_notification_title">You have new message</string>
+    <string name="update_profile_title_name">Name:</string>
+    <string name="update_profile_title_address">Address:</string>
+    <string name="update_profile_title_phone">Phone number:</string>
+    <string name="update_profile_title_email">Email:</string>
+    <string name="update_profile_title_gender">Gender:</string>
+    <string name="update_profile_title_date">Date of birth:</string>
+    <string name="update_profile_avatar_upload_error">An error occurred while updating the avatar</string>
+    <string name="update_profile_birthday_empty">Please select a birthday</string>
+    <string name="update_profile_name_empty">Please enter full name</string>
+    <string name="update_profile_denied_request">You have not granted memory access!</string>
+    <string name="update_profile_error_date">Cannot select future date!</string>
+    <string name="update_profile_done">Finish</string>
+    <string name="active_otp_resend_message">Do you want to resend the OTP code?</string>
+    <string name="active_otp_code_error">Authentication code incorrect. Please enter again</string>
+    <string name="active_otp_send_code_error">An error occurred. Please try again</string>
+    <string name="active_otp_success">Successful account registration</string>
+    <string name="active_otp_error">Authentication code incorrect. Please enter again</string>
+    <string name="update_profile_toolbar_title">Update personal information</string>
+    <string name="update_profile_image_title">Choose an avatar</string>
+    <string name="update_profile_image_des">Upload Images</string>
+    <string name="share_option">Choose form of sharing</string>
+</resources>

@@ -42,7 +42,6 @@
 
     <!--Main-->
     <string name="home_toolbar_title">Messenger</string>
-    <string name="menu_home">Home</string>
     <string name="menu_friends">Bạn bè</string>
     <string name="menu_profile">Cá nhân</string>
     <string name="nav_open">Open</string>
@@ -90,5 +89,21 @@
     <string name="message_push_notification_title">Bạn nhận được tin nhắn mới</string>
     <string name="notification_toolbar_title">Thông báo</string>
     <string name="notification_title_screen">Cài đặt thông báo</string>
+    <string name="menu_home">Trang chủ</string>
+
+    <!--    change password-->
+    <string name="change_password_title">Đổi mật khẩu</string>
+    <string name="change_password_old">Mật khẩu cũ</string>
+    <string name="change_password_new">Mật khẩu mới</string>
+    <string name="change_password_retype">Xác nhận mật khẩu mới</string>
+    <string name="change_password_success">Đổi mật khẩu thành công</string>
+    <string name="change_password_failed">Đổi mật khẩu thất bại.Vui lòng thử lại</string>
+    <string name="change_password_old_no_type">Vui lòng nhập mật khẩu cũ!</string>
+    <string name="change_password_new_no_type">Vui lòng nhập mật khẩu mới!</string>
+    <string name="change_password_retype_no_type">Vui lòng nhập xác nhận mật khẩu mới!</string>
+    <string name="change_password_old_error_type">Mật khẩu cũ không đúng định dạng!</string>
+    <string name="change_password_new_error_type">Mật khẩu mới không đúng định dạng!</string>
+    <string name="change_password_not_exactly">Xác nhận mật khẩu không khớp!</string>
+    <string name="change_password_btn_save">Lưu</string>
 
 </resources>

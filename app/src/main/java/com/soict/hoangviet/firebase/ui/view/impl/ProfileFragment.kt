@@ -69,6 +69,9 @@ class ProfileFragment : BaseFragment(), ProfileView {
                 }
             }
         }
+        row_changepass.onAvoidDoubleClick {
+            requireActivity().launchActivity<ChangePasswordActivity>()
+        }
     }
 
     override fun onDetach() {

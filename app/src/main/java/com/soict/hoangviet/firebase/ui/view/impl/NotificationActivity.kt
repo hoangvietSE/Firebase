@@ -37,28 +37,27 @@ class NotificationActivity : BaseActivity(), NotificationView {
         toolbar.setOnBackClickListener {
             finish()
         }
-        switch_notification.setOnCheckedChangeListener { compoundButton, isChecked ->
-            switch_notification.isChecked = isChecked
-            when {
-                isChecked -> {
-                    bg_switch.setBackgroundColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.md_green_50
-                        )
-                    )
-                }
-                else -> {
-                    bg_switch.setBackgroundColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.md_white_1000
-                        )
-                    )
-                }
-            }
+        switch_notification.observableFromView {
+            switch_notification.isChecked = it
+                    when {
+                        it -> {
+                            bg_switch.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    this,
+                                    R.color.md_green_50
+                                )
+                            )
+                        }
+                        else -> {
+                            bg_switch.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    this,
+                                    R.color.md_white_1000
+                                )
+                            )
+                        }
+                    }
         }
-        switch_notification.observableFromView()
             .debounce(300, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .subscribeOn(Schedulers.io())

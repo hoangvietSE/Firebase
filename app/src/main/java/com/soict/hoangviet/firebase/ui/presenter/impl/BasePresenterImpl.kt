@@ -31,7 +31,7 @@ import java.util.concurrent.TimeoutException
 abstract class BasePresenterImpl<V : BaseView, I : BaseInteractor>
 internal constructor(
     protected var mInteractor: I?,
-    protected var mAppSharePreference: SharePreference?
+    protected var mAppSharePreference: SharePreference
 ) : BasePresenter<V, I> {
     protected var mView: V? = null
     protected var mCompositeDisposable: CompositeDisposable? = null

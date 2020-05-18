@@ -2,7 +2,12 @@ package com.soict.hoangviet.baseproject.extension
 
 import android.graphics.Bitmap
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
+import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -42,6 +47,21 @@ fun Bitmap.toBase64(): String {
  */
 fun runDelayed(action: () -> Unit, delay: Long, timeUnit: TimeUnit = TimeUnit.MILLISECONDS) {
     Handler().postDelayed(action, timeUnit.toMillis(delay))
+}
+
+fun Pair<TextInputLayout, EditText>.addTextChangeListener() {
+    second.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            first.error = null
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            first.isPasswordVisibilityToggleEnabled = s!!.isNotEmpty()
+        }
+    })
 }
 
 

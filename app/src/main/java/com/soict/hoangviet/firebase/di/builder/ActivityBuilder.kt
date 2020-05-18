@@ -40,4 +40,7 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [(NotificationActivityModule::class)])
     abstract fun bindNotificationActivity(): NotificationActivity
 
+    @ContributesAndroidInjector(modules = [(ChangePasswordActivityModule::class)])
+    abstract fun bindChangePasswordActivity(): ChangePasswordActivity
+
 }

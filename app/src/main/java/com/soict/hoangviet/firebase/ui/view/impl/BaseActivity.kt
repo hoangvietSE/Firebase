@@ -14,7 +14,7 @@ import javax.inject.Inject
 abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
     BaseFragment.CallBack {
     protected open val mLayoutRes: Int? = null
-    private var mBaseLoadingDialog: BaseLoadingDialog? = null
+    private lateinit var mBaseLoadingDialog: BaseLoadingDialog
     @Inject
     lateinit var mSharedPreferences: SharePreference
 
@@ -47,11 +47,15 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
     }
 
     override fun showLoading() {
-        mBaseLoadingDialog?.let { it.showLoadingDialog() }
+        mBaseLoadingDialog.let {
+            it.showLoadingDialog()
+        }
     }
 
     override fun hideLoading() {
-        mBaseLoadingDialog?.let { it.hideLoadingDialog() }
+        mBaseLoadingDialog.let {
+            it.hideLoadingDialog()
+        }
     }
 
     protected fun startActivity(classOfT: Class<*>) {

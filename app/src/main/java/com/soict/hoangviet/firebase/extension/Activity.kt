@@ -117,9 +117,10 @@ fun completableTimer(func: () -> Unit, timer: Long = 2000L): Disposable {
         }
 }
 
-fun Switch.observableFromView(): Observable<Boolean> {
+fun Switch.observableFromView(onCheckedListener: (Boolean) -> Unit): Observable<Boolean> {
     val subject = PublishSubject.create<Boolean>()
     setOnCheckedChangeListener { compoundButton, isChecked ->
+        onCheckedListener?.invoke(isChecked)
         subject.onNext(isChecked)
     }
     return subject

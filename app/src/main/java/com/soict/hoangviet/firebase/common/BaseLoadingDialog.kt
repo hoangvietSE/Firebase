@@ -35,7 +35,7 @@ class BaseLoadingDialog private constructor(private val context: Context) {
 
     fun showLoadingDialog() {
         if (!(context as Activity).isFinishing) {
-            if (shown && mDialog != null) {
+            if (!shown && mDialog != null) {
                 force()
                 mDialog?.show()
             }
