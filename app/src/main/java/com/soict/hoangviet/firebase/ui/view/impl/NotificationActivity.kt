@@ -1,11 +1,15 @@
 package com.soict.hoangviet.firebase.ui.view.impl;
 
 import androidx.core.content.ContextCompat
+import com.soict.hoangviet.baseproject.extension.observableFromView
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.local.entity.NotificationSetting
 import com.soict.hoangviet.firebase.ui.presenter.NotificationPresenter
 import com.soict.hoangviet.firebase.ui.view.NotificationView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_notification.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NotificationActivity : BaseActivity(), NotificationView {
@@ -34,7 +38,6 @@ class NotificationActivity : BaseActivity(), NotificationView {
             finish()
         }
         switch_notification.setOnCheckedChangeListener { compoundButton, isChecked ->
-            mPresenter.setNotificationStatus(isChecked)
             switch_notification.isChecked = isChecked
             when {
                 isChecked -> {
@@ -55,6 +58,15 @@ class NotificationActivity : BaseActivity(), NotificationView {
                 }
             }
         }
+        switch_notification.observableFromView()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                mPresenter.setNotificationStatus(it)
+            }
+
     }
 
     override fun onFragmentAttached() {

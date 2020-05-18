@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/content_padding_32_dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_vn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_32_dp"
+            android:padding="@dimen/content_padding_4_dp">
+
+            <ImageView
+                android:id="@+id/imv_flag_vn"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/flag_viet_nam" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imv_flag_vn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_8_dp"
+                android:text="Vietnamese"
+                android:textColor="@color/md_black_1000"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_en"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/content_padding_4_dp">
+
+            <ImageView
+                android:id="@+id/imv_flag_en"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/flag_english" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imv_flag_en"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_8_dp"
+                android:text="English"
+                android:textColor="@color/md_black_1000"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

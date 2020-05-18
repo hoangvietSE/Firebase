@@ -12,6 +12,7 @@ object AppConstant {
         const val USER = "user"
         const val DEVICE_TOKEN = "deviceToken"
         const val FIRST_TIME_APP = "firstTimeApp"
+        const val LANGUAGE = "language"
     }
 
     object DataBaseRef {

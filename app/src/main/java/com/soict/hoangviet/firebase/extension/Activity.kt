@@ -7,14 +7,20 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.soict.hoangviet.firebase.R
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.activity_notification.*
 import java.util.concurrent.TimeUnit
 
 fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
@@ -109,4 +115,12 @@ fun completableTimer(func: () -> Unit, timer: Long = 2L): Disposable {
         .subscribe {
             func()
         }
+}
+
+fun Switch.observableFromView(): Observable<Boolean> {
+    val subject = PublishSubject.create<Boolean>()
+    setOnCheckedChangeListener { compoundButton, isChecked ->
+        subject.onNext(isChecked)
+    }
+    return subject
 }
