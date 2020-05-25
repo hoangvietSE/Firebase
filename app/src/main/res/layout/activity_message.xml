@@ -88,6 +88,7 @@
                         android:src="@drawable/ic_album_primary" />
 
                     <ImageView
+                        android:id="@+id/btn_send_speech"
                         style="@style/ButtonBottomMessage"
                         android:src="@drawable/ic_voice_primary" />
                 </LinearLayout>

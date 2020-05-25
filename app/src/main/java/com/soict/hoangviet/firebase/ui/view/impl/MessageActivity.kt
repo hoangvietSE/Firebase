@@ -1,12 +1,16 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
+import android.speech.RecognizerIntent
 import android.text.TextUtils
 import android.view.View
+import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -33,7 +37,9 @@ import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.item_message_sender.view.*
 import kotlinx.android.synthetic.main.item_message_sender_emoji.view.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class MessageActivity : BasePhotoActivity(), MessageView {
@@ -44,6 +50,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         const val FACE_EMOJI = 0
         const val FISH_EMOJI = 1
         const val KITTY_EMOJI = 2
+        const val REQUEST_CODE_SPEECH = 1009
     }
 
     override val mLayoutRes: Int
@@ -181,6 +188,28 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         toolbar.imvRightOne?.setOnClickListener {
             launchActivity<InfoActivity>()
         }
+        btn_send_speech.setOnClickListener {
+            openSpeechApi()
+        }
+    }
+
+    private fun openSpeechApi() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak")
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH)
+        } catch (a: ActivityNotFoundException) {
+            Toast.makeText(
+                applicationContext,
+                getString(R.string.device_not_support),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun openAlbumFishbun() {
@@ -313,6 +342,19 @@ class MessageActivity : BasePhotoActivity(), MessageView {
                         receiverToken,
                         AppConstant.TypeMessage.ALBUM
                     )
+                }
+            }
+        }
+        when (requestCode) {
+            REQUEST_CODE_SPEECH -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.let {
+                        mPresenter.sendMessage(
+                            receiver,
+                            it.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0).toString(),
+                            receiverToken
+                        )
+                    }
                 }
             }
         }
