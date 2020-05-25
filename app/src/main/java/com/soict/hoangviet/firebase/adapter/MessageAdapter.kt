@@ -8,13 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
-import com.soict.hoangviet.baseproject.extension.loadImage
-import com.soict.hoangviet.baseproject.extension.loadImageListener
 import com.soict.hoangviet.baseproject.extension.loadImageMessage
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
-import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
 import com.soict.hoangviet.firebase.utils.AppConstant
 import kotlinx.android.extensions.LayoutContainer
@@ -215,11 +212,13 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             data as ChatsResponse
             Glide.with(itemView.context)
                 .load(BitmapFactory.decodeStream(itemView.context.assets.open(data.message)))
+                .override(200, 200)
+                .centerCrop()
                 .into(imv_sender_emoji)
             tv_seen_emoji.text = when (data.seen) {
-                AppConstant.UNSEND -> "Đang gửi"
-                AppConstant.UNSEEN -> "Đã gửi"
-                else -> "Đã xem"
+                AppConstant.UNSEND -> BaseApplication.instance.getString(R.string.message_adapter_sending)
+                AppConstant.UNSEEN -> BaseApplication.instance.getString(R.string.message_adapter_sent)
+                else -> BaseApplication.instance.getString(R.string.message_adapter_seen)
             }
         }
     }
@@ -231,6 +230,8 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             data as ChatsResponse
             Glide.with(itemView.context)
                 .load(BitmapFactory.decodeStream(itemView.context.assets.open(data.message)))
+                .override(200, 200)
+                .centerCrop()
                 .into(imv_receiver_emoji)
         }
     }
@@ -278,15 +279,16 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             data as ChatsResponse
             val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
             rcv_sender_msg_album.adapter = messageAlbumAdapter
-            val gridLayoutManager = object : GridLayoutManager(itemView.context, 3,GridLayoutManager.VERTICAL, false){
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
+            val gridLayoutManager =
+                object : GridLayoutManager(itemView.context, 3, GridLayoutManager.VERTICAL, false) {
+                    override fun canScrollVertically(): Boolean {
+                        return false
+                    }
 
-                override fun isLayoutRTL(): Boolean {
-                    return true
+                    override fun isLayoutRTL(): Boolean {
+                        return true
+                    }
                 }
-            }
             rcv_sender_msg_album.layoutManager = gridLayoutManager
             rcv_sender_msg_album.setOnClickListener {
 

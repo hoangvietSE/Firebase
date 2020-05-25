@@ -192,7 +192,7 @@ class MessagePresenterImpl @Inject internal constructor(
                     Log.d("myLog", "connected")
                     messageRef.child("Chats").child(mChatId)
                         .updateChildren(mapOf("seen" to AppConstant.UNSEEN))
-                    when (enableNotificationReceiver.enable) {
+                    when (enableNotificationReceiver?.enable) {
                         AppConstant.Notification.ENABLE -> pushNotificationToReceiver(
                             receiver,
                             receiverToken

@@ -28,13 +28,10 @@ class EmojiChildAdapter(context: Context, val childName: String) :
         NormalViewHolder(containerView!!), LayoutContainer {
         override fun <T> bind(data: T) {
             data as String
-            val requestOptions = RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(100, 100) // resize does not respect aspect ratio
-            val options = BitmapFactory.Options()
-            options.inSampleSize = 8
-            val mBitmap = BitmapFactory.decodeStream(itemView.context.assets.open("emoji/${childName}/${data}"), null, options)
-            Glide.with(itemView.context).load(mBitmap).apply(requestOptions)
+            val mBitmap = BitmapFactory.decodeStream(itemView.context.assets.open("emoji/${childName}/${data}"), null, null)
+            Glide.with(itemView.context).load(mBitmap)
+                .override(200,200)
+                .centerCrop()
                 .into(imv_item_emoji)
         }
     }

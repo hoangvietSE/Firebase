@@ -1,20 +1,13 @@
 package com.soict.hoangviet.firebase.ui.view.impl;
 
-import android.graphics.Color
-import android.os.Bundle
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.soict.hoangviet.firebase.R;
+import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.InfoListImageAdapter
 import com.soict.hoangviet.firebase.data.local.entity.PhotoProvider
 import com.soict.hoangviet.firebase.extension.gridLayout
-import com.soict.hoangviet.firebase.ui.view.InfoView
 import com.soict.hoangviet.firebase.ui.presenter.InfoPresenter
+import com.soict.hoangviet.firebase.ui.view.InfoView
 import kotlinx.android.synthetic.main.activity_info.*
 import javax.inject.Inject
 

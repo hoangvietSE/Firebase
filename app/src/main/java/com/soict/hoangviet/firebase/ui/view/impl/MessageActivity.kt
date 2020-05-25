@@ -40,6 +40,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     companion object {
         const val EXTRA_USER_ID = "extra_user_id"
         const val TOKEN_DEVICE_ID = "token_device_id"
+        const val WAVE_HAND = "wave_hand"
         const val FACE_EMOJI = 0
         const val FISH_EMOJI = 1
         const val KITTY_EMOJI = 2
@@ -59,6 +60,9 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     private val receiverToken: String by lazy {
         intent.getStringExtra(TOKEN_DEVICE_ID)
     }
+    private val waveHand: Boolean by lazy {
+        intent.getBooleanExtra(WAVE_HAND, false)
+    }
     var path = ArrayList<Uri>()
     lateinit var zoomImageDialogFragment: ZoomImageDialogFragment
 
@@ -69,6 +73,18 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         readMessage()
         seenMessage()
         initEmojiAdapter()
+        sendWaveHand()
+    }
+
+    private fun sendWaveHand() {
+        if (waveHand) {
+            mPresenter.sendMessage(
+                receiver,
+                "emoji/hi_emoji/wavehand.png",
+                receiverToken,
+                AppConstant.TypeMessage.EMOJI
+            )
+        }
     }
 
     private fun initEmojiAdapter() {

@@ -2,6 +2,8 @@ package com.soict.hoangviet.firebase.ui.view.impl
 
 import android.content.Intent
 import android.os.Bundle
+import com.soict.hoangviet.baseproject.extension.launchActivity
+import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.adapter.UserAdapter
 import com.soict.hoangviet.firebase.data.network.response.User
@@ -16,7 +18,7 @@ class FriendsFragment : BaseFragment(), FriendsView {
 
     @Inject
     lateinit var mPresenter: FriendsPresenter
-    private var mUserAdpter: UserAdapter? = null
+    private lateinit var mUserAdpter: UserAdapter
 
     companion object {
         fun getInstance(): FriendsFragment {
@@ -30,23 +32,27 @@ class FriendsFragment : BaseFragment(), FriendsView {
     override fun initAdapter(mListUser: ArrayList<User>) {
         context?.let {
             mUserAdpter = UserAdapter(it)
-            recycler_view_user.setAdapter(mUserAdpter!!)
+            mUserAdpter.setOnWaveClickListener { position ->
+                val user = mUserAdpter.getItemPosition(position, User::class.java)
+                requireActivity().launchActivity<MessageActivity> {
+                    putExtra(MessageActivity.EXTRA_USER_ID, user.id)
+                    putExtra(MessageActivity.TOKEN_DEVICE_ID, user.deviceToken)
+                    putExtra(MessageActivity.WAVE_HAND, true)
+                }
+            }
+            recycler_view_user.setAdapter(mUserAdpter)
             recycler_view_user.setOnRefreshListener {
             }
             recycler_view_user.setLoadingMoreListener {
             }
             recycler_view_user.setOnItemClickListener { parent, viewType, view, position ->
-                val user = mUserAdpter?.getItemPosition(position!!, User::class.java)
-                startActivity(
-                    Intent(
-                        parentActivity?.let { it },
-                        MessageActivity::class.java
-                    ).apply {
-                        putExtra(MessageActivity.EXTRA_USER_ID, user?.id)
-                        putExtra(MessageActivity.TOKEN_DEVICE_ID, user?.deviceToken)
-                    })
+                val user = mUserAdpter.getItemPosition(position!!, User::class.java)
+                requireActivity().launchActivity<MessageActivity> {
+                    putExtra(MessageActivity.EXTRA_USER_ID, user.id)
+                    putExtra(MessageActivity.TOKEN_DEVICE_ID, user.deviceToken)
+                }
             }
-            mUserAdpter?.addModels(mListUser, false)
+            mUserAdpter.addModels(mListUser, false)
             recycler_view_user.setLinearLayoutManager()
             recycler_view_user.disableRefreshing()
         }

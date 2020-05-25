@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
-    android:paddingStart="@dimen/content_padding_10_dp"
-    android:padding="@dimen/content_padding_4_dp">
+    android:padding="@dimen/content_padding_4_dp"
+    android:paddingStart="@dimen/content_padding_10_dp">
 
     <com.soict.hoangviet.firebase.custom.CircleImageView
         android:id="@+id/imv_avatar"
@@ -40,9 +40,10 @@
         tools:text="Hoàng Tiến Việt" />
 
     <ImageView
+        android:id="@+id/imv_wave_hand"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="@dimen/margin_16_dp"
+        android:layout_marginEnd="@dimen/margin_10_dp"
         android:background="@drawable/bg_circle_grey"
         android:padding="@dimen/content_padding_8_dp"
         android:src="@drawable/ic_clap"

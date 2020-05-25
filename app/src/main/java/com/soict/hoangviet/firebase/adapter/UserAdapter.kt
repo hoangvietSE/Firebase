@@ -19,6 +19,12 @@ import kotlinx.android.synthetic.main.item_user.*
 import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
+    private var onWaveClickListener: ((Int) -> Unit)? = null
+
+    fun setOnWaveClickListener(func: (Int) -> Unit) {
+        onWaveClickListener = func
+    }
+
     override fun initNormalViewHolder(parent: ViewGroup, viewType: Int): NormalViewHolder? {
         return UserViewHolder(parent.inflate(R.layout.item_user))
     }
@@ -27,13 +33,21 @@ class UserAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context)
         holder.bind(getItemPosition(position, User::class.java))
     }
 
-    class UserViewHolder(override val containerView: View?) : NormalViewHolder(containerView!!), LayoutContainer {
+    inner class UserViewHolder(override val containerView: View?) :
+        NormalViewHolder(containerView!!),
+        LayoutContainer {
+        init {
+            imv_wave_hand.setOnClickListener {
+                onWaveClickListener?.invoke(adapterPosition)
+            }
+        }
+
         override fun <T> bind(data: T) {
             data as User
             tv_username.text = data.fullname
             imv_avatar.loadImageUrl(
-                    itemView.context,
-                    data.avatar
+                itemView.context,
+                data.avatar
             )
             when (data.status) {
                 AppConstant.ONLINE -> imv_online.visible()
