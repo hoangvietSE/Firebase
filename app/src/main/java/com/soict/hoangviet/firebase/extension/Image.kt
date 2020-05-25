@@ -30,6 +30,16 @@ inline fun <reified T : Any> ImageView.loadImage(
         .into(this)
 }
 
+inline fun <reified T : Any> ImageView.loadImageMessage(
+    context: Context,
+    image: T
+) {
+    GlideApp.with(context)
+        .load(image)
+        .override(540, 360)
+        .into(this)
+}
+
 fun ImageView.loadImageListener(
     context: Context,
     image: String,

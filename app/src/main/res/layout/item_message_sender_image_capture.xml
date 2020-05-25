@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
+            android:visibility="visible"
             android:id="@+id/progress_loading_image"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -36,7 +37,6 @@
             android:theme="@style/progressBarRed" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:scaleType="fitXY"
             android:id="@+id/imv_sender_image_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

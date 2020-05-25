@@ -42,7 +42,6 @@
             android:theme="@style/progressBarRed" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:scaleType="fitXY"
             app:riv_corner_radius="@dimen/radius_10_dp"
             android:id="@+id/imv_receiver_image_capture"
             android:layout_width="wrap_content"

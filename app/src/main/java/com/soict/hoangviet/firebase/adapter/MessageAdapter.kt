@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
+import com.soict.hoangviet.baseproject.extension.loadImage
 import com.soict.hoangviet.baseproject.extension.loadImageListener
+import com.soict.hoangviet.baseproject.extension.loadImageMessage
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
@@ -241,27 +243,11 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             when (data.seen) {
                 AppConstant.UNSEND -> {
                     progress_loading_image.visible()
-//                    imv_sender_image_capture.loadImageListener(
-//                        itemView.context,
-//                        Uri.parse(data.message),
-//                        {
-//                            progress_loading_image.gone()
-//                        },
-//                        {
-//                            progress_loading_image.visible()
-//                        }
-//                    )
                 }
                 else -> {
-                    imv_sender_image_capture.loadImageListener(
+                    imv_sender_image_capture.loadImageMessage(
                         itemView.context,
-                        data.message,
-                        {
-                            progress_loading_image.gone()
-                        },
-                        {
-                            progress_loading_image.visible()
-                        }
+                        data.message
                     )
                 }
             }
@@ -279,15 +265,9 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         override fun <T> bind(data: T) {
             data as ChatsResponse
             imv_receiver_image_capture.setImageResource(android.R.color.transparent)
-            imv_receiver_image_capture.loadImageListener(
+            imv_receiver_image_capture.loadImageMessage(
                 itemView.context,
-                data.message,
-                {
-                    progress_loading_image_receiver.gone()
-                },
-                {
-                    progress_loading_image_receiver.visible()
-                }
+                data.message
             )
         }
     }
