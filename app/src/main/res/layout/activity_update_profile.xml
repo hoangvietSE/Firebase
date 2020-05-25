@@ -8,6 +8,8 @@
     android:orientation="vertical">
 
     <com.soict.hoangviet.firebase.custom.CustomFirebaseToolbar
+        app:cft_icon="@drawable/ic_back"
+        app:cft_title="@string/update_profile_toolbar_title"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

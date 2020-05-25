@@ -54,7 +54,7 @@ class ProfileFragment : BaseFragment(), ProfileView {
             requireActivity().launchActivity<NotificationActivity>()
         }
         row_language.onAvoidDoubleClick {
-            val languageDialogFragment = LanguageDialogFragment.getInstance(mSharePreference)
+            val languageDialogFragment = LanguageDialogFragment.getInstance()
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             val fragment =
                 requireActivity().supportFragmentManager.findFragmentByTag(AppConstant.DialogFragmentTag.LANGUAGE)
@@ -88,7 +88,11 @@ class ProfileFragment : BaseFragment(), ProfileView {
         row_email.setDetail(user.email)
         row_phone.setDetail(user.phone)
         row_birthday.setDetail(user.birthday)
-        row_gender.setDetail(if (user.gender == 0) "Nam" else "Nữ")
+        row_gender.setDetail(
+            if (user.gender == 0) getString(R.string.update_profile_adapter_male) else getString(
+                R.string.update_profile_adapter_female
+            )
+        )
         imv_avatar.loadImageUrl(
             context!!,
             user.avatar

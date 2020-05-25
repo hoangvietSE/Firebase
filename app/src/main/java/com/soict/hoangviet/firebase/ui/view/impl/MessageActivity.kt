@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.view.View
@@ -131,6 +130,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
 
     private fun getDataIntent() {
         mPresenter.showInfoUserMessage(receiver)
+        mPresenter.checkEnablePushNotification(receiver)
     }
 
     override fun initListener() {
@@ -177,11 +177,11 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     }
 
     override fun addSender(mChatsResponse: ChatsResponse, type: Int) {
-        mMessageAdapter?.addModel(mChatsResponse, type)
+        mMessageAdapter?.addModel(mChatsResponse, type, isSelected = false, isScroolToLast = true)
     }
 
     override fun addReceiver(mChatsResponse: ChatsResponse, type: Int) {
-        mMessageAdapter?.addModel(mChatsResponse, type)
+        mMessageAdapter?.addModel(mChatsResponse, type, isSelected = false, isScroolToLast = true)
     }
 
     override fun clearMessage() {

@@ -12,6 +12,7 @@ import com.soict.hoangviet.firebase.builder.StorageFirebase
 import com.soict.hoangviet.firebase.data.network.request.DataNotification
 import com.soict.hoangviet.firebase.data.network.request.MessageRequestBody
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
+import com.soict.hoangviet.firebase.data.network.response.NotificationEnable
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.interactor.MessageInteractor
@@ -30,12 +31,14 @@ class MessagePresenterImpl @Inject internal constructor(
     mInteractor = messageInteractor,
     mAppSharePreference = sharePreference
 ), MessagePresenter {
+    private lateinit var enableNotificationReceiver:NotificationEnable
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var pairMessageSender: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairMessageReceiver: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairShowAllMessage: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairShowInfoUser: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairSeenMessage: Pair<DatabaseReference, ValueEventListener>
+    private lateinit var pairNotification: Pair<DatabaseReference, ValueEventListener>
     override fun sendMessage(
         receiver: String,
         msg: String,
@@ -103,6 +106,19 @@ class MessagePresenterImpl @Inject internal constructor(
             }
             .build()
         mView?.onSendSuccess()
+    }
+
+    override fun checkEnablePushNotification(receiver: String) {
+        pairNotification = DatabaseFirebase.Builder()
+            .child(AppConstant.DataBaseRef.NOTIFICATIONS)
+            .child(receiver)
+            .onDataChange {
+                enableNotificationReceiver = it.getValue(NotificationEnable::class.java) ?: NotificationEnable()
+            }
+            .onCancelled {
+
+            }
+            .build()
     }
 
     private fun detectNetworkPushImage(
@@ -176,7 +192,15 @@ class MessagePresenterImpl @Inject internal constructor(
                     Log.d("myLog", "connected")
                     messageRef.child("Chats").child(mChatId)
                         .updateChildren(mapOf("seen" to AppConstant.UNSEEN))
-                    pushNotificationToReceiver(receiver, receiverToken)
+                    when (enableNotificationReceiver.enable) {
+                        AppConstant.Notification.ENABLE -> pushNotificationToReceiver(
+                            receiver,
+                            receiverToken
+                        )
+                        else -> {
+                        }
+                    }
+
                     processDone = true
                 } else {
                     Log.d("myLog", "disconnected")

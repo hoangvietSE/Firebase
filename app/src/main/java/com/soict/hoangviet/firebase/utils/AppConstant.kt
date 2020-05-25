@@ -19,6 +19,14 @@ object AppConstant {
         const val CHATS = "chats"
         const val CHATS_LIST = "ChatsList"
         const val USERS = "Users"
+        const val STATUS = "status"
+        const val DEVICE_TOKEN = "deviceToken"
+        const val NOTIFICATIONS = "Notifications"
+    }
+
+    object Notification {
+        const val DISABLE = 0
+        const val ENABLE = 1
     }
 
     object TypeMessage {

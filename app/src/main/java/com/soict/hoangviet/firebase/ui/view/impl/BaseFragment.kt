@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.extension.inflate
 import com.soict.hoangviet.firebase.ui.view.BaseView
+import com.soict.hoangviet.firebase.utils.LanguageUtil
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerAppCompatActivity
 

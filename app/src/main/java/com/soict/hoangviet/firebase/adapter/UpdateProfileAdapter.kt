@@ -10,7 +10,8 @@ import com.soict.hoangviet.firebase.extension.inflate
 import kotlinx.android.synthetic.main.item_spinner_update_profile.view.*
 
 class UpdateProfileAdapter(val context: Context) : BaseAdapter() {
-    private var listItem: ArrayList<String> = arrayListOf("Nam", "Nữ")
+    private var listItem: ArrayList<String> = arrayListOf(context.getString(R.string.update_profile_adapter_male), context.getString(
+            R.string.update_profile_adapter_female))
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = parent!!.inflate(R.layout.item_spinner_update_profile)

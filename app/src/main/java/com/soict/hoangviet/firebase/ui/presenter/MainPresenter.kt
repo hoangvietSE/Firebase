@@ -5,4 +5,5 @@ import com.soict.hoangviet.firebase.ui.view.MainView
 
 interface MainPresenter : BasePresenter<MainView, MainInteractor> {
     fun setStatus(status: Int)
+    fun clearDeviceToken()
 }

@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.soict.hoangviet.baseproject.extension.inflate
 import com.soict.hoangviet.baseproject.extension.loadImageListener
 import com.soict.hoangviet.firebase.R
+import com.soict.hoangviet.firebase.application.BaseApplication
 import com.soict.hoangviet.firebase.data.network.response.ChatsResponse
 import com.soict.hoangviet.firebase.extension.gone
 import com.soict.hoangviet.firebase.extension.visible
@@ -265,9 +266,9 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                 }
             }
             tv_seen_image_capture.text = when (data.seen) {
-                AppConstant.UNSEND -> "Đang gửi"
-                AppConstant.UNSEEN -> "Đã gửi"
-                else -> "Đã xem"
+                AppConstant.UNSEND -> BaseApplication.instance.getString(R.string.message_adapter_sending)
+                AppConstant.UNSEEN -> BaseApplication.instance.getString(R.string.message_adapter_sent)
+                else -> BaseApplication.instance.getString(R.string.message_adapter_seen)
             }
         }
     }
@@ -277,6 +278,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         LayoutContainer {
         override fun <T> bind(data: T) {
             data as ChatsResponse
+            imv_receiver_image_capture.setImageResource(android.R.color.transparent)
             imv_receiver_image_capture.loadImageListener(
                 itemView.context,
                 data.message,

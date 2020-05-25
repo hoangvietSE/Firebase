@@ -18,4 +18,6 @@ interface MessagePresenter : BasePresenter<MessageView, MessageInteractor> {
         receiverToken: String,
         image: Int
     )
+
+    fun checkEnablePushNotification(receiver: String)
 }

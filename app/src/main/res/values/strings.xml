@@ -71,7 +71,6 @@
     <string name="active_otp_error">Mã xác thực không đúng. Vui lòng nhập lại</string>
 
     <!--Update Profile-->
-    <string name="update_profile_toolbar_title">Cập nhật thông tin cá nhân</string>
     <string name="update_profile_image_title">Chọn ảnh đại diện</string>
     <string name="update_profile_image_des">Upload Images</string>
     <string name="update_profile_title_name">Tên:</string>
@@ -86,6 +85,9 @@
     <string name="update_profile_name_empty">Vui lòng nhập họ tên</string>
     <string name="update_profile_birthday_empty">Vui lòng chọn ngày sinh</string>
     <string name="update_profile_avatar_upload_error">Có lỗi xảy ra trong quá trình cập nhật ảnh đại diện</string>
+    <string name="update_profile_success">Cập nhật thành công</string>
+    <string name="update_profile_error">Cập nhật thất bại. Vui lòng thử lại</string>
+    <string name="update_profile_toolbar_title">Cập nhật thông tin</string>
     <string name="message_push_notification_title">Bạn nhận được tin nhắn mới</string>
     <string name="notification_toolbar_title">Thông báo</string>
     <string name="notification_title_screen">Cài đặt thông báo</string>
@@ -105,5 +107,14 @@
     <string name="change_password_new_error_type">Mật khẩu mới không đúng định dạng!</string>
     <string name="change_password_not_exactly">Xác nhận mật khẩu không khớp!</string>
     <string name="change_password_btn_save">Lưu</string>
+    <string name="message_adapter_sending">Đang gửi</string>
+    <string name="message_adapter_sent">Đã gửi</string>
+    <string name="message_adapter_seen">Đã xem</string>
+    <string name="update_profile_adapter_male">Nam</string>
+    <string name="update_profile_adapter_female">Nữ</string>
+    <string name="menu_logout">Đăng xuất</string>
+    <string name="splash_notification_title">Thông báo!</string>
+    <string name="splash_message_alert">Không có kết nối Internet. Vui lòng quay lại khi có kết nối!</string>
+    <string name="splash_positive_title">Đồng ý</string>
 
 </resources>

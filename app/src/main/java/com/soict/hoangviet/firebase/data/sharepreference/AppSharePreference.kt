@@ -23,7 +23,7 @@ class AppSharePreference constructor(var context: Context?) : SharePreference {
             is Float -> editor.putFloat(key, value)
             else -> put(key, toJsonFromObject(value))
         }
-        editor.commit()
+        editor.apply()
     }
 
     override fun <T> get(key: String, clazz: Class<T>): T {

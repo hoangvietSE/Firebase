@@ -74,10 +74,10 @@ class SplashActivity : BaseActivity(), SplashView {
     private fun showAlertNoNetworkConnection() {
         DialogUtil.showMessageDialog(
             this,
-            "Warning!",
-            "Không có kết nối Internet. Vui lòng quay lại khi có kết nối!",
+            getString(R.string.splash_notification_title),
+            getString(R.string.splash_message_alert),
             false,
-            "Đồng ý",
+            getString(R.string.splash_positive_title),
             object : DialogUtil.BaseDialogInterface {
                 override fun onPositiveClick(dialog: DialogInterface) {
                     finish()

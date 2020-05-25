@@ -1,5 +1,6 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.google.firebase.messaging.FirebaseMessaging
@@ -7,6 +8,7 @@ import com.soict.hoangviet.firebase.common.BaseLoadingDialog
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.ui.view.BaseView
 import com.soict.hoangviet.firebase.utils.AppConstant
+import com.soict.hoangviet.firebase.utils.LanguageSharePreference
 import com.soict.hoangviet.firebase.utils.LanguageUtil
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -23,18 +25,15 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
         mLayoutRes?.let {
             setContentView(it)
         }
+        val lang = LanguageSharePreference.getLanguage()
+        LanguageUtil.setCurrentLanguage(this, lang)
         mBaseLoadingDialog = BaseLoadingDialog.getInstance(this)
         initView()
         initListener()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val lang = mSharedPreferences.get(AppConstant.SharePreference.LANGUAGE, String::class.java)
-        LanguageUtil.setCurrentLanguage(
-            this,
-            if (lang == "") AppConstant.Language.VIETNAMESE else lang
-        )
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LanguageUtil.setCurrentLanguage(newBase!!, LanguageSharePreference.getLanguage()))
     }
 
     override fun onDestroy() {
@@ -67,5 +66,4 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView,
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         })
     }
-
 }

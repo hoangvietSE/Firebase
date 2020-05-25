@@ -1,5 +1,7 @@
 package com.soict.hoangviet.firebase.ui.presenter.impl
 
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.soict.hoangviet.firebase.builder.DatabaseFirebase
 import com.soict.hoangviet.firebase.data.network.response.User
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
@@ -17,13 +19,25 @@ class MainPresenterImpl @Inject internal constructor(
         mInteractor = mainInteractor,
         mAppSharePreference = sharePreference
     ), MainPresenter {
-    override fun setStatus(status: Int) {
-        val pairStatus = DatabaseFirebase.Builder()
+    lateinit var pairUser: Pair<DatabaseReference, ValueEventListener>
+    override fun onAttach(view: MainView?) {
+        super.onAttach(view)
+        pairUser  = DatabaseFirebase.Builder()
             .reference("Users")
             .child(currentId!!)
             .build()
-        val userRecorded: MutableMap<String, Any> = mutableMapOf()
-        userRecorded.put("status", status)
-        pairStatus.first.updateChildren(userRecorded)
+    }
+
+    override fun setStatus(status: Int) {
+        pairUser.first.updateChildren(mapOf(AppConstant.DataBaseRef.STATUS to status))
+    }
+
+    override fun clearDeviceToken() {
+        pairUser.first.updateChildren(mapOf(AppConstant.DataBaseRef.DEVICE_TOKEN to ""))
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        pairUser.first.removeEventListener(pairUser.second)
     }
 }

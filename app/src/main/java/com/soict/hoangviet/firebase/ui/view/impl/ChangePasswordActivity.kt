@@ -68,7 +68,6 @@ class ChangePasswordActivity : BaseActivity(), ChangePasswordView {
             finish()
         }
         btn_save.onAvoidDoubleClick {
-            showLoading()
             mPresenter.changePassword(
                 et_change_password_old.text.toString(),
                 et_change_password_new.text.toString(),

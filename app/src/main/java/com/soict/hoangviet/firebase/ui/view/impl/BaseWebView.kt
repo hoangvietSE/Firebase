@@ -1,6 +1,5 @@
 package com.soict.hoangviet.firebase.ui.view.impl
 
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.os.Build
 import android.webkit.WebResourceError

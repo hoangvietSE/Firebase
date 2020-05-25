@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.module.GlideApp
 
 /**
@@ -19,8 +20,8 @@ import com.soict.hoangviet.firebase.module.GlideApp
 inline fun <reified T : Any> ImageView.loadImage(
     context: Context,
     image: T,
-    @DrawableRes placeHolder: Int,
-    @DrawableRes error: Int
+    @DrawableRes placeHolder: Int = R.drawable.ic_avatar,
+    @DrawableRes error: Int = R.drawable.ic_avatar
 ) {
     GlideApp.with(context)
         .load(image)

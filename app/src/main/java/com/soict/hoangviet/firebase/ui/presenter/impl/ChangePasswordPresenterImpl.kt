@@ -28,7 +28,10 @@ class ChangePasswordPresenterImpl @Inject internal constructor(
             !newPassword.isValidatePassword() -> mView?.showErrorNewPassword()
             confirmPassword.isNullOrEmpty() -> mView?.showEmptyConfirmPassword()
             newPassword != confirmPassword -> mView?.showErrorConfirmPassword()
-            else -> changePasswordFirebase(oldPassword, newPassword, confirmPassword)
+            else -> {
+                mView?.showLoading()
+                changePasswordFirebase(oldPassword, newPassword, confirmPassword)
+            }
         }
     }
 

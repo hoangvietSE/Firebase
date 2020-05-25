@@ -121,28 +121,28 @@ class MainActivity : BaseActivity(), MainView,
         val itemHome = ItemMenuNav(
             R.drawable.ic_home_active,
             R.drawable.ic_home_disable,
-            "Home",
+            getString(R.string.menu_home),
             "home",
             false
         )
         val itemFriends = ItemMenuNav(
             R.drawable.ic_friends_active,
             R.drawable.ic_friends_disable,
-            "Bạn bè",
+            getString(R.string.menu_friends),
             "friends",
             false
         )
         val itemProfile = ItemMenuNav(
             R.drawable.ic_profile_active,
             R.drawable.ic_profile_disable,
-            "Cá nhân",
+            getString(R.string.menu_profile),
             "profile",
             false
         )
         val itemLogout = ItemMenuNav(
             R.drawable.ic_logout_active,
             R.drawable.ic_logout_disable,
-            "Đăng xuất",
+            getString(R.string.menu_logout),
             "logout",
             false
         )
@@ -199,6 +199,7 @@ class MainActivity : BaseActivity(), MainView,
 
     private fun logoutApplication() {
         showLoading()
+        mPresenter.clearDeviceToken()
         mAppSharePreference.clearAllPreference()
         Handler().postDelayed({
             FirebaseAuth.getInstance().signOut()

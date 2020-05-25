@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import beetech.com.carbooking.util.DateUtil
+import com.soict.hoangviet.baseproject.extension.loadImage
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
 import com.soict.hoangviet.firebase.R
@@ -93,7 +94,8 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
         tv_phone.text = user.phone
         tv_email.text = user.email
         tv_birthday.text = user.birthday
-        user.gender?.let { spinner_gender.setSelection(it) }
+        user.gender.let { spinner_gender.setSelection(it) }
+        imv_choose_image.loadImage(this, user.avatar)
     }
 
     override fun initListener() {
@@ -132,6 +134,9 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
                 birthday = tv_birthday.text.toString()
             }
             mPresenter.updateProfile(mUpdateProfileRequest)
+        }
+        toolbar.setOnBackClickListener {
+            finish()
         }
     }
 
@@ -174,11 +179,11 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
     }
 
     override fun uploadSuccess() {
-        toast("Cập nhật thành công")
+        toast(getString(R.string.update_profile_success))
         finish()
     }
 
     override fun uploadError() {
-        toast("Cập nhật thất bại. Vui lòng thử lại")
+        toast(getString(R.string.update_profile_error))
     }
 }

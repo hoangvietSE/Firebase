@@ -7,19 +7,18 @@ import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.data.sharepreference.SharePreference
 import com.soict.hoangviet.firebase.utils.AppConstant
+import com.soict.hoangviet.firebase.utils.LanguageSharePreference
 import kotlinx.android.synthetic.main.layout_dialog_fragment_language.*
 
 class LanguageDialogFragment private constructor() : BaseDialogFragment(isStyleFullScreen = false) {
     override val mLayoutRes: Int
         get() = R.layout.layout_dialog_fragment_language
-    private lateinit var mSharePreference: SharePreference
     private lateinit var listFlagLanguage: ArrayList<RelativeLayout>
     private var onClickLanguageListener: (() -> Unit)? = null
 
     companion object {
-        fun getInstance(mSharePreference: SharePreference): LanguageDialogFragment {
+        fun getInstance(): LanguageDialogFragment {
             val languageDialogFragment = LanguageDialogFragment()
-            languageDialogFragment.mSharePreference = mSharePreference
             return languageDialogFragment
         }
     }
@@ -34,21 +33,13 @@ class LanguageDialogFragment private constructor() : BaseDialogFragment(isStyleF
     }
 
     private fun initLanguage() {
-        defaultBackground(
-            mSharePreference.get(
-                AppConstant.SharePreference.LANGUAGE,
-                String::class.java
-            )
-        )
+        defaultBackground(LanguageSharePreference.getLanguage())
     }
 
     override fun initListeners() {
         rl_vn.onAvoidDoubleClick {
             defaultBackground(AppConstant.Language.VIETNAMESE)
-            mSharePreference.put(
-                AppConstant.SharePreference.LANGUAGE,
-                AppConstant.Language.VIETNAMESE
-            )
+            LanguageSharePreference.putLanguage(AppConstant.Language.VIETNAMESE)
             completableTimer({
                 dismiss()
                 onClickLanguageListener?.invoke()
@@ -56,7 +47,7 @@ class LanguageDialogFragment private constructor() : BaseDialogFragment(isStyleF
         }
         rl_en.onAvoidDoubleClick {
             defaultBackground(AppConstant.Language.ENGLISH)
-            mSharePreference.put(AppConstant.SharePreference.LANGUAGE, AppConstant.Language.ENGLISH)
+            LanguageSharePreference.putLanguage(AppConstant.Language.ENGLISH)
             completableTimer({
                 dismiss()
                 onClickLanguageListener?.invoke()
