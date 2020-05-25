@@ -112,6 +112,8 @@ fun completable(func: () -> Unit): Disposable {
 
 fun completableTimer(func: () -> Unit, timer: Long = 2000L): Disposable {
     return Completable.timer(timer, TimeUnit.MILLISECONDS)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe {
             func()
         }

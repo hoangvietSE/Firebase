@@ -30,6 +30,20 @@ inline fun <reified T : Any> ImageView.loadImage(
         .into(this)
 }
 
+inline fun <reified T : Any> ImageView.loadImageCircle(
+    context: Context,
+    image: T,
+    @DrawableRes placeHolder: Int = R.drawable.ic_avatar,
+    @DrawableRes error: Int = R.drawable.ic_avatar
+) {
+    GlideApp.with(context)
+        .load(image)
+        .placeholder(placeHolder)
+        .error(error)
+        .circleCrop()
+        .into(this)
+}
+
 inline fun <reified T : Any> ImageView.loadImageMessage(
     context: Context,
     image: T

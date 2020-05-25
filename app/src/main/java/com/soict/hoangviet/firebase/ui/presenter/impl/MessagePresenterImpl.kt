@@ -31,7 +31,7 @@ class MessagePresenterImpl @Inject internal constructor(
     mInteractor = messageInteractor,
     mAppSharePreference = sharePreference
 ), MessagePresenter {
-    private lateinit var enableNotificationReceiver:NotificationEnable
+    private lateinit var enableNotificationReceiver: NotificationEnable
     private val messageRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var pairMessageSender: Pair<DatabaseReference, ValueEventListener>
     private lateinit var pairMessageReceiver: Pair<DatabaseReference, ValueEventListener>
@@ -113,7 +113,8 @@ class MessagePresenterImpl @Inject internal constructor(
             .child(AppConstant.DataBaseRef.NOTIFICATIONS)
             .child(receiver)
             .onDataChange {
-                enableNotificationReceiver = it.getValue(NotificationEnable::class.java) ?: NotificationEnable()
+                enableNotificationReceiver =
+                    it.getValue(NotificationEnable::class.java) ?: NotificationEnable()
             }
             .onCancelled {
 

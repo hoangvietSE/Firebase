@@ -1,7 +1,8 @@
 package com.soict.hoangviet.baseproject.extension
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
+import android.content.res.Resources
+import android.graphics.Rect
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +14,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.soict.hoangviet.firebase.application.BaseApplication
 
 const val CLICK_THROTTLE_DELAY = 800L
+
+val View?.isOnScreen: Boolean
+    get() {
+        if (this?.isShown != true) return false
+        val actualPosition = Rect().also { getGlobalVisibleRect(it) }
+        val screen = Resources.getSystem().displayMetrics.run {
+            Rect(0, 0, widthPixels, heightPixels)
+        }
+        return actualPosition.intersect(screen)
+    }
 
 fun View.onAvoidDoubleClick(
     throttleDelay: Long = CLICK_THROTTLE_DELAY,

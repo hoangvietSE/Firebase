@@ -53,6 +53,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         const val REQUEST_CODE_SPEECH = 1009
     }
 
+    private lateinit var userMessage: User
     override val mLayoutRes: Int
         get() = R.layout.activity_message
 
@@ -186,7 +187,9 @@ class MessageActivity : BasePhotoActivity(), MessageView {
             openAlbumFishbun()
         }
         toolbar.imvRightOne?.setOnClickListener {
-            launchActivity<InfoActivity>()
+            launchActivity<InfoActivity>() {
+                putExtra(InfoActivity.EXTRA_USERS, userMessage)
+            }
         }
         btn_send_speech.setOnClickListener {
             openSpeechApi()
@@ -234,6 +237,7 @@ class MessageActivity : BasePhotoActivity(), MessageView {
     }
 
     override fun showInfoUserMessage(user: User) {
+        userMessage = user
         when (user.status) {
             AppConstant.ONLINE -> {
                 onOnlineMessage()
