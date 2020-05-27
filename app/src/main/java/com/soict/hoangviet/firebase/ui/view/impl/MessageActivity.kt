@@ -146,6 +146,9 @@ class MessageActivity : BasePhotoActivity(), MessageView {
 
     private fun initAdapter() {
         mMessageAdapter = MessageAdapter(this)
+        mMessageAdapter?.setOnItemAlbumClickListener { imageUrl ->
+            zoomImageDialogFragment(imageUrl)
+        }
     }
 
     private fun readMessage() {
@@ -198,12 +201,15 @@ class MessageActivity : BasePhotoActivity(), MessageView {
 
     private fun openSpeechApi() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak")
+        intent.apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak")
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 5000)
+        }
         try {
             startActivityForResult(intent, REQUEST_CODE_SPEECH)
         } catch (a: ActivityNotFoundException) {
@@ -274,8 +280,17 @@ class MessageActivity : BasePhotoActivity(), MessageView {
         recycler_view_message.disableRefreshing()
     }
 
-    private fun zoomImageDialogFragment(data: ChatsResponse) {
-        zoomImageDialogFragment = ZoomImageDialogFragment.getInstance(data.message)
+    private inline fun <reified T : Any> zoomImageDialogFragment(data: T) {
+        when (T::class) {
+            ChatsResponse::class -> {
+                zoomImageDialogFragment =
+                    ZoomImageDialogFragment.getInstance((data as ChatsResponse).message)
+            }
+            else -> {
+                zoomImageDialogFragment =
+                    ZoomImageDialogFragment.getInstance((data as String))
+            }
+        }
         hideFragmentByTag("zoomImageDialogFragment")
         zoomImageDialogFragment.show(supportFragmentManager, "zoomImageDialogFragment")
     }

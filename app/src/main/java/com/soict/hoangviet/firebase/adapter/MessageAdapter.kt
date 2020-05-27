@@ -27,6 +27,8 @@ import kotlinx.android.synthetic.main.item_message_sender_image_capture.tv_seen_
 
 
 class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(context) {
+    private var onItemAlbumClickListener: ((String) -> Unit)? = null
+
     companion object {
         const val VIEW_TYPE_SENDER = 0
         const val VIEW_TYPE_RECEIVER = 1
@@ -36,6 +38,10 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         const val VIEW_TYPE_RECEIVER_IMAGE_CAPTURE = 5
         const val VIEW_TYPE_SENDER_ALBUM = 6
         const val VIEW_TYPE_RECEIVER_ALBUM = 7
+    }
+
+    fun setOnItemAlbumClickListener(func: (String) -> Unit) {
+        onItemAlbumClickListener = func
     }
 
     override fun solveOnCreateViewHolder(
@@ -273,11 +279,22 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         }
     }
 
-    class SenderAlbumViewHolder(override val containerView: View?) :
+    inner class SenderAlbumViewHolder(override val containerView: View?) :
         NormalViewHolder(containerView!!), LayoutContainer {
+        var messageAlbumAdapter: MessageAlbumAdapter = MessageAlbumAdapter(itemView.context)
+        init {
+            messageAlbumAdapter.setOnItemClickListener { parent, viewType, view, position ->
+                onItemAlbumClickListener?.invoke(
+                    messageAlbumAdapter.getItemPosition(
+                        position!!,
+                        String::class.java
+                    )
+                )
+            }
+        }
+
         override fun <T> bind(data: T) {
             data as ChatsResponse
-            val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
             rcv_sender_msg_album.adapter = messageAlbumAdapter
             val gridLayoutManager =
                 object : GridLayoutManager(itemView.context, 3, GridLayoutManager.VERTICAL, false) {
@@ -290,10 +307,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
                     }
                 }
             rcv_sender_msg_album.layoutManager = gridLayoutManager
-            rcv_sender_msg_album.setOnClickListener {
-
-            }
-            messageAlbumAdapter.addModels(data.listImage!!, false)
+            messageAlbumAdapter.addModels(data.listImage, false)
         }
     }
 
@@ -307,7 +321,7 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
             rcv_receiver_msg_album.setOnClickListener {
 
             }
-            messageAlbumAdapter.addModels(data.listImage!!, false)
+            messageAlbumAdapter.addModels(data.listImage, false)
         }
 
     }
