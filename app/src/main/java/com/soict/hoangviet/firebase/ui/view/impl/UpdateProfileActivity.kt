@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import beetech.com.carbooking.util.DateUtil
+import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
 import com.soict.hoangviet.baseproject.extension.loadImage
 import com.soict.hoangviet.baseproject.extension.onAvoidDoubleClick
 import com.soict.hoangviet.baseproject.extension.toast
@@ -126,14 +127,18 @@ class UpdateProfileActivity : BasePhotoActivity(), UpdateProfileView {
             }
         }
         btn_update.onAvoidDoubleClick {
-            val mUpdateProfileRequest = UpdateProfileRequest()
-            mUpdateProfileRequest.apply {
-                email = tv_email.text.toString()
-                phone = tv_phone.text.toString()
-                fullname = edt_name.text.toString()
-                birthday = tv_birthday.text.toString()
+            if (hasNetworkConnection()) {
+                val mUpdateProfileRequest = UpdateProfileRequest()
+                mUpdateProfileRequest.apply {
+                    email = tv_email.text.toString()
+                    phone = tv_phone.text.toString()
+                    fullname = edt_name.text.toString()
+                    birthday = tv_birthday.text.toString()
+                }
+                mPresenter.updateProfile(mUpdateProfileRequest)
+            } else {
+                toast(getString(R.string.toast_no_internet_connection))
             }
-            mPresenter.updateProfile(mUpdateProfileRequest)
         }
         toolbar.setOnBackClickListener {
             finish()

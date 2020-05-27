@@ -85,6 +85,7 @@ internal constructor(
                 // [END_EXCLUDE]
             }
             .build()
+        pairUser?.first?.keepSynced(true)
     }
 
     private fun <T> gsonFromJson(json: String?, classOfT: Class<T>): T {

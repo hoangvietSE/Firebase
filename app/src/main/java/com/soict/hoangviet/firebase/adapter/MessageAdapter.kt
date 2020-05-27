@@ -311,11 +311,22 @@ class MessageAdapter(context: Context) : EndlessLoadingRecyclerViewAdapter(conte
         }
     }
 
-    class ReceiverAlbumViewHolder(override val containerView: View?) :
+    inner class ReceiverAlbumViewHolder(override val containerView: View?) :
         NormalViewHolder(containerView!!), LayoutContainer {
+        private val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
+        init {
+            messageAlbumAdapter.setOnItemClickListener { parent, viewType, view, position ->
+                onItemAlbumClickListener?.invoke(
+                    messageAlbumAdapter.getItemPosition(
+                        position!!,
+                        String::class.java
+                    )
+                )
+            }
+        }
         override fun <T> bind(data: T) {
             data as ChatsResponse
-            val messageAlbumAdapter = MessageAlbumAdapter(itemView.context)
+
             rcv_receiver_msg_album.adapter = messageAlbumAdapter
             rcv_receiver_msg_album.layoutManager = GridLayoutManager(itemView.context, 3)
             rcv_receiver_msg_album.setOnClickListener {

@@ -4,19 +4,18 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
-import com.soict.hoangviet.baseproject.extension.hasNetworkConnection
-import com.soict.hoangviet.baseproject.extension.inResourceString
-import com.soict.hoangviet.baseproject.extension.launchActivity
-import com.soict.hoangviet.baseproject.extension.toast
+import com.soict.hoangviet.baseproject.extension.*
 import com.soict.hoangviet.firebase.R
 import com.soict.hoangviet.firebase.ui.presenter.SplashPresenter
 import com.soict.hoangviet.firebase.ui.view.SplashView
 import com.soict.hoangviet.firebase.utils.DialogUtil
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashView {
     @Inject
     lateinit var mPresenter: SplashPresenter
+    private val compositeDisposable = CompositeDisposable()
 
     override fun initListener() {
     }
@@ -27,17 +26,20 @@ class SplashActivity : BaseActivity(), SplashView {
 
     override fun initView() {
         mPresenter.onAttach(this)
-        Handler().postDelayed({
-            checkNetworkConnection()
-        }, SPLASH_TIME)
+        compositeDisposable.add(
+            completableTimer({
+                checkNetworkConnection()
+            }, 1000)
+        )
     }
 
     private fun checkNetworkConnection() {
-        if (hasNetworkConnection()) {
-            mPresenter.checkFirstTimeForApp()
-        } else {
-            showAlertNoNetworkConnection()
-        }
+//        if (hasNetworkConnection()) {
+//
+//        } else {
+//            showAlertNoNetworkConnection()
+//        }
+        mPresenter.checkFirstTimeForApp()
     }
 
     override fun checkCurrentUser() {
@@ -100,6 +102,7 @@ class SplashActivity : BaseActivity(), SplashView {
 
     override fun onDestroy() {
         super.onDestroy()
+        compositeDisposable.dispose()
         mPresenter.onDetach()
     }
 }

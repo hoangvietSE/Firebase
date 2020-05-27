@@ -119,5 +119,6 @@
     <string name="info_message">Nhắn tin</string>
     <string name="info_add_friend">Kết bạn</string>
     <string name="device_not_support">Thiết bị không hỗ trợ tính năng này!</string>
+    <string name="toast_no_internet_connection">Không có kết nối Internet</string>
 
 </resources>

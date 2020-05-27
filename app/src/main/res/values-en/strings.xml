@@ -96,4 +96,5 @@
     <string name="splash_positive_title">OK</string>
     <string name="splash_message_alert">No Internet Conntection. Please connect or come back later</string>
     <string name="device_not_support">Sorry your device not supported</string>
+    <string name="toast_no_internet_connection">No Internet Conntection</string>
 </resources>
